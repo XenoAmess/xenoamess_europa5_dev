@@ -4,7 +4,7 @@ Europa Universalis V 多 Mod 开发、验收与发布仓库。
 
 本仓库采用“根目录独立产品 + 共享工具链”的结构：每个 `mod_<product_key>/` 都是可独立版本化、构建、验收和发布的 Mod；`docs/`、`tools/`、`tests/`、`fixtures/` 与 `workshop/` 提供跨产品共用能力。
 
-当前状态：仓库基础设施已建立，尚未创建第一个正式 Mod 产品。产品需求确定后，先按 [产品合同模板](docs/product-contract-template.md) 写出可证伪合同，再创建 EU5 原生 stub 和玩家可见垂直切片。
+当前状态：首个候选产品“献给白绮的殖民领版图整理”已经完成需求合同、源码与静态工具；受“不启动游戏、不占用屏幕”的硬门禁约束，EU5 原生 stub/metadata 与实机验收尚待后续授权。
 
 ## 文档入口
 
@@ -15,6 +15,7 @@ Europa Universalis V 多 Mod 开发、验收与发布仓库。
 - [版本与发布](docs/versioning-and-release.md)
 - [当前 EU5 exact-build 静态基线](docs/exact-build-baseline.md)
 - [产品登记表](docs/products.md)
+- [献给白绮的殖民领版图整理](mod_colonial_region_transfer/README.md)
 
 ## 当前边界
 

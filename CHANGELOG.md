@@ -4,6 +4,7 @@
 
 ## Unreleased
 
+- 完成首个候选产品“献给白绮的殖民领版图整理”的需求合同、P 脚本、11 种语言本地化和静态/构建工具；原生 metadata 与实机验收仍受屏幕门禁约束。
 - 建立 Europa Universalis V 多 Mod 仓库骨架。
 - 建立文档先行、exact-build 研究、分层验收、OCR 证据和发布闭环规范。
 - 建立每个用户目标完成后必须 commit 并 push 的仓库规则。

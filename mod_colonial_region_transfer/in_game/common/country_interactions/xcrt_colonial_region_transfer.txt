@@ -1,0 +1,123 @@
+﻿xcrt_cleanup_colonial_region = {
+	type = subject
+	category = CATEGORY_SUBJECT_ACTIONS
+
+	ai_tick = never
+	use_enroute = no
+	block_when_at_war = yes
+
+	potential = {
+		scope:actor = {
+			is_colonial_overlord = yes
+		}
+	}
+
+	allow = {
+		scope:actor = {
+			at_war = no
+		}
+	}
+
+	select_trigger = {
+		looking_for_a = country
+		interaction_source_list = {
+			scope:actor = {
+				every_subject = {
+					limit = {
+						is_colonial_subject = yes
+						NOR = {
+							country_type = building
+							country_type = pop
+						}
+					}
+					add_to_list = source
+				}
+			}
+		}
+		target_flag = recipient
+		name = "xcrt_select_colonial_subject"
+		none_available_msg_key = "xcrt_no_colonial_subject"
+		show_why_not_enabled = yes
+		column = {
+			data = name
+		}
+		column = {
+			data = population
+		}
+		visible = {
+			is_colonial_subject = yes
+			is_subject_of = scope:actor
+		}
+		enabled = {
+			custom_tooltip = {
+				text = xcrt_target_must_be_at_peace_tt
+				at_war = no
+			}
+			custom_tooltip = {
+				text = xcrt_overlord_capital_outside_region_tt
+				scope:actor = {
+					capital = {
+						NOT = { region = root.capital.region }
+					}
+				}
+			}
+			custom_tooltip = {
+				text = xcrt_affected_subjects_at_peace_tt
+				scope:actor = {
+					NOT = {
+						any_subject_or_below = {
+							at_war = yes
+							any_owned_location = {
+								region = root.capital.region
+							}
+						}
+					}
+				}
+			}
+			custom_tooltip = {
+				text = xcrt_has_transferable_locations_tt
+				root.capital.region = {
+					any_location_in_region = {
+						is_ownable = yes
+						NOT = { owner ?= root }
+						owner ?= {
+							OR = {
+								this = scope:actor
+								is_subject_or_below_of = scope:actor
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	effect = {
+		if = {
+			limit = {
+				exists = scope:recipient
+			}
+			custom_tooltip = {
+				text = xcrt_transfer_effect_tt
+				scope:recipient.capital.region = {
+					every_location_in_region = {
+						limit = {
+							is_ownable = yes
+							NOT = { owner ?= scope:recipient }
+							owner ?= {
+								OR = {
+									this = scope:actor
+									is_subject_or_below_of = scope:actor
+								}
+							}
+						}
+						change_location_owner = scope:recipient
+					}
+				}
+			}
+		}
+		else = {
+			custom_tooltip = xcrt_select_colonial_subject_first_tt
+		}
+	}
+}

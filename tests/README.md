@@ -8,3 +8,9 @@
 - fixtures/scenarios 与已保存验收结论的一致性。
 
 云端或离线测试只属于 L0，不能声明 EU5 已加载、UI 已显示或玩法已通过。
+
+当前产品工具测试：
+
+```powershell
+python -m unittest tests.test_colonial_region_transfer_tools
+```

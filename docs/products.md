@@ -4,6 +4,6 @@
 
 | Product key | 展示名称 | Stable ID | 版本 | 支持的 EU5 build | Workshop ID | 状态 |
 | --- | --- | --- | --- | --- | --- | --- |
-| `colonial_region_transfer` | 殖民领地区一键划拨 | 待 EU5 Mod Tools 生成 | `0.1.0-dev`（计划） | Steam Build `24187685` | — | [需求已基线化](requirements/colonial-region-transfer.md)；实现与 metadata 待完成 |
+| `colonial_region_transfer` | 献给白绮的殖民领版图整理 | 待 EU5 Mod Tools 生成 | `0.1.0-dev` | Steam Build `24187685` | — | [需求已基线化](requirements/colonial-region-transfer.md)；源码已实现，metadata 与实机验收待屏幕授权 |
 
 登记表只用于导航。版本真值位于各产品 `VERSION`，Workshop 与 provider 身份以产品 metadata、发布记录和远端回读为准。

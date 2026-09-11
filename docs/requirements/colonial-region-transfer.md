@@ -1,10 +1,10 @@
-# 殖民领地区一键划拨：需求分析与产品合同
+# 献给白绮的殖民领版图整理：需求分析与产品合同
 
-状态：`requirements-baselined / implementation-pending`
+状态：`source-implemented / native-stub-pending`
 
 产品 key：`colonial_region_transfer`
 
-计划目录：`mod_colonial_region_transfer/`
+产品目录：`mod_colonial_region_transfer/`
 
 脚本与本地化前缀：`xcrt_`
 
@@ -25,6 +25,8 @@
 原文中的“殖民地”解释为殖民领附属国，而不是一个尚未建成的殖民据点；“该地区”解释为所选殖民领首都所在的 EU5 `region`；“自己附属的地”包括玩家直属及更下层附属国持有的地点。这样无需再选地点，能以一次附属国互动清理一个完整 Region 内同一宗主体系的犬牙交错领土。
 
 玩家价值可以写成一句话：宗主从附属国互动中选择一个直属殖民领，一次把该殖民领首都 Region 内、宗主体系持有的全部地点划给它，以整理版图。
+
+中文展示名为“献给白绮的殖民领版图整理”，互动选项名为“整理殖民领地区”；非中文语境中的人名统一写作 `Vivhite`，英文展示名为 “For Vivhite: Colonial Border Cleanup”。献词属于 Mod 标题，不重复添加到每条互动按钮和说明中。
 
 ### 术语与边界
 
@@ -65,7 +67,7 @@
 - 不吞并目标殖民领，不调用原版“合并殖民地”的整国吞并流程。
 - 不提供 Area/Subcontinent/自定义框选等第二种地理口径。
 - 不让 AI 使用，不做自动月度整理，不增加 MCP、输入注入或 GUI 自动化。
-- 当前运行时与 OCR 只验收简体中文；其他语言仅做静态缺失记录。
+- 当前运行时与 OCR 只验收简体中文；EU5 当前内置的其他语言必须提供完整本地化并通过 L0 静态检查，但不以静态结果冒充运行时验证。
 - 本轮不发布 Workshop，不创建 tag 或 GitHub Release。
 
 ## exact-build 原版依据
@@ -95,7 +97,7 @@
 预期写入面仅为：
 
 - `in_game/common/country_interactions/xcrt_colonial_region_transfer.txt`
-- `main_menu/localization/simp_chinese/xcrt_colonial_region_transfer_l_simp_chinese.yml`
+- `main_menu/localization/<language>/xcrt_colonial_region_transfer_l_<language>.yml`，覆盖当前构建的 `braz_por`、`english`、`french`、`german`、`japanese`、`korean`、`polish`、`russian`、`simp_chinese`、`spanish` 与 `turkish`
 - 产品 README、VERSION、验收计划，以及由当前 EU5 Mod Tools 生成并冻结的 `.metadata/metadata.json`
 
 正式 release builder 使用精确 allowlist；开发文档、测试证据、缓存和仓库工具不得进入 Mod ZIP。
@@ -104,7 +106,7 @@
 
 | 层级 | 场景 | 可证伪断言 | 所需证据 |
 | --- | --- | --- | --- |
-| L0 | 结构、编码与静态合同 | 唯一 `xcrt_` key；括号、重复键、本地化引用、UTF-8 BOM、allowlist、版本一致性通过。 | 静态验证报告、输入哈希、`git diff --check`。 |
+| L0 | 结构、编码与静态合同 | 唯一 `xcrt_` key；括号、重复键、11 种语言的本地化引用、UTF-8 BOM、allowlist、版本一致性通过；非中文标题使用 `Vivhite`。 | 静态验证报告、输入哈希、`git diff --check`。 |
 | L0 | P 语言语义工具覆盖 | Open Kaishek 的 EU5 exact-build profile 能解析并 round-trip 产品脚本；否则标记 `tool-coverage RED`。 | profile 身份、解析 JSON、诊断列表。 |
 | L1 | 隔离加载 | 只启用本 Mod 时，fresh 日志确认 Mod 被加载，且无本产品归因的 script/localization error。 | fresh 日志、加载配置、Mod 树哈希。 |
 | L2 | 主成功路径 | 宗主直属地和另一个附属国的地位于目标首都 Region；确认后全部归目标，Region 外不变。 | 前后地点 owner 清单、简中 UI 截图、OCR JSON、日志。 |
@@ -118,6 +120,7 @@
 
 - 需求与 exact-build 静态证据：已基线化。
 - EU5 Mod Tools 原生 stub/metadata：未生成；用户明确要求当前不占用屏幕且不启动游戏，因此不得手写猜测 metadata。
-- Open Kaishek EU5 profile：尚无，属于 `tool-coverage RED`。
+- Open Kaishek 通用 parser：当前产品脚本为 `PARSED`，2276 bytes、823 CST nodes、42 blocks、0 diagnostics、`roundTrip = true`。
+- Open Kaishek EU5 profile：尚无；上述通用解析不验证 country interaction/scope/effect 语义，因此语义工具覆盖仍属于 `tool-coverage RED`。
 - 游戏、日志与 OCR：尚未执行；等待用户在未来明确释放屏幕并授权该轮实机操作。
 - 因此实现可以先形成可审查源码与静态工具，但在上述门禁补齐前不得称为可加载、运行时 GREEN 或可发布版本。
