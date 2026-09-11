@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+
+# Local runtime and generated release output
+_runtime/
+artifacts/
+dist/
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Local EU5 mirrors and Workshop caches must never be committed
+Europa Universalis V/
+workshop-cache/

@@ -1,0 +1,15 @@
+* text=auto
+
+*.md text eol=lf
+*.json text eol=lf
+*.py text eol=lf
+*.txt text eol=lf
+*.gui text eol=lf
+*.yml text eol=lf
+*.mod text eol=lf
+
+*.dds binary
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.zip binary
