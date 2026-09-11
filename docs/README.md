@@ -12,6 +12,7 @@
 - [当前 EU5 exact-build 静态基线](exact-build-baseline.md)
 - [产品登记表](products.md)
 - [产品合同模板](product-contract-template.md)
+- [殖民领地区一键划拨：需求分析与产品合同](requirements/colonial-region-transfer.md)
 
 ## 知识归档原则
 
