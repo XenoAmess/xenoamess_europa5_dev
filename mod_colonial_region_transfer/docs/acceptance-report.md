@@ -1,6 +1,6 @@
 # 献给白绮的殖民领版图整理：实机验收报告
 
-状态：`FULL_ACCEPTANCE_GREEN / USER_APPROVED_FOR_RELEASE`
+状态：`FULL_ACCEPTANCE_GREEN / WORKSHOP_RELEASED`
 
 本报告记录正式版本 `0.1.0` 的隔离实机结果。过程证据位于被 Git 忽略的 `_runtime/<run-id>/`；报告列出的 SHA-256 用于证明证据未被后续改写。
 
@@ -76,4 +76,7 @@
 - 产品验证：GREEN，用户已批准发布。
 - 发布资产：三张实机功能图、原创图标与 Workshop BBCode 已齐备。
 - 工具覆盖：Open Kaishek EU5 profile 缺失，保持 `tool-coverage RED`，不得表述为已通过。
-- 平台步骤：定版、tag、构建、上传、远端回读与 Workshop ID 回填由本次发布流程完成；Steam 只在上传所必需的时间内在线，完成后立即恢复离线。
+- 平台步骤：Workshop item [`3800505751`](https://steamcommunity.com/sharedfiles/filedetails/?id=3800505751) 已公开；上传内容 manifest `2596763729356634813` 与预览图均获 Steam `OK`。
+- 远端回读：匿名页面返回正式标题；三张 BBCode 实机图均正常显示，且从公开 URL 重新下载后的 SHA-256 与仓库源文件一致。
+- Fresh cache：订阅后从新路径下载 14 个文件、742,656 字节，与上传投影逐路径逐 SHA-256 比对，差异为 0。
+- 环境收尾：EU5 已正常退出；Steam 于 2026-09-13 05:04:09 `LogOff()`，日志确认不会自动重连，客户端保持运行并显示离线模式。

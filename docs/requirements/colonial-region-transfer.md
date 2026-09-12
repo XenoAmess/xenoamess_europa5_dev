@@ -1,6 +1,6 @@
 # 献给白绮的殖民领版图整理：需求分析与产品合同
 
-状态：`runtime-accepted / workshop-release-in-progress`
+状态：`released / workshop-public`
 
 产品 key：`colonial_region_transfer`
 
@@ -153,4 +153,4 @@ EU5 Build `24187685` 会为 country interaction 默认查找 `WE_PERFORM_<key>_A
 - 隔离简中实机：run `xcrt-20260912T064111-dev-runtime` 的加载、主成功路径、存档 owner、重载后审计、无工作量重复执行禁用、OCR 与真实 userdir 保护均通过；产品归因运行时错误为 0。两条历史脚本错误来自旧夹具对已被引擎清理国家的无效解引用，热修夹具后在同一进程通过，未重启游戏。
 - 补充负路径 run `xcrt-20260912T044732Z-full-gates-runtime` 已取得战争与宗主首都同 Region 的原生可见禁用原因；同一 run 另取得互动、确认和执行结果三张无控制台的 `2560x1440` 实机展示图。
 - 2026-09-13，用户审阅当前证据后明确判定验证已经充分并批准立即发布。因此产品验收门禁关闭；Open Kaishek profile 缺失仍保留为独立的 `tool-coverage RED`，不冒充产品 RED。
-- `0.1.0` 版本、changelog、tag、可复现构建、Workshop 上传与远端回读按本次发布流程执行，Workshop ID 在上传后回填。
+- `0.1.0` 已由 tag `colonial_region_transfer-v0.1.0` 的 commit `0e26c1ea12dbde40024db67d135994ac80cf8e56` 可复现构建并公开发布到 Workshop item [`3800505751`](https://steamcommunity.com/sharedfiles/filedetails/?id=3800505751)。上传结果、匿名页面回读、三张媒体回读与 fresh Workshop cache 严格比对均已通过；发布后 Steam 已恢复离线并保持运行。
