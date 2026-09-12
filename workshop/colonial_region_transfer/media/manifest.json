@@ -1,0 +1,37 @@
+{
+  "run_id": "xcrt-20260912T044732Z-full-gates-runtime",
+  "images": [
+    {
+      "path": "game-interaction-zh-cn.png",
+      "purpose": "Simplified Chinese in-game subject-action entry and explanation",
+      "width": 2560,
+      "height": 1440,
+      "bytes": 4312601,
+      "sha256": "f1cb5020b50a3c2a0fa85d58dd8e53c7f281b88c952ded2eb1b8d4fdb8a082eb"
+    },
+    {
+      "path": "game-confirmation-zh-cn.png",
+      "purpose": "Simplified Chinese irreversible-action confirmation and lifecycle warning",
+      "width": 2560,
+      "height": 1440,
+      "bytes": 4260926,
+      "sha256": "4c88179235458187357a0c2ecf4748c1f96663b3789dfa52f18d6e92ddd1ec2f"
+    },
+    {
+      "path": "game-result-zh-cn.png",
+      "purpose": "Post-action map and target ownership result",
+      "width": 2560,
+      "height": 1440,
+      "bytes": 4588309,
+      "sha256": "08598f8033209a1161c073eed3a7ff1478473478f7a53f47daceba528ee51097"
+    },
+    {
+      "path": "icon-512.png",
+      "purpose": "Original Workshop preview and mod icon candidate",
+      "width": 512,
+      "height": 512,
+      "bytes": 715056,
+      "sha256": "8db0837c6e1e7804543a0b80bfe038a4534f882f060ed0fc0c52beadb19b9e8d"
+    }
+  ]
+}

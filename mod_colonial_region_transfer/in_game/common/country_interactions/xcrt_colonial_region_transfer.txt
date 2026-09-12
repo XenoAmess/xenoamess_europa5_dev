@@ -5,6 +5,8 @@
 	ai_tick = never
 	use_enroute = no
 	block_when_at_war = yes
+	show_message = no
+	show_message_to_target = no
 
 	potential = {
 		scope:actor = {
@@ -57,7 +59,7 @@
 				text = xcrt_overlord_capital_outside_region_tt
 				scope:actor = {
 					capital = {
-						NOT = { region = root.capital.region }
+						NOT = { region = scope:recipient.capital.region }
 					}
 				}
 			}
@@ -68,7 +70,7 @@
 						any_subject_or_below = {
 							at_war = yes
 							any_owned_location = {
-								region = root.capital.region
+								region = scope:recipient.capital.region
 							}
 						}
 					}
@@ -76,10 +78,10 @@
 			}
 			custom_tooltip = {
 				text = xcrt_has_transferable_locations_tt
-				root.capital.region = {
+				scope:recipient.capital.region = {
 					any_location_in_region = {
 						is_ownable = yes
-						NOT = { owner ?= root }
+						NOT = { owner ?= scope:recipient }
 						owner ?= {
 							OR = {
 								this = scope:actor
@@ -111,8 +113,12 @@
 								}
 							}
 						}
-						change_location_owner = scope:recipient
+						add_to_list = xcrt_transfer_locations
 					}
+				}
+				every_in_list = {
+					list = xcrt_transfer_locations
+					change_location_owner = scope:recipient
 				}
 			}
 		}

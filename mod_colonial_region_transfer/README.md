@@ -12,7 +12,9 @@ Product key：`colonial_region_transfer`
 
 ## 当前状态
 
-P 脚本和 11 种语言本地化已经实现。当前目录还不是可加载或可发布的 Mod：用户明确要求不启动游戏、不占用屏幕，因此尚未通过当前 EU5 build 的内置 Mod Tools 生成 `.metadata/metadata.json`。不得从其他 Paradox 游戏或旧版本手写该文件。
+P 脚本、11 种语言本地化和当前 EU5 Mod Tools 原生 metadata 已实现。Build `24187685` 的隔离简中实机主路径、存档 owner、重载后审计、无工作量重复执行禁用、OCR、日志归因与真实玩家 userdir 保护均已通过；详见 [`docs/acceptance-report.md`](docs/acceptance-report.md)。
+
+`0.1.0` 已完成主成功路径、战争禁用、宗主首都同 Region 禁用、存档重载、简中 OCR、日志和所有权审计；现有实机截图已作为 Workshop 展示素材。Open Kaishek EU5 profile 缺失继续如实记为独立的 `tool-coverage RED`，不改变已由实机证据和用户批准关闭的产品发布门禁。
 
 白绮是人名；所有非中文本地化统一写作 `Vivhite`。当前 EU5 build 的 11 种内置语言都提供完整互动本地化；简体中文是唯一实机与 OCR 验收语言。
 
@@ -38,7 +40,7 @@ P 脚本和 11 种语言本地化已经实现。当前目录还不是可加载�
 python tools/validate_colonial_region_transfer_static.py
 ```
 
-release builder 会在 metadata 缺失时拒绝构建：
+release builder 会拒绝 metadata 缺失、工作树不干净或 HEAD 未绑定精确产品 tag 的构建：
 
 ```powershell
 python tools/build_colonial_region_transfer_release.py

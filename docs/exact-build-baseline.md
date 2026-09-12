@@ -1,6 +1,6 @@
 # 本机 Europa Universalis V 静态基线
 
-状态：静态调查完成；未启动游戏，运行时版本字符串、可见 checksum、用户目录和日志布局待有屏幕授权后冻结。
+状态：静态调查完成；2026-09-12 已获屏幕授权并开始隔离实机验收，运行时事实见下方接管复核和各产品验收报告。
 
 调查日期：2026-09-11。
 
@@ -55,7 +55,7 @@ Mod 的 VFS 合并和跨层路径行为必须用 EU5 自己生成的 stub 与实
 
 `D:\workspace\open_kaishek` 当前有 CK3 1.19.0.6 与 Stellaris 4.4.6 profile，没有 EU5 profile。首个 Mod 的 L0 工作包含建立 exact-build EU5 profile；完成前可以进行文件、编码和合同检查，但不能宣称 EU5 P 语言语义已由该工具验证。
 
-## 待屏幕授权后补齐
+## 实机阶段待补齐或持续复核
 
 1. 无 Mod 简中主菜单的实际版本名、版本号和 checksum。
 2. EU5 真实用户目录、日志、settings、playsets 和存档路径。
@@ -64,3 +64,11 @@ Mod 的 VFS 合并和跨层路径行为必须用 EU5 自己生成的 stub 与实
 5. 直启和 Steam 启动差异、焦点、DPI、分辨率与 UI 缩放。
 6. fresh 日志的 session marker、加载成功与产品错误归因规则。
 7. Workshop cache、远端 metadata 规范化和 fresh-cache 下载流程。
+
+## 2026-09-12 接管环境复核
+
+当前执行环境只挂载 `C:`，Steam 实际根目录为 `C:\Program Files (x86)\Steam`，EU5 实际安装目录为 `C:\Program Files (x86)\Steam\steamapps\common\Europa Universalis V`。App manifest 仍为 Build ID `24187685`，上述 EXE、checksum 与五项原版依据哈希全部未变。原先记录的 `D:` 路径是上一环境的位置，不是产品身份或 exact-build 依据。
+
+静态验证器应优先接受显式 `--game-root`/`EU5_GAME_ROOT`，否则从当前 Steam 注册表与 `libraryfolders.vdf` 发现安装目录；不得把易变的盘符写成唯一默认值。发现结果仍须通过六项哈希，路径发现本身不证明 exact build。
+
+接管时还发现真实 Documents userdir 已存在，且已有一次无命令行参数、无 Mod 的非隔离运行日志：游戏日志报告 `u26q2/release/1.3.11`、Git `69f9fa5a5`，设置为简体中文、`2560x1440`、DX12。该运行不属于本产品的唯一 run，也没有输入 manifest、保护目录快照或任务总线记录，因此只能作为环境调查事实，不能计入 L1–L3 验收。正式验收仍必须先实测隔离参数，且不得改写该真实 userdir。

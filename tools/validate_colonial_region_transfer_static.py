@@ -40,7 +40,7 @@ LOC_FILES = {
     for language in LANGUAGES
 }
 METADATA_REL = Path(".metadata/metadata.json")
-DEFAULT_GAME_ROOT = Path(r"D:\Program Files (x86)\Steam\steamapps\common\Europa Universalis V")
+LEGACY_GAME_ROOT = Path(r"D:\Program Files (x86)\Steam\steamapps\common\Europa Universalis V")
 UTF8_BOM = b"\xef\xbb\xbf"
 SEMVER_RE = re.compile(r"^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$")
 LOC_KEY_RE = re.compile(r"^\s*([A-Za-z0-9_.-]+):", re.MULTILINE)
@@ -50,6 +50,7 @@ VANILLA_HASHES = {
     Path("game/in_game/common/country_interactions/give_location_to_subject.txt"): "82f5bdf0c0c85637e7e1d81c9722d09083e7672fa08cfc8d9f91c6f9f6a489f3",
     Path("game/in_game/common/country_interactions/give_subject_location_to_other_subject.txt"): "58e84f71ad9219b2d1d81530d1b648d86b310b91fcda3c179d04e13e8022ee6e",
     Path("game/in_game/common/country_interactions/merge_colonies.txt"): "0aa4d7b3704c1f3c26ec2259bcdb08561acd7993aab925c12c1a2f32a1ffac2a",
+    Path("game/in_game/common/country_interactions/readme.txt"): "2656714d72427abacd2497fc23bc80940a91df64f8c4f5d24c3839866a6ead23",
     Path("game/in_game/events/debug/qa_debug.txt"): "26664f3b8013c860dcf96690d5bd6e7544a3544198128fb9b56e13bedf30976e",
     Path("game/main_menu/localization/simp_chinese/country_interactions_l_simp_chinese.yml"): "86833fac8166602c67ba03a06e722b91e3c87ffcaa9ff03012a9f28f80511628",
 }
@@ -59,15 +60,23 @@ REQUIRED_SCRIPT_FRAGMENTS = (
     "type = subject",
     "category = CATEGORY_SUBJECT_ACTIONS",
     "ai_tick = never",
+    "show_message = no",
+    "show_message_to_target = no",
     "is_colonial_overlord = yes",
     "is_colonial_subject = yes",
     "target_flag = recipient",
-    "root.capital.region = {",
     "scope:recipient.capital.region = {",
     "any_location_in_region = {",
     "every_location_in_region = {",
+    "add_to_list = xcrt_transfer_locations",
+    "every_in_list = {",
+    "list = xcrt_transfer_locations",
     "is_subject_or_below_of = scope:actor",
     "change_location_owner = scope:recipient",
+)
+
+FORBIDDEN_SCRIPT_FRAGMENTS = (
+    "root.capital.region",
 )
 
 REQUIRED_LOC_KEYS = {
@@ -87,6 +96,74 @@ REQUIRED_LOC_KEYS = {
     "xcrt_transfer_effect_tt",
     "xcrt_select_colonial_subject_first_tt",
 }
+
+
+def steam_library_paths(vdf_text: str) -> list[Path]:
+    """Extract Valve library paths without depending on a third-party VDF parser."""
+
+    paths: list[Path] = []
+    for encoded in re.findall(r'"path"\s+"([^"]+)"', vdf_text):
+        candidate = Path(encoded.replace(r"\\", "\\"))
+        if candidate not in paths:
+            paths.append(candidate)
+    return paths
+
+
+def steam_roots() -> list[Path]:
+    roots: list[Path] = []
+
+    def add(candidate: str | Path | None) -> None:
+        if not candidate:
+            return
+        path = Path(candidate)
+        if path not in roots:
+            roots.append(path)
+
+    add(os.environ.get("STEAM_PATH"))
+    if sys.platform == "win32":
+        try:
+            import winreg
+
+            registry_locations = (
+                (winreg.HKEY_CURRENT_USER, r"Software\Valve\Steam", "SteamPath"),
+                (
+                    winreg.HKEY_LOCAL_MACHINE,
+                    r"SOFTWARE\WOW6432Node\Valve\Steam",
+                    "InstallPath",
+                ),
+            )
+            for hive, key_name, value_name in registry_locations:
+                try:
+                    with winreg.OpenKey(hive, key_name) as key:
+                        add(winreg.QueryValueEx(key, value_name)[0])
+                except OSError:
+                    continue
+        except ImportError:
+            pass
+        add(Path(os.environ.get("ProgramFiles(x86)", r"C:\Program Files (x86)")) / "Steam")
+        add(Path(os.environ.get("ProgramFiles", r"C:\Program Files")) / "Steam")
+    return roots
+
+
+def discover_default_game_root() -> Path:
+    for steam_root in steam_roots():
+        libraries = [steam_root]
+        library_file = steam_root / "steamapps/libraryfolders.vdf"
+        if library_file.is_file():
+            try:
+                libraries.extend(
+                    steam_library_paths(library_file.read_text(encoding="utf-8-sig"))
+                )
+            except (OSError, UnicodeDecodeError):
+                pass
+        for library in libraries:
+            candidate = library / "steamapps/common/Europa Universalis V"
+            if candidate.is_dir():
+                return candidate.resolve()
+    return LEGACY_GAME_ROOT
+
+
+DEFAULT_GAME_ROOT = discover_default_game_root()
 
 
 def sha256(path: Path) -> str:
@@ -200,6 +277,13 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
     for fragment in REQUIRED_SCRIPT_FRAGMENTS:
         if fragment not in script:
             errors.append(f"script fragment missing: {fragment}")
+    for fragment in FORBIDDEN_SCRIPT_FRAGMENTS:
+        if fragment in script:
+            errors.append(f"forbidden selector scope fragment present: {fragment}")
+    if script.count("scope:recipient.capital.region") < 4:
+        errors.append(
+            "recipient capital Region must be the shared source for all three selector checks and the effect"
+        )
     if script.count("xcrt_cleanup_colonial_region = {") != 1:
         errors.append("interaction root must be declared exactly once")
     checks["script_sha256"] = sha256(script_path) if script_path.is_file() else None
@@ -307,7 +391,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--game-root",
-        default=os.environ.get("EU5_GAME_ROOT", str(DEFAULT_GAME_ROOT)),
+        default=os.environ.get("EU5_GAME_ROOT") or str(DEFAULT_GAME_ROOT),
         help="Europa Universalis V installation root",
     )
     parser.add_argument(

@@ -1,0 +1,244 @@
+﻿namespace = xcrt_acceptance
+
+xcrt_acceptance.1 = {
+	type = country_event
+	title = xcrt_acceptance.1.title
+	desc = xcrt_acceptance.1.desc
+	outcome = neutral
+	orphan = yes
+	trigger = { always = no }
+
+	option = {
+		name = xcrt_acceptance.1.a
+
+		location:tortuga = {
+			discover_location = root
+			create_country_from_location = {
+				overlord = root
+				subject_type = subject_type:colonial_nation
+				define_unique_country_tag = XCRTT
+				change_country_name = XCRTT
+				change_country_adjective = XCRTT
+			}
+		}
+
+		location:guahaba = {
+			discover_location = root
+			create_country_from_location = {
+				overlord = root
+				subject_type = subject_type:vassal
+				define_unique_country_tag = XCRTD
+				change_country_name = XCRTD
+				change_country_adjective = XCRTD
+				set_global_variable = {
+					name = xcrt_acceptance_direct_donor
+					value = this
+				}
+			}
+		}
+
+		location:porto_santo = {
+			discover_location = root
+			change_location_owner = global_var:xcrt_acceptance_direct_donor
+		}
+
+		location:baynoa = {
+			discover_location = root
+			create_country_from_location = {
+				overlord = global_var:xcrt_acceptance_direct_donor
+				subject_type = subject_type:vassal
+				define_unique_country_tag = XCRTS
+				change_country_name = XCRTS
+				change_country_adjective = XCRTS
+			}
+		}
+
+		location:iguamuco = {
+			discover_location = root
+			change_location_owner = root
+			create_country_from_location = {
+				define_unique_country_tag = XCRTI
+				change_country_name = XCRTI
+				change_country_adjective = XCRTI
+			}
+		}
+
+		location:marien = {
+			discover_location = root
+			change_location_owner = root
+		}
+
+		set_global_variable = {
+			name = xcrt_acceptance_actor
+			value = root
+		}
+		set_global_variable = xcrt_acceptance_ready
+	}
+}
+
+xcrt_acceptance.2 = {
+	type = country_event
+	title = xcrt_acceptance.2.title
+	desc = xcrt_acceptance.2.desc
+	outcome = neutral
+	orphan = yes
+	trigger = { always = no }
+
+	option = {
+		name = xcrt_acceptance.2.pass
+		trigger = {
+			has_global_variable = xcrt_acceptance_ready
+			location:tortuga = { owner = c:XCRTT }
+			location:marien = { owner = c:XCRTT }
+			location:guahaba = { owner = c:XCRTT }
+			location:baynoa = { owner = c:XCRTT }
+			location:iguamuco = { owner = c:XCRTI }
+			location:porto_santo = { NOT = { owner ?= c:XCRTT } }
+			country_exists = c:XCRTT
+			NOT = { country_exists = c:XCRTS }
+			country_exists = c:XCRTI
+			c:XCRTT = { is_subject_of = global_var:xcrt_acceptance_actor }
+		}
+		custom_tooltip = xcrt_acceptance.audit.pass.tt
+	}
+
+	option = {
+		name = xcrt_acceptance.2.fail
+		trigger = {
+			NOT = {
+				has_global_variable = xcrt_acceptance_ready
+				location:tortuga = { owner = c:XCRTT }
+				location:marien = { owner = c:XCRTT }
+				location:guahaba = { owner = c:XCRTT }
+				location:baynoa = { owner = c:XCRTT }
+				location:iguamuco = { owner = c:XCRTI }
+				location:porto_santo = { NOT = { owner ?= c:XCRTT } }
+				country_exists = c:XCRTT
+				NOT = { country_exists = c:XCRTS }
+				country_exists = c:XCRTI
+				c:XCRTT = { is_subject_of = global_var:xcrt_acceptance_actor }
+			}
+		}
+		custom_tooltip = xcrt_acceptance.audit.fail.tt
+	}
+}
+
+xcrt_acceptance.3 = {
+	type = country_event
+	title = xcrt_acceptance.3.title
+	desc = xcrt_acceptance.3.desc
+	outcome = neutral
+	orphan = yes
+	trigger = { always = no }
+
+	option = {
+		name = xcrt_acceptance.3.pass
+		trigger = {
+			has_global_variable = xcrt_acceptance_ready
+			location:tortuga = { owner = c:XCRTT }
+			location:marien = { owner = global_var:xcrt_acceptance_actor }
+			location:guahaba = { owner = c:XCRTD }
+			location:baynoa = { owner = c:XCRTS }
+			location:iguamuco = { owner = c:XCRTI }
+			location:porto_santo = { owner = c:XCRTD }
+			c:XCRTT = { is_subject_of = global_var:xcrt_acceptance_actor }
+			c:XCRTD = { is_subject_of = global_var:xcrt_acceptance_actor }
+			c:XCRTS = { is_subject_of = c:XCRTD }
+		}
+		custom_tooltip = xcrt_acceptance.preflight.pass.tt
+	}
+
+	option = {
+		name = xcrt_acceptance.3.fail
+		trigger = {
+			NOT = {
+				has_global_variable = xcrt_acceptance_ready
+				location:tortuga = { owner = c:XCRTT }
+				location:marien = { owner = global_var:xcrt_acceptance_actor }
+				location:guahaba = { owner = c:XCRTD }
+				location:baynoa = { owner = c:XCRTS }
+				location:iguamuco = { owner = c:XCRTI }
+				location:porto_santo = { owner = c:XCRTD }
+				c:XCRTT = { is_subject_of = global_var:xcrt_acceptance_actor }
+				c:XCRTD = { is_subject_of = global_var:xcrt_acceptance_actor }
+				c:XCRTS = { is_subject_of = c:XCRTD }
+			}
+		}
+		custom_tooltip = xcrt_acceptance.preflight.fail.tt
+	}
+}
+
+xcrt_acceptance.4 = {
+	type = country_event
+	title = xcrt_acceptance.4.title
+	desc = xcrt_acceptance.4.desc
+	outcome = neutral
+	orphan = yes
+	trigger = { always = no }
+
+	option = {
+		name = xcrt_acceptance.4.a
+		trigger = {
+			has_global_variable = xcrt_acceptance_ready
+			location:marien = { owner = root }
+		}
+		set_capital = location:marien
+	}
+}
+
+xcrt_acceptance.5 = {
+	type = country_event
+	title = xcrt_acceptance.5.title
+	desc = xcrt_acceptance.5.desc
+	outcome = neutral
+	orphan = yes
+	trigger = { always = no }
+
+	option = {
+		name = xcrt_acceptance.5.a
+		trigger = {
+			capital = location:marien
+			location:lisbon = { owner = root }
+		}
+		set_capital = location:lisbon
+	}
+}
+
+xcrt_acceptance.6 = {
+	type = country_event
+	title = xcrt_acceptance.6.title
+	desc = xcrt_acceptance.6.desc
+	outcome = neutral
+	orphan = yes
+	trigger = { always = no }
+
+	option = {
+		name = xcrt_acceptance.6.a
+		trigger = {
+			has_global_variable = xcrt_acceptance_ready
+			at_war = no
+			country_exists = c:XCRTI
+		}
+		declare_war = c:XCRTI
+	}
+}
+
+xcrt_acceptance.7 = {
+	type = country_event
+	title = xcrt_acceptance.7.title
+	desc = xcrt_acceptance.7.desc
+	outcome = neutral
+	orphan = yes
+	trigger = { always = no }
+
+	option = {
+		name = xcrt_acceptance.7.a
+		trigger = { at_war = yes }
+		every_current_war = {
+			limit = {
+				any_war_participant = { this = c:XCRTI }
+			}
+			white_peace = this
+		}
+	}
+}

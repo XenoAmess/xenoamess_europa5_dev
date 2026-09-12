@@ -2,15 +2,19 @@ from __future__ import annotations
 
 import argparse
 import importlib.util
+import json
 import subprocess
 import sys
+import tempfile
 import unittest
+import zipfile
 from pathlib import Path
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 VALIDATOR_PATH = REPO_ROOT / "tools/validate_colonial_region_transfer_static.py"
 BUILDER_PATH = REPO_ROOT / "tools/build_colonial_region_transfer_release.py"
+PREPARER_PATH = REPO_ROOT / "tools/prepare_colonial_region_transfer_acceptance.py"
 
 
 def load_validator():
@@ -22,10 +26,30 @@ def load_validator():
     return module
 
 
+def load_builder():
+    spec = importlib.util.spec_from_file_location("xcrt_builder", BUILDER_PATH)
+    if spec is None or spec.loader is None:
+        raise RuntimeError("unable to load builder")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def load_preparer():
+    spec = importlib.util.spec_from_file_location("xcrt_preparer", PREPARER_PATH)
+    if spec is None or spec.loader is None:
+        raise RuntimeError("unable to load acceptance preparer")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
 class ColonialRegionTransferToolTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.validator = load_validator()
+        cls.builder = load_builder()
+        cls.preparer = load_preparer()
 
     def test_brace_scanner_ignores_comments_and_strings(self) -> None:
         sample = 'root = { text = "a { brace }" # ignored }\n child = { value = yes }\n}'
@@ -33,6 +57,13 @@ class ColonialRegionTransferToolTests(unittest.TestCase):
 
     def test_duplicate_detector_is_stable(self) -> None:
         self.assertEqual(["a", "b"], self.validator.duplicate_values(["b", "a", "b", "a"]))
+
+    def test_steam_library_parser_decodes_windows_paths(self) -> None:
+        vdf = '"path" "C:\\\\Steam"\n"path" "E:\\\\SteamLibrary"\n'
+        self.assertEqual(
+            [Path(r"C:\Steam"), Path(r"E:\SteamLibrary")],
+            self.validator.steam_library_paths(vdf),
+        )
 
     def test_repository_source_contract(self) -> None:
         args = argparse.Namespace(
@@ -45,15 +76,104 @@ class ColonialRegionTransferToolTests(unittest.TestCase):
         self.assertFalse(report["errors"], report)
         self.assertEqual("PASS_WITH_GATES", report["status"])
 
+    def test_selector_region_is_anchored_to_recipient(self) -> None:
+        script_path = self.validator.PRODUCT_ROOT / self.validator.SCRIPT_REL
+        script = script_path.read_text(encoding="utf-8-sig")
+        self.assertNotIn("root.capital.region", script)
+        self.assertGreaterEqual(script.count("scope:recipient.capital.region"), 4)
+
+    def test_transfer_set_is_snapshotted_before_mutation(self) -> None:
+        script_path = self.validator.PRODUCT_ROOT / self.validator.SCRIPT_REL
+        script = script_path.read_text(encoding="utf-8-sig")
+        snapshot = script.index("add_to_list = xcrt_transfer_locations")
+        replay = script.index("list = xcrt_transfer_locations")
+        mutation = script.index("change_location_owner = scope:recipient")
+        self.assertLess(snapshot, replay)
+        self.assertLess(replay, mutation)
+
+    def test_interaction_suppresses_undefined_post_action_messages(self) -> None:
+        script_path = self.validator.PRODUCT_ROOT / self.validator.SCRIPT_REL
+        script = script_path.read_text(encoding="utf-8-sig")
+        self.assertIn("show_message = no", script)
+        self.assertIn("show_message_to_target = no", script)
+
     def test_release_builder_refuses_missing_native_metadata(self) -> None:
-        result = subprocess.run(
-            [sys.executable, str(BUILDER_PATH)],
-            cwd=REPO_ROOT,
-            text=True,
-            capture_output=True,
-        )
-        self.assertEqual(2, result.returncode)
-        self.assertIn("metadata.json is missing", result.stderr)
+        with tempfile.TemporaryDirectory() as temp:
+            with self.assertRaisesRegex(self.builder.BuildRefused, "metadata.json is missing"):
+                self.builder.require_native_metadata(Path(temp))
+
+    def test_acceptance_projection_keeps_fixture_external_to_product(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            temp_root = Path(temp)
+            profile = temp_root / "profile"
+            evidence = temp_root / "evidence"
+            profile.mkdir()
+            manifest = self.preparer.compose(profile, evidence)
+            target = profile / "mod" / self.preparer.MOD_DIRECTORY
+            fixture_event = Path("in_game/events/xcrt_acceptance_fixture.txt")
+            self.assertTrue((target / fixture_event).is_file())
+            self.assertFalse((self.preparer.PRODUCT_ROOT / fixture_event).exists())
+            origins = {record["path"]: record["origin"] for record in manifest["files"]}
+            self.assertEqual("fixture", origins[fixture_event.as_posix()])
+            self.assertEqual("product", origins[".metadata/metadata.json"])
+
+    def test_acceptance_playset_is_ascii_json_and_enables_only_projection(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            temp_root = Path(temp)
+            profile = temp_root / "profile"
+            evidence = temp_root / "evidence"
+            profile.mkdir()
+            self.preparer.compose(profile, evidence)
+            expected = self.preparer.write_playset(profile)
+            raw = (profile / "playsets.json").read_bytes()
+            self.assertTrue(raw.isascii())
+            observed = json.loads(raw)
+            self.assertEqual(expected, observed)
+            mods = observed["playsets"][0]["orderedListMods"]
+            self.assertEqual(1, len(mods))
+            self.assertTrue(mods[0]["isEnabled"])
+            self.assertTrue(mods[0]["path"].endswith("/xcrt_colonial_region_transfer/"))
+
+    def test_release_projection_is_reproducible_and_allowlisted(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            temp_root = Path(temp)
+            product_root = temp_root / "product"
+            for index, relative in enumerate(self.builder.ALLOWLIST):
+                target = product_root / relative
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(f"fixture-{index}\n".encode())
+            excluded = product_root / "in_game/events/xcrt_acceptance_fixture.txt"
+            excluded.parent.mkdir(parents=True, exist_ok=True)
+            excluded.write_text("fixture = yes\n", encoding="utf-8")
+
+            report = self.builder.check_reproducible(
+                product_root,
+                "0.1.0",
+                "a" * 40,
+                "colonial_region_transfer-v0.1.0",
+            )
+            self.assertEqual("PASS", report["status"])
+
+            release_root = temp_root / "release"
+            manifest = self.builder.build_projection(
+                product_root,
+                release_root,
+                "0.1.0",
+                "a" * 40,
+                "colonial_region_transfer-v0.1.0",
+            )
+            manifest_on_disk = json.loads(
+                (release_root / "colonial_region_transfer-0.1.0.manifest.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            self.assertEqual(manifest, manifest_on_disk)
+            with zipfile.ZipFile(release_root / "colonial_region_transfer-0.1.0.zip") as archive:
+                self.assertEqual(
+                    sorted(relative.as_posix() for relative in self.builder.ALLOWLIST),
+                    archive.namelist(),
+                )
+                self.assertNotIn("in_game/events/xcrt_acceptance_fixture.txt", archive.namelist())
 
 
 if __name__ == "__main__":
