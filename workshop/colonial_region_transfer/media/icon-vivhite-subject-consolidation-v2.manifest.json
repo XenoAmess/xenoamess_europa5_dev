@@ -1,7 +1,7 @@
 {
   "schema": "xcrt.media-candidate.v1",
   "candidate": "vivhite_subject_consolidation_v2",
-  "status": "candidate_not_published",
+  "status": "selected_for_phase_2_not_published",
   "created_on": "2026-09-14",
   "generator": "Codex built-in image generation tool",
   "reference": {
@@ -11,6 +11,12 @@
     "included_in_repository": false
   },
   "prompt_record": "README.md",
+  "selection": {
+    "selected_for": "colonial_region_transfer 0.2.0 official thumbnail replacement",
+    "selected_on": "2026-09-14",
+    "reference_usage_rights_confirmed_by_user": true,
+    "published": false
+  },
   "images": [
     {
       "path": "icon-vivhite-subject-consolidation-v2-source.png",
@@ -34,6 +40,6 @@
     "territory_fragments_and_convergence_visible": true,
     "readable_at_64px": true,
     "forbidden_text_or_branding_absent": true,
-    "rights_confirmation_required_before_publication": true
+    "rights_confirmation_required_before_publication": false
   }
 }
