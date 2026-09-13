@@ -2,6 +2,8 @@
 
 本计划从仓库级[需求分析与产品合同](../../docs/requirements/colonial-region-transfer.md)派生。没有 fresh 证据的层级保持 `NOT_RUN`，不得推断为 GREEN。
 
+本文件记录已发布 0.1.0 的殖民领专属验收。包含殖民领与非殖民领的通用附属国目标属于尚未实现的 0.2.0 二期，使用独立的[二期需求分析、实施阶段与最低验收矩阵](../../docs/requirements/colonial-region-transfer-phase-2.md)；不得用本文件的 0.1.0 结果替二期背书。
+
 ## L0 静态
 
 运行：

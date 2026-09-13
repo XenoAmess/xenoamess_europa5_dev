@@ -13,6 +13,7 @@
 - [产品登记表](products.md)
 - [产品合同模板](product-contract-template.md)
 - [献给白绮的殖民领版图整理：需求分析与产品合同](requirements/colonial-region-transfer.md)
+- [献给白绮的附属地整合：二期需求分析与实施计划](requirements/colonial-region-transfer-phase-2.md)
 
 ## 知识归档原则
 

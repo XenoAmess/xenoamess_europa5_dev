@@ -8,6 +8,8 @@ Product key：`colonial_region_transfer`
 
 目标游戏：Europa Universalis V，Steam Build `24187685`
 
+二期计划：把同一互动扩展到包含殖民领与非殖民领在内的所有合格直属领土型附属国，并将玩家展示名泛化为“献给白绮的附属地整合”。当前源码、metadata、Workshop 与 `VERSION` 仍是已发布的 `0.1.0`，尚未实现二期；增量合同和分阶段门禁见 [`docs/requirements/colonial-region-transfer-phase-2.md`](../docs/requirements/colonial-region-transfer-phase-2.md)。
+
 宗主可在附属国互动中选择“整理殖民领地区”，把目标殖民领首都所在 Region 内由宗主及其任意层级附属国持有的全部可拥有地点划给目标殖民领。
 
 ## 当前状态
