@@ -1,4 +1,4 @@
-namespace = xcrt_acceptance
+﻿namespace = xcrt_acceptance
 
 # Fresh-game scenario: the target is a normal vassal rather than a colony.
 xcrt_acceptance.8 = {
