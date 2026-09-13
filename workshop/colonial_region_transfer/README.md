@@ -9,6 +9,7 @@
 - `description.bbcode`：中英双语商店说明；实机图使用公开仓库的 raw URL，可在首次发布时直接嵌入。
 - `media/icon-source.png`：原创图标母版。
 - `media/icon-512.png`：`0.1.0` 已由当前 EU5 Mod Tools/Steam 上传流程接受并用作正式预览图。
+- `media/icon-vivhite-subject-consolidation-v2-*.png`：把白绮人物形象与附属地汇聚主题结合的二期候选，尚未采用或发布；提示、来源、权利门禁与哈希见媒体 README 和独立 candidate manifest。
 - `media/game-*.png`：简中实机互动入口、确认警告和执行结果三张功能展示图；来源与哈希见 `media/manifest.json`。
 
 验收 fixture 可以用来构造可复现演示局，但对外截图不得出现 debug 面板、控制台、审计事件或 `XCRT` 测试标签。若场景由 fixture 布置，BBCode 图片说明必须明确写“实机功能演示场景”，不得暗示来自自然推进的普通存档。

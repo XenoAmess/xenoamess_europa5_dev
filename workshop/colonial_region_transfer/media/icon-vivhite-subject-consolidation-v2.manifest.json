@@ -1,0 +1,39 @@
+{
+  "schema": "xcrt.media-candidate.v1",
+  "candidate": "vivhite_subject_consolidation_v2",
+  "status": "candidate_not_published",
+  "created_on": "2026-09-14",
+  "generator": "Codex built-in image generation tool",
+  "reference": {
+    "role": "Vivhite identity and character-design reference supplied by the user",
+    "url": "https://i0.hdslb.com/bfs/face/718c36bc01a173d0c42c0d1131f67e31055244c7.jpg",
+    "sha256": "b52b0624a3c2b2114f66a6c7ba839880d1dc89adaa91de0f5ca6bfc302160ca6",
+    "included_in_repository": false
+  },
+  "prompt_record": "README.md",
+  "images": [
+    {
+      "path": "icon-vivhite-subject-consolidation-v2-source.png",
+      "purpose": "Generated source candidate combining Vivhite and subject-territory consolidation",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 2847562,
+      "sha256": "1868bdba33f394872f44c5fac78b031e7d6e4e47849452b387e075f573d375c7"
+    },
+    {
+      "path": "icon-vivhite-subject-consolidation-v2-512.png",
+      "purpose": "Non-published 512px Workshop thumbnail candidate",
+      "width": 512,
+      "height": 512,
+      "bytes": 737585,
+      "sha256": "ebb1c217d594235070e51bf221b89b156c5fb7a2389e337821f022201027189a"
+    }
+  ],
+  "review": {
+    "identity_features_visible": true,
+    "territory_fragments_and_convergence_visible": true,
+    "readable_at_64px": true,
+    "forbidden_text_or_branding_absent": true,
+    "rights_confirmation_required_before_publication": true
+  }
+}
