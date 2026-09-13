@@ -25,6 +25,7 @@ EXACT_BUILD_DLC = (
 PRODUCT_FILES = (
     Path(".metadata/metadata.json"),
     Path("in_game/common/country_interactions/xcrt_colonial_region_transfer.txt"),
+    Path("in_game/common/scripted_triggers/xcrt_subject_territory_consolidation_triggers.txt"),
     *tuple(
         Path(f"main_menu/localization/{language}/xcrt_colonial_region_transfer_l_{language}.yml")
         for language in (

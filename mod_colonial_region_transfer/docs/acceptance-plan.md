@@ -1,59 +1,91 @@
-# 献给白绮的殖民领版图整理验收计划
+# 献给白绮的附属地整合 0.2.0 验收计划
 
-本计划从仓库级[需求分析与产品合同](../../docs/requirements/colonial-region-transfer.md)派生。没有 fresh 证据的层级保持 `NOT_RUN`，不得推断为 GREEN。
+本计划从仓库级
+[二期增量合同](../../docs/requirements/colonial-region-transfer-phase-2.md)派生。
+没有 fresh 证据的层级保持 NOT_RUN，不得用 0.1.0 的殖民专属结果替 0.2.0 背书。
 
-本文件记录已发布 0.1.0 的殖民领专属验收。包含殖民领与非殖民领的通用附属国目标属于尚未实现的 0.2.0 二期，使用独立的[二期需求分析、实施阶段与最低验收矩阵](../../docs/requirements/colonial-region-transfer-phase-2.md)；不得用本文件的 0.1.0 结果替二期背书。
-
-## L0 静态
+## L0 静态与 exact-build profile
 
 运行：
 
-```powershell
-python tools/validate_colonial_region_transfer_static.py
-python -m unittest tests.test_colonial_region_transfer_tools
-git diff --check
-```
+    python tools/validate_colonial_region_transfer_static.py --require-metadata --require-open-kaishek
+    python -m unittest tests.test_colonial_region_transfer_tools
+    mvn -o -pl kaishek-eu5-1311-profile,kaishek-cli -am test
+    git diff --check
 
-通过条件：脚本与 11 种语言本地化的 UTF-8 BOM、括号、键引用、命名空间、版本、exact-build 原版哈希和 release allowlist 全部通过。简体中文标题必须是“献给白绮的殖民领版图整理”，所有非中文标题必须包含人名 `Vivhite`。
+通过条件：
 
-选择器 scope 回归条件：`select_trigger.enabled` 中宗主首都门禁、受影响 donor 战争门禁和可转让地点查询必须都引用 `scope:recipient.capital.region`；脚本中不得使用会解析为互动发起者的 `root.capital.region` 代指候选殖民领。
-
-生命周期回归条件：effect 必须先冻结完整 `xcrt_transfer_locations` 临时列表，再执行所有权变更；L3 的末块领地场景同时放置下层附属国地点，证明 donor 消失不会截断已冻结的转让集合。
-
-验收场景由 `fixtures/colonial_region_transfer/` 的外置 overlay 布置，只能合成到按 run ID 创建的一次性验收树。准备器同时以 ASCII 播放集名称和 UTF-8 JSON 生成只启用该投影的 `playsets.json`，避免本地化播放集名称经 PowerShell 默认编码往返后损坏 JSON。overlay 的 event/localization 以及场景说明均不属于产品 runtime allowlist；L0 必须证明正式 staging 和 ZIP 中没有 `xcrt_acceptance_` key 或 fixture 路径。夹具只负责布置与标记状态，L2 的执行动作仍必须来自玩家可见的“整理殖民领地区”互动。
-
-当前预期门禁：
-
-- `.metadata/metadata.json` 已由 EU5 Build `24187685` 的内置 Mod Tools 生成；静态检查验证 stable ID、版本与产品目录一致。metadata 缺失的安全拒绝仍由工具测试覆盖。
-- 初版脚本曾由 Open Kaishek 通用 parser 做过 lossless round-trip，但修复后的当前脚本尚未由锁定 Build `24187685` 的 EU5 profile 复验；本机记录的 Open Kaishek 工作树当前不存在，语义覆盖仍标记 `tool-coverage RED`。
-- run `xcrt-20260912T064111-dev-runtime` 已通过隔离加载、主成功路径、存档与重载审计、简中 OCR、无工作量重复执行禁用和 userdir 保护；完整结果见 [`acceptance-report.md`](acceptance-report.md)。战争与宗主首都同 Region 的可见禁用路径仍须在后续离线 Steam run 覆盖。
-- 本轮用户已明确授权把机器、屏幕、Steam 与 EU5 视为独占资源，并要求忽略当前不可用的共享任务总线；该总线缺失不再阻止本轮实机与发布动作。
+- VERSION、EU5 Mod Tools metadata、stable ID 与 0.2.0 一致。
+- interaction 与 scripted triggers 均为 UTF-8 BOM、括号平衡，11 种语言键完整。
+- 源码不含 is_colonial_overlord / is_colonial_subject 入口门禁；候选来自
+  actor.every_subject，按 building/pop/army、有效 capital 与直属关系筛选。
+- selector、effect 使用同一 xcrt_is_eligible_direct_subject_target 谓词。
+- target Region 始终来自 scope:recipient.capital.region。
+- 先冻结 xcrt_transfer_locations，效果侧再复核全部硬条件后才改变 owner。
+- 土司 1..14 个既有地点与最多可接收数量 14..1 一一对应；选择器 count 与快照
+  list_size 矩阵完全一致，15 个地点时没有可执行分支。
+- exact build 的 20 个 subject type 清单与 12 项原版/EXE 哈希不漂移。
+- Open Kaishek eu5-1.3.11-build-24187685 对两个产品脚本返回 VALIDATED。
+- 新缩略图为 512×512，SHA-256
+  ebb1c217d594235070e51bf221b89b156c5fb7a2389e337821f022201027189a。
+- release allowlist 包含产品 scripted trigger，但不包含 fixture。
 
 ## L1 隔离加载
 
-前置条件：用户在当前任务明确释放屏幕并授权启动 EU5；任务总线无屏幕冲突；原生 stub 已生成。
+前置硬门禁：用户在当前任务中明确确认屏幕可供本任务占用；任务总线无 EU5/Steam/屏幕
+冲突；Steam 在启动游戏时保持离线。
 
-使用全新隔离 profile，只加载本产品。冻结 EU5 build、EXE SHA-256、metadata、Mod 树、启动参数、简中语言、分辨率、UI 缩放与 DPI。fresh 日志必须证明产品被加载，且没有归因于 `xcrt_` 的 script/localization error，包括不得出现缺失 `WE_PERFORM_xcrt_cleanup_colonial_region_ACTION` 或 `ACTION_xcrt_cleanup_colonial_region_PERFORMED_ON_US` message type。
+每个 attempt 使用新的 run ID 与全新 userdir/profile，只启用由
+prepare_colonial_region_transfer_acceptance.py 合成的产品 + 外置 fixture 投影。记录
+Build、EXE SHA、Mod 树 SHA、DLC、播放集、简体中文、2560×1440、UI 缩放、DPI、
+启动参数和受保护真实 userdir 前后差异。
+
+fresh error.log 中不得出现归因于 xcrt_、interaction 或 scripted trigger 的错误；尤其
+不得有 unknown trigger、wrong scope、坏参数、缺失本地化或未定义消息类型。
 
 ## L2 玩家行为
 
-场景 A：宗主、目标殖民领、同 Region 的宗主直属地点、另一直属附属国地点、下层附属国地点、体系外国家地点，以及 Region 外宗主地点同时存在。
+所有产品动作必须从真实“附属国行动 → 整合附属地”界面执行；fixture 只布置/审计状态。
 
-1. 打开附属国行动，OCR 找到“整理殖民领地区”。
-2. 选择目标殖民领，截图和 OCR 保存确认警告。
-3. 执行后读取 owner 真值：前三类体系内地点全部归目标；体系外和 Region 外地点不变。
-4. 再次打开互动；若没有新地点，目标应显示为不可用。
+1. 殖民领回归：全新葡萄牙开局执行 event xcrt_acceptance.1，使用 .3 审计前置；
+   真实互动选择白绮附属地，先取消一次并核对 owner 不变，再确认执行；用 .2 审计 Region
+   内宗主、直属 donor、下层 donor 均转让，体系外与 Region 外不变。
+2. 普通附庸主路径：全新开局执行 event xcrt_acceptance.8；真实互动选择 vassal
+   目标并执行，以 .9 审计同构结果。
+3. 全类型矩阵：全新开局执行 event xcrt_acceptance.20，以 .21 确认夹具建立 18 个
+   location 型直属附属和两个 building 型直属附属；在真实目标列表逐项确认 18 种领土型
+   目标出现，state_bank 与 trade_company 不出现，列表无坏 capital scope 提示。
+4. 禁用路径：复用 0.1.0 的战争、同首都 Region、无工作量路径；每项保存简中禁用原因、
+   前后 owner 与 fresh 日志。
+5. 关系层级：殖民回归场景的 XCRTS 是 XCRTD 的下层附属；它的地点可作为 donor，但
+   XCRTS 不得直接出现在宗主的目标列表。
 
-场景 B：宗主、目标或持有待转让地点的 donor 处于战争。互动必须禁用，并显示简中原因。
+OCR 只证明玩家可见状态；所有权、关系、类型和数量必须由事件 trigger、存档或确定性
+机器审计交叉验证。
 
-场景 C：普通附属国不能成为目标；宗主与目标首都处于同一 Region 时禁用。
+## L3 土司、生命周期与重载
 
-每个输入动作后都验证可见后置状态；OCR 只证明 UI，不替代地点 owner 真值。
+1. 全新开局执行 event xcrt_acceptance.10：目标土司 14 个地点、同 Region 两个待转让
+   地点；真实互动必须因 14→16 显示不可用，两个 donor owner 均不变。
+2. 执行 .11 移走一个 donor，真实互动必须允许 14→15；确认后 .12 只显示通过，
+   target.num_locations = 15。
+3. 执行 .13 增加一个新 donor；15→16 必须不可用，.14 证明 target 仍为 15 且 donor
+   未转让。整个过程不得出现部分转让。
+4. 殖民回归主路径继续覆盖 donor 最后地点、donor 首都、国家清理、Region 外保护；完成
+   后保存并重载，owner、目标关系、生命周期结果保持。
 
-## L3 高风险生命周期
+每次失败 attempt 永久保留并按 product、fixture/harness、environment 或 tool-coverage
+分类；重试必须新建 run。
 
-- donor 在目标 Region 内仅余最后一块地：执行后检查 donor 国家生命周期、附属关系和日志。
-- donor 首都位于目标 Region 但仍有 Region 外领土：执行后检查国家有效性、首都和日志；允许引擎按产品警告选择迁都或清理该国，但必须证明互动没有把 Region 外地点直接转给目标殖民领。
-- 完成后保存、退出到可安全状态并重载：目标 Region 与体系外地点 owner 必须保持；记录并复核 donor 的实际生命周期结果，不把“必然迁都并存活”当作产品保证。
+## P Workshop 发布验收
 
-每次 attempt 使用新 run ID，永久保存 manifest、日志、截图、OCR JSON、owner 对照、存档、报告和 SHA-256。失败 attempt 不覆盖。
+- 发布前写 0.2.0 changelog，从 clean、tagged HEAD 构建两次并逐字节复现。
+- 更新同一 Workshop item 3800505751；标题、说明、0.2.0 内容与新缩略图作为同一发布
+  目标完成，不创建新 item。
+- 上传前 Steam 才临时在线；先确认账号未在其他机器游戏。上传完成后立即恢复离线。
+- 匿名回读远端标题、说明、更新时间与新预览图；Steam 实际 64 px 渲染仍须可辨白绮人物
+  与附属地汇聚主题。
+- 从空路径取得 fresh Workshop cache；runtime 文件逐路径/逐 SHA 与 staging 一致；
+  cache 的 .metadata/thumbnail.png 必须与选定 512 px 输入逐字节一致。
+- 发布后执行必要的简中 fresh-cache 回归并更新
+  acceptance-report-0.2.0.md。GitHub Release 不在本轮范围内。

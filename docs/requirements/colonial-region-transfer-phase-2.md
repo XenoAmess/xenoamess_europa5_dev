@@ -1,10 +1,10 @@
 # 献给白绮的附属地整合：二期需求分析与实施计划
 
-状态：`planned / docs-only / not-implemented`
+状态：`implementation-in-progress / 0.2.0 source-complete / runtime-and-publication-pending`
 
 分析日期：2026-09-14
 
-目标候选版本：`0.2.0`（实施时再修改 `VERSION`；当前已发布版本仍为 `0.1.0`）
+实施版本：`0.2.0`（`VERSION` 与 metadata 已更新；Workshop 远端仍须在 P4 上传后回读）
 
 沿用产品 key：`colonial_region_transfer`
 
@@ -14,7 +14,7 @@
 
 二期英文工作名：For Vivhite: Subject Territory Consolidation
 
-本文件是已发布 [0.1.0 产品合同](colonial-region-transfer.md)的增量合同与实施计划，不改写 0.1.0 的历史事实。截至 2026-09-14，二期已经完成需求分析并选定新缩略图，但尚未修改 Mod 源码、版本、metadata、Workshop 页面或公开构建。
+本文件是已发布 [0.1.0 产品合同](colonial-region-transfer.md)的增量合同与实施计划，不改写 0.1.0 的历史事实。截至 2026-09-14，二期源码、版本、metadata、11 种本地化、外置验收夹具、静态工具与新缩略图输入已经落地；Open Kaishek exact-build profile 与 L0 已通过，隔离实机、发布构建、Workshop 上传和 fresh-cache 回读仍须按 P3/P4 完成。
 
 ## 原始二期需求
 
@@ -212,4 +212,4 @@
 - 不改变宗主体系外领土，不自动吞并国家，不更改核心、控制、文化、宗教、市场或附属类型。
 - 不保证 donor 首都一定迁移或国家一定存活；沿用 0.1.0 的显式生命周期风险合同。
 - 不让 AI 使用，不增加自动周期执行。
-- 本轮只把已选定缩略图替换加入二期合同并关闭参考权利确认门禁；不改源码、版本和 metadata，不启动 EU5/Steam/Mod Tools，不制作 release，不提前替换远端 Workshop 图。
+- 不创建或发布 GitHub Release；本轮发布授权只覆盖既有 Steam Workshop item 的 0.2.0 更新、对应产品 tag 与普通 Git 推送。

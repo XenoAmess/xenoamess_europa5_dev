@@ -1,0 +1,507 @@
+namespace = xcrt_acceptance
+
+# Fresh-game scenario: the target is a normal vassal rather than a colony.
+xcrt_acceptance.8 = {
+	type = country_event
+	title = xcrt_acceptance.8.title
+	desc = xcrt_acceptance.8.desc
+	outcome = neutral
+	orphan = yes
+	trigger = { always = no }
+
+	option = {
+		name = xcrt_acceptance.8.a
+
+		location:tortuga = {
+			discover_location = root
+			create_country_from_location = {
+				overlord = root
+				subject_type = subject_type:vassal
+				define_unique_country_tag = XCRTT
+				change_country_name = XCRTT
+				change_country_adjective = XCRTT
+			}
+		}
+		location:guahaba = {
+			discover_location = root
+			create_country_from_location = {
+				overlord = root
+				subject_type = subject_type:vassal
+				define_unique_country_tag = XCRTD
+				change_country_name = XCRTD
+				change_country_adjective = XCRTD
+				set_global_variable = {
+					name = xcrt_acceptance_direct_donor
+					value = this
+				}
+			}
+		}
+		location:porto_santo = {
+			discover_location = root
+			change_location_owner = global_var:xcrt_acceptance_direct_donor
+		}
+		location:baynoa = {
+			discover_location = root
+			create_country_from_location = {
+				overlord = global_var:xcrt_acceptance_direct_donor
+				subject_type = subject_type:vassal
+				define_unique_country_tag = XCRTS
+				change_country_name = XCRTS
+				change_country_adjective = XCRTS
+			}
+		}
+		location:iguamuco = {
+			discover_location = root
+			change_location_owner = root
+			create_country_from_location = {
+				define_unique_country_tag = XCRTI
+				change_country_name = XCRTI
+				change_country_adjective = XCRTI
+			}
+		}
+		location:marien = {
+			discover_location = root
+			change_location_owner = root
+		}
+		set_global_variable = {
+			name = xcrt_acceptance_actor
+			value = root
+		}
+		set_global_variable = xcrt_acceptance_phase2_vassal_ready
+	}
+}
+
+xcrt_acceptance.9 = {
+	type = country_event
+	title = xcrt_acceptance.9.title
+	desc = xcrt_acceptance.9.desc
+	outcome = neutral
+	orphan = yes
+	trigger = { always = no }
+
+	option = {
+		name = xcrt_acceptance.9.pass
+		trigger = {
+			has_global_variable = xcrt_acceptance_phase2_vassal_ready
+			location:tortuga = { owner = c:XCRTT }
+			location:marien = { owner = c:XCRTT }
+			location:guahaba = { owner = c:XCRTT }
+			location:baynoa = { owner = c:XCRTT }
+			location:iguamuco = { owner = c:XCRTI }
+			location:porto_santo = { NOT = { owner ?= c:XCRTT } }
+			c:XCRTT = {
+				is_subject_of = global_var:xcrt_acceptance_actor
+				is_subject_type = vassal
+			}
+		}
+		custom_tooltip = xcrt_acceptance.phase2_vassal.pass.tt
+	}
+
+	option = {
+		name = xcrt_acceptance.9.fail
+		trigger = {
+			NOT = {
+				has_global_variable = xcrt_acceptance_phase2_vassal_ready
+				location:tortuga = { owner = c:XCRTT }
+				location:marien = { owner = c:XCRTT }
+				location:guahaba = { owner = c:XCRTT }
+				location:baynoa = { owner = c:XCRTT }
+				location:iguamuco = { owner = c:XCRTI }
+				location:porto_santo = { NOT = { owner ?= c:XCRTT } }
+				c:XCRTT = {
+					is_subject_of = global_var:xcrt_acceptance_actor
+					is_subject_type = vassal
+				}
+			}
+		}
+		custom_tooltip = xcrt_acceptance.phase2.fail.tt
+	}
+}
+
+# Fresh-game Tusi scenario. The target starts with 14 locations while two
+# transferable locations remain in its capital Region.
+xcrt_acceptance.10 = {
+	type = country_event
+	title = xcrt_acceptance.10.title
+	desc = xcrt_acceptance.10.desc
+	outcome = neutral
+	orphan = yes
+	trigger = { always = no }
+
+	option = {
+		name = xcrt_acceptance.10.a
+
+		location:tortuga = {
+			discover_location = root
+			create_country_from_location = {
+				overlord = root
+				subject_type = subject_type:tusi
+				define_unique_country_tag = XCRTT
+				change_country_name = XCRTT
+				change_country_adjective = XCRTT
+			}
+		}
+		location:iguamuco = {
+			discover_location = root
+			change_location_owner = root
+			create_country_from_location = {
+				define_unique_country_tag = XCRTI
+				change_country_name = XCRTI
+				change_country_adjective = XCRTI
+			}
+		}
+
+		location:torres_vedras = { discover_location = root change_location_owner = c:XCRTT }
+		location:santarem = { discover_location = root change_location_owner = c:XCRTT }
+		location:evora = { discover_location = root change_location_owner = c:XCRTT }
+		location:setubal = { discover_location = root change_location_owner = c:XCRTT }
+		location:alcacer_do_sal = { discover_location = root change_location_owner = c:XCRTT }
+		location:beja = { discover_location = root change_location_owner = c:XCRTT }
+		location:sines = { discover_location = root change_location_owner = c:XCRTT }
+		location:odemira = { discover_location = root change_location_owner = c:XCRTT }
+		location:ourique = { discover_location = root change_location_owner = c:XCRTT }
+		location:elvas = { discover_location = root change_location_owner = c:XCRTT }
+		location:moura = { discover_location = root change_location_owner = c:XCRTT }
+		location:portalegre = { discover_location = root change_location_owner = c:XCRTT }
+		location:castelo_branco = { discover_location = root change_location_owner = c:XCRTT }
+		location:marien = { discover_location = root change_location_owner = root }
+		location:guahaba = { discover_location = root change_location_owner = root }
+
+		set_global_variable = {
+			name = xcrt_acceptance_actor
+			value = root
+		}
+		set_global_variable = xcrt_acceptance_phase2_tusi_ready
+	}
+}
+
+# Turn the 14 -> 16 disabled setup into a 14 -> 15 success setup.
+xcrt_acceptance.11 = {
+	type = country_event
+	title = xcrt_acceptance.11.title
+	desc = xcrt_acceptance.11.desc
+	outcome = neutral
+	orphan = yes
+	trigger = { always = no }
+
+	option = {
+		name = xcrt_acceptance.11.a
+		trigger = {
+			has_global_variable = xcrt_acceptance_phase2_tusi_ready
+			c:XCRTT = {
+				is_subject_type = tusi
+				num_locations = 14
+			}
+		}
+		location:guahaba = {
+			change_location_owner = c:XCRTI
+		}
+	}
+}
+
+xcrt_acceptance.12 = {
+	type = country_event
+	title = xcrt_acceptance.12.title
+	desc = xcrt_acceptance.12.desc
+	outcome = neutral
+	orphan = yes
+	trigger = { always = no }
+
+	option = {
+		name = xcrt_acceptance.12.pass
+		trigger = {
+			has_global_variable = xcrt_acceptance_phase2_tusi_ready
+			location:marien = { owner = c:XCRTT }
+			location:guahaba = { owner = c:XCRTI }
+			c:XCRTT = {
+				is_subject_type = tusi
+				is_subject_of = global_var:xcrt_acceptance_actor
+				num_locations = 15
+			}
+		}
+		custom_tooltip = xcrt_acceptance.phase2_tusi_success.pass.tt
+	}
+
+	option = {
+		name = xcrt_acceptance.12.fail
+		trigger = {
+			NOT = {
+				has_global_variable = xcrt_acceptance_phase2_tusi_ready
+				location:marien = { owner = c:XCRTT }
+				location:guahaba = { owner = c:XCRTI }
+				c:XCRTT = {
+					is_subject_type = tusi
+					is_subject_of = global_var:xcrt_acceptance_actor
+					num_locations = 15
+				}
+			}
+		}
+		custom_tooltip = xcrt_acceptance.phase2.fail.tt
+	}
+}
+
+# With the target already at 15, add one new transferable location.
+xcrt_acceptance.13 = {
+	type = country_event
+	title = xcrt_acceptance.13.title
+	desc = xcrt_acceptance.13.desc
+	outcome = neutral
+	orphan = yes
+	trigger = { always = no }
+
+	option = {
+		name = xcrt_acceptance.13.a
+		trigger = {
+			c:XCRTT = {
+				is_subject_type = tusi
+				num_locations = 15
+			}
+		}
+		location:guahaba = {
+			change_location_owner = root
+		}
+	}
+}
+
+xcrt_acceptance.14 = {
+	type = country_event
+	title = xcrt_acceptance.14.title
+	desc = xcrt_acceptance.14.desc
+	outcome = neutral
+	orphan = yes
+	trigger = { always = no }
+
+	option = {
+		name = xcrt_acceptance.14.pass
+		trigger = {
+			location:guahaba = { owner = global_var:xcrt_acceptance_actor }
+			c:XCRTT = {
+				is_subject_type = tusi
+				num_locations = 15
+			}
+		}
+		custom_tooltip = xcrt_acceptance.phase2_tusi_block.pass.tt
+	}
+
+	option = {
+		name = xcrt_acceptance.14.fail
+		trigger = {
+			NOT = {
+				location:guahaba = { owner = global_var:xcrt_acceptance_actor }
+				c:XCRTT = {
+					is_subject_type = tusi
+					num_locations = 15
+				}
+			}
+		}
+		custom_tooltip = xcrt_acceptance.phase2.fail.tt
+	}
+}
+
+# Fresh-game target matrix: all 18 current-build territorial subject types are
+# direct subjects. Two building countries are also direct state_bank and
+# trade_company subjects and must not enter the product selector.
+xcrt_acceptance.20 = {
+	type = country_event
+	title = xcrt_acceptance.20.title
+	desc = xcrt_acceptance.20.desc
+	outcome = neutral
+orphan = yes
+	trigger = { always = no }
+
+	option = {
+		name = xcrt_acceptance.20.a
+		save_scope_as = xcrt_matrix_actor
+
+		location:torres_vedras = {
+			discover_location = root
+			change_location_owner = root
+			create_country_from_location = { overlord = root subject_type = subject_type:appanage define_unique_country_tag = XMAPP change_country_name = XMAPP }
+		}
+		location:santarem = {
+			discover_location = root
+			change_location_owner = root
+			create_country_from_location = { overlord = root subject_type = subject_type:colonial_nation define_unique_country_tag = XMCOL change_country_name = XMCOL }
+		}
+		location:evora = {
+			discover_location = root
+			change_location_owner = root
+			create_country_from_location = { overlord = root subject_type = subject_type:conquistador define_unique_country_tag = XMCON change_country_name = XMCON }
+		}
+		location:setubal = {
+			discover_location = root
+			change_location_owner = root
+			create_country_from_location = { overlord = root subject_type = subject_type:dominion define_unique_country_tag = XMDOM change_country_name = XMDOM }
+		}
+		location:alcacer_do_sal = {
+			discover_location = root
+			change_location_owner = root
+			create_country_from_location = { overlord = root subject_type = subject_type:fiefdom define_unique_country_tag = XMFIE change_country_name = XMFIE }
+		}
+		location:beja = {
+			discover_location = root
+			change_location_owner = root
+			create_country_from_location = { overlord = root subject_type = subject_type:hanseatic_member define_unique_country_tag = XMHAN change_country_name = XMHAN }
+		}
+		location:sines = {
+			discover_location = root
+			change_location_owner = root
+			create_country_from_location = { overlord = root subject_type = subject_type:imperial_free_city define_unique_country_tag = XMIFC change_country_name = XMIFC }
+		}
+		location:odemira = {
+			discover_location = root
+			change_location_owner = root
+			create_country_from_location = { overlord = root subject_type = subject_type:direct_imperial_free_city define_unique_country_tag = XMDIFC change_country_name = XMDIFC }
+		}
+		location:ourique = {
+			discover_location = root
+			change_location_owner = root
+			create_country_from_location = { overlord = root subject_type = subject_type:march define_unique_country_tag = XMMAR change_country_name = XMMAR }
+		}
+		location:elvas = {
+			discover_location = root
+			change_location_owner = root
+			create_country_from_location = { overlord = root subject_type = subject_type:secessionists define_unique_country_tag = XMSEC change_country_name = XMSEC }
+		}
+		location:moura = {
+			discover_location = root
+			change_location_owner = root
+			create_country_from_location = { overlord = root subject_type = subject_type:tributary define_unique_country_tag = XMTRI change_country_name = XMTRI }
+		}
+		location:portalegre = {
+			discover_location = root
+			change_location_owner = root
+			create_country_from_location = { overlord = root subject_type = subject_type:vassal define_unique_country_tag = XMVAS change_country_name = XMVAS }
+		}
+		location:castelo_branco = {
+			discover_location = root
+			change_location_owner = root
+			create_country_from_location = { overlord = root subject_type = subject_type:pronoia define_unique_country_tag = XMPRN change_country_name = XMPRN }
+		}
+		location:lagos = {
+			discover_location = root
+			change_location_owner = root
+			create_country_from_location = { overlord = root subject_type = subject_type:samanta define_unique_country_tag = XMSAM change_country_name = XMSAM }
+		}
+		location:tavira = {
+			discover_location = root
+			change_location_owner = root
+			create_country_from_location = { overlord = root subject_type = subject_type:maha_samanta define_unique_country_tag = XMMHS change_country_name = XMMHS }
+		}
+		location:faro = {
+			discover_location = root
+			change_location_owner = root
+			create_country_from_location = { overlord = root subject_type = subject_type:pradhana_maha_samanta define_unique_country_tag = XMPMS change_country_name = XMPMS }
+		}
+		location:avis = {
+			discover_location = root
+			change_location_owner = root
+			create_country_from_location = { overlord = root subject_type = subject_type:tusi define_unique_country_tag = XMTUS change_country_name = XMTUS }
+		}
+		location:guarda = {
+			discover_location = root
+			change_location_owner = root
+			create_country_from_location = { overlord = root subject_type = subject_type:uc_bey define_unique_country_tag = XMUBE change_country_name = XMUBE }
+		}
+
+		location:lisbon = {
+			create_building_country_in_location = {
+				name = { name = XMBNK }
+				reforms = { banking_country }
+				save_scope_as = xcrt_matrix_bank
+				hidden_effect = {
+					define_unique_country_tag = XMBNK
+					make_subject_of = {
+						target = scope:xcrt_matrix_actor
+						type = subject_type:state_bank
+					}
+				}
+			}
+			create_building_country_in_location = {
+				name = { name = XMTRD }
+				reforms = { banking_country }
+				save_scope_as = xcrt_matrix_trade_company
+				hidden_effect = {
+					define_unique_country_tag = XMTRD
+					make_subject_of = {
+						target = scope:xcrt_matrix_actor
+						type = subject_type:trade_company
+					}
+				}
+			}
+		}
+
+		set_global_variable = {
+			name = xcrt_acceptance_actor
+			value = root
+		}
+		set_global_variable = xcrt_acceptance_phase2_matrix_ready
+	}
+}
+
+xcrt_acceptance.21 = {
+	type = country_event
+	title = xcrt_acceptance.21.title
+	desc = xcrt_acceptance.21.desc
+	outcome = neutral
+	orphan = yes
+	trigger = { always = no }
+
+	option = {
+		name = xcrt_acceptance.21.pass
+		trigger = {
+			has_global_variable = xcrt_acceptance_phase2_matrix_ready
+			c:XMAPP = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = appanage country_type = location exists = capital }
+			c:XMCOL = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = colonial_nation country_type = location exists = capital }
+			c:XMCON = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = conquistador country_type = location exists = capital }
+			c:XMDOM = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = dominion country_type = location exists = capital }
+			c:XMFIE = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = fiefdom country_type = location exists = capital }
+			c:XMHAN = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = hanseatic_member country_type = location exists = capital }
+			c:XMIFC = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = imperial_free_city country_type = location exists = capital }
+			c:XMDIFC = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = direct_imperial_free_city country_type = location exists = capital }
+			c:XMMAR = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = march country_type = location exists = capital }
+			c:XMSEC = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = secessionists country_type = location exists = capital }
+			c:XMTRI = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = tributary country_type = location exists = capital }
+			c:XMVAS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = vassal country_type = location exists = capital }
+			c:XMPRN = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = pronoia country_type = location exists = capital }
+			c:XMSAM = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = samanta country_type = location exists = capital }
+			c:XMMHS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = maha_samanta country_type = location exists = capital }
+			c:XMPMS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = pradhana_maha_samanta country_type = location exists = capital }
+			c:XMTUS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = tusi country_type = location exists = capital }
+			c:XMUBE = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = uc_bey country_type = location exists = capital }
+			c:XMBNK = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = state_bank country_type = building }
+			c:XMTRD = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = trade_company country_type = building }
+		}
+		custom_tooltip = xcrt_acceptance.phase2_matrix.pass.tt
+	}
+
+	option = {
+		name = xcrt_acceptance.21.fail
+		trigger = {
+			NOT = {
+				has_global_variable = xcrt_acceptance_phase2_matrix_ready
+				c:XMAPP = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = appanage country_type = location exists = capital }
+				c:XMCOL = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = colonial_nation country_type = location exists = capital }
+				c:XMCON = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = conquistador country_type = location exists = capital }
+				c:XMDOM = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = dominion country_type = location exists = capital }
+				c:XMFIE = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = fiefdom country_type = location exists = capital }
+				c:XMHAN = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = hanseatic_member country_type = location exists = capital }
+				c:XMIFC = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = imperial_free_city country_type = location exists = capital }
+				c:XMDIFC = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = direct_imperial_free_city country_type = location exists = capital }
+				c:XMMAR = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = march country_type = location exists = capital }
+				c:XMSEC = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = secessionists country_type = location exists = capital }
+				c:XMTRI = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = tributary country_type = location exists = capital }
+				c:XMVAS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = vassal country_type = location exists = capital }
+				c:XMPRN = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = pronoia country_type = location exists = capital }
+				c:XMSAM = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = samanta country_type = location exists = capital }
+				c:XMMHS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = maha_samanta country_type = location exists = capital }
+				c:XMPMS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = pradhana_maha_samanta country_type = location exists = capital }
+				c:XMTUS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = tusi country_type = location exists = capital }
+				c:XMUBE = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = uc_bey country_type = location exists = capital }
+				c:XMBNK = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = state_bank country_type = building }
+				c:XMTRD = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = trade_company country_type = building }
+			}
+		}
+		custom_tooltip = xcrt_acceptance.phase2.fail.tt
+	}
+}

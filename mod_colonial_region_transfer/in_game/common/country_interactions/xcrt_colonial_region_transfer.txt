@@ -10,7 +10,9 @@
 
 	potential = {
 		scope:actor = {
-			is_colonial_overlord = yes
+			any_subject = {
+				xcrt_is_eligible_direct_subject_target = yes
+			}
 		}
 	}
 
@@ -26,19 +28,15 @@
 			scope:actor = {
 				every_subject = {
 					limit = {
-						is_colonial_subject = yes
-						NOR = {
-							country_type = building
-							country_type = pop
-						}
+						xcrt_is_eligible_direct_subject_target = yes
 					}
 					add_to_list = source
 				}
 			}
 		}
 		target_flag = recipient
-		name = "xcrt_select_colonial_subject"
-		none_available_msg_key = "xcrt_no_colonial_subject"
+		name = "xcrt_select_subject"
+		none_available_msg_key = "xcrt_no_subject"
 		show_why_not_enabled = yes
 		column = {
 			data = name
@@ -47,8 +45,7 @@
 			data = population
 		}
 		visible = {
-			is_colonial_subject = yes
-			is_subject_of = scope:actor
+			xcrt_is_eligible_direct_subject_target = yes
 		}
 		enabled = {
 			custom_tooltip = {
@@ -80,16 +77,13 @@
 				text = xcrt_has_transferable_locations_tt
 				scope:recipient.capital.region = {
 					any_location_in_region = {
-						is_ownable = yes
-						NOT = { owner ?= scope:recipient }
-						owner ?= {
-							OR = {
-								this = scope:actor
-								is_subject_or_below_of = scope:actor
-							}
-						}
+						xcrt_is_transferable_location = yes
 					}
 				}
+			}
+			custom_tooltip = {
+				text = xcrt_subject_location_limit_tt
+				xcrt_recipient_respects_tusi_cap = yes
 			}
 		}
 	}
@@ -98,32 +92,55 @@
 		if = {
 			limit = {
 				exists = scope:recipient
+				scope:recipient = {
+					xcrt_is_eligible_direct_subject_target = yes
+				}
 			}
-			custom_tooltip = {
-				text = xcrt_transfer_effect_tt
-				scope:recipient.capital.region = {
-					every_location_in_region = {
-						limit = {
-							is_ownable = yes
-							NOT = { owner ?= scope:recipient }
-							owner ?= {
-								OR = {
-									this = scope:actor
-									is_subject_or_below_of = scope:actor
+			scope:recipient.capital.region = {
+				every_location_in_region = {
+					limit = {
+						xcrt_is_transferable_location = yes
+					}
+					add_to_list = xcrt_transfer_locations
+				}
+			}
+			if = {
+				limit = {
+					scope:actor = {
+						at_war = no
+						capital = {
+							NOT = { region = scope:recipient.capital.region }
+						}
+						NOT = {
+							any_subject_or_below = {
+								at_war = yes
+								any_owned_location = {
+									region = scope:recipient.capital.region
 								}
 							}
 						}
-						add_to_list = xcrt_transfer_locations
+					}
+					scope:recipient = {
+						at_war = no
+						xcrt_is_eligible_direct_subject_target = yes
+						xcrt_frozen_transfer_list_respects_tusi_cap = yes
+					}
+					list_size = { name = xcrt_transfer_locations value > 0 }
+				}
+				custom_tooltip = {
+					text = xcrt_transfer_effect_tt
+					every_in_list = {
+						list = xcrt_transfer_locations
+						change_location_owner = scope:recipient
 					}
 				}
-				every_in_list = {
-					list = xcrt_transfer_locations
-					change_location_owner = scope:recipient
-				}
+			}
+			else = {
+				custom_tooltip = xcrt_requirements_changed_tt
 			}
 		}
 		else = {
-			custom_tooltip = xcrt_select_colonial_subject_first_tt
+			custom_tooltip = xcrt_select_subject_first_tt
 		}
 	}
 }

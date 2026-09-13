@@ -1,0 +1,82 @@
+﻿# Root: candidate recipient country. Named scope: actor = initiating overlord.
+xcrt_is_eligible_direct_subject_target = {
+	NOR = {
+		country_type = building
+		country_type = pop
+		country_type = army
+	}
+	exists = capital
+	is_subject_of = scope:actor
+}
+
+# Root: location. Named scopes: actor = initiating overlord, recipient = target subject.
+xcrt_is_transferable_location = {
+	is_ownable = yes
+	NOT = { owner ?= scope:recipient }
+	owner ?= {
+		OR = {
+			this = scope:actor
+			is_subject_or_below_of = scope:actor
+		}
+	}
+}
+
+# Root: candidate recipient country. Named scopes: actor and recipient.
+xcrt_has_at_most_transferable_locations = {
+	capital.region = {
+		any_location_in_region = {
+			count <= $MAX$
+			xcrt_is_transferable_location = yes
+		}
+	}
+}
+
+# Root: candidate recipient country. Used by the selector before the snapshot exists.
+xcrt_recipient_respects_tusi_cap = {
+	trigger_if = {
+		limit = {
+			is_subject_type = tusi
+		}
+		OR = {
+			AND = { num_locations = 1 xcrt_has_at_most_transferable_locations = { MAX = 14 } }
+			AND = { num_locations = 2 xcrt_has_at_most_transferable_locations = { MAX = 13 } }
+			AND = { num_locations = 3 xcrt_has_at_most_transferable_locations = { MAX = 12 } }
+			AND = { num_locations = 4 xcrt_has_at_most_transferable_locations = { MAX = 11 } }
+			AND = { num_locations = 5 xcrt_has_at_most_transferable_locations = { MAX = 10 } }
+			AND = { num_locations = 6 xcrt_has_at_most_transferable_locations = { MAX = 9 } }
+			AND = { num_locations = 7 xcrt_has_at_most_transferable_locations = { MAX = 8 } }
+			AND = { num_locations = 8 xcrt_has_at_most_transferable_locations = { MAX = 7 } }
+			AND = { num_locations = 9 xcrt_has_at_most_transferable_locations = { MAX = 6 } }
+			AND = { num_locations = 10 xcrt_has_at_most_transferable_locations = { MAX = 5 } }
+			AND = { num_locations = 11 xcrt_has_at_most_transferable_locations = { MAX = 4 } }
+			AND = { num_locations = 12 xcrt_has_at_most_transferable_locations = { MAX = 3 } }
+			AND = { num_locations = 13 xcrt_has_at_most_transferable_locations = { MAX = 2 } }
+			AND = { num_locations = 14 xcrt_has_at_most_transferable_locations = { MAX = 1 } }
+		}
+	}
+}
+
+# Root: recipient country. xcrt_transfer_locations must already be frozen.
+xcrt_frozen_transfer_list_respects_tusi_cap = {
+	trigger_if = {
+		limit = {
+			is_subject_type = tusi
+		}
+		OR = {
+			AND = { num_locations = 1 list_size = { name = xcrt_transfer_locations value <= 14 } }
+			AND = { num_locations = 2 list_size = { name = xcrt_transfer_locations value <= 13 } }
+			AND = { num_locations = 3 list_size = { name = xcrt_transfer_locations value <= 12 } }
+			AND = { num_locations = 4 list_size = { name = xcrt_transfer_locations value <= 11 } }
+			AND = { num_locations = 5 list_size = { name = xcrt_transfer_locations value <= 10 } }
+			AND = { num_locations = 6 list_size = { name = xcrt_transfer_locations value <= 9 } }
+			AND = { num_locations = 7 list_size = { name = xcrt_transfer_locations value <= 8 } }
+			AND = { num_locations = 8 list_size = { name = xcrt_transfer_locations value <= 7 } }
+			AND = { num_locations = 9 list_size = { name = xcrt_transfer_locations value <= 6 } }
+			AND = { num_locations = 10 list_size = { name = xcrt_transfer_locations value <= 5 } }
+			AND = { num_locations = 11 list_size = { name = xcrt_transfer_locations value <= 4 } }
+			AND = { num_locations = 12 list_size = { name = xcrt_transfer_locations value <= 3 } }
+			AND = { num_locations = 13 list_size = { name = xcrt_transfer_locations value <= 2 } }
+			AND = { num_locations = 14 list_size = { name = xcrt_transfer_locations value <= 1 } }
+		}
+	}
+}

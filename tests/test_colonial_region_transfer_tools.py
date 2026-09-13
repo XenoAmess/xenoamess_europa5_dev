@@ -70,17 +70,54 @@ class ColonialRegionTransferToolTests(unittest.TestCase):
             game_root=str(self.validator.DEFAULT_GAME_ROOT),
             allow_missing_game_baseline=True,
             require_metadata=False,
+            require_open_kaishek=False,
             report=None,
         )
         report = self.validator.validate(args)
         self.assertFalse(report["errors"], report)
-        self.assertEqual("PASS_WITH_GATES", report["status"])
+        self.assertIn(report["status"], {"PASS", "PASS_WITH_GATES"})
 
     def test_selector_region_is_anchored_to_recipient(self) -> None:
         script_path = self.validator.PRODUCT_ROOT / self.validator.SCRIPT_REL
         script = script_path.read_text(encoding="utf-8-sig")
         self.assertNotIn("root.capital.region", script)
-        self.assertGreaterEqual(script.count("scope:recipient.capital.region"), 4)
+        self.assertGreaterEqual(script.count("scope:recipient.capital.region"), 6)
+
+    def test_selector_accepts_all_direct_territorial_subjects(self) -> None:
+        script_path = self.validator.PRODUCT_ROOT / self.validator.SCRIPT_REL
+        script = script_path.read_text(encoding="utf-8-sig")
+        triggers_path = self.validator.PRODUCT_ROOT / self.validator.TRIGGERS_REL
+        triggers = triggers_path.read_text(encoding="utf-8-sig")
+        self.assertIn("every_subject = {", script)
+        self.assertIn("is_subject_of = scope:actor", triggers)
+        self.assertNotIn("is_colonial_subject = yes", script + triggers)
+        self.assertNotIn("is_colonial_overlord = yes", script + triggers)
+        for excluded_type in ("building", "pop", "army"):
+            self.assertIn(f"country_type = {excluded_type}", triggers)
+
+    def test_tusi_cap_is_identical_before_and_after_snapshot(self) -> None:
+        triggers_path = self.validator.PRODUCT_ROOT / self.validator.TRIGGERS_REL
+        triggers = triggers_path.read_text(encoding="utf-8-sig")
+        selector_pairs = {
+            int(current): int(maximum)
+            for current, maximum in self.validator.re.findall(
+                r"num_locations\s*=\s*(\d+)\s+"
+                r"xcrt_has_at_most_transferable_locations\s*=\s*\{\s*MAX\s*=\s*(\d+)\s*\}",
+                triggers,
+            )
+        }
+        snapshot_pairs = {
+            int(current): int(maximum)
+            for current, maximum in self.validator.re.findall(
+                r"num_locations\s*=\s*(\d+)\s+"
+                r"list_size\s*=\s*\{\s*name\s*=\s*xcrt_transfer_locations\s+"
+                r"value\s*<=\s*(\d+)\s*\}",
+                triggers,
+            )
+        }
+        expected = {current: 15 - current for current in range(1, 15)}
+        self.assertEqual(expected, selector_pairs)
+        self.assertEqual(expected, snapshot_pairs)
 
     def test_transfer_set_is_snapshotted_before_mutation(self) -> None:
         script_path = self.validator.PRODUCT_ROOT / self.validator.SCRIPT_REL

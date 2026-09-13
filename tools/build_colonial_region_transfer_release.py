@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a tagged, deterministic For Vivhite: Colonial Border Cleanup release."""
+"""Build a tagged, deterministic For Vivhite: Subject Territory Consolidation release."""
 
 from __future__ import annotations
 
@@ -35,6 +35,7 @@ LANGUAGES = (
 ALLOWLIST = (
     METADATA,
     Path("in_game/common/country_interactions/xcrt_colonial_region_transfer.txt"),
+    Path("in_game/common/scripted_triggers/xcrt_subject_territory_consolidation_triggers.txt"),
     *(
         Path(f"main_menu/localization/{language}/xcrt_colonial_region_transfer_l_{language}.yml")
         for language in LANGUAGES
@@ -233,7 +234,12 @@ def main() -> int:
         sys.stderr.write(f"REFUSED: {exc}\n")
         return 2
 
-    validator_command = [sys.executable, str(VALIDATOR), "--require-metadata"]
+    validator_command = [
+        sys.executable,
+        str(VALIDATOR),
+        "--require-metadata",
+        "--require-open-kaishek",
+    ]
     if args.game_root:
         validator_command.extend(["--game-root", args.game_root])
     validation = subprocess.run(validator_command, cwd=REPO_ROOT, text=True, capture_output=True)

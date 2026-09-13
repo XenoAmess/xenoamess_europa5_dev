@@ -1,9 +1,9 @@
 ﻿{
-	"name":	"献给白绮的殖民领版图整理",
+	"name":	"献给白绮的附属地整合",
 	"id":	"xenoamess.colonial_region_transfer",
-	"version":	"0.1.0",
+	"version":	"0.2.0",
 	"supported_game_version":	"1.3.11",
-	"short_description":	"将宗主体系在目标殖民领首都 Region 内的地点一次性整理给该殖民领。",
+	"short_description":	"将宗主体系在目标直属附属国首都 Region 内的地点一次性整合给该附属国。",
 	"tags":	["Diplomacy"],
 	"relationships":	[],
 	"game_custom_data":	{

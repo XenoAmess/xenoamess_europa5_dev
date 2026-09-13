@@ -1,62 +1,61 @@
-# 献给白绮的殖民领版图整理
+# 献给白绮的附属地整合
 
-英文名：For Vivhite: Colonial Border Cleanup
+英文名：For Vivhite: Subject Territory Consolidation
 
-Product key：`colonial_region_transfer`
+Product key：colonial_region_transfer
 
-版本：以 `VERSION` 为准
+版本：以 VERSION 为准
 
-目标游戏：Europa Universalis V，Steam Build `24187685`
+目标游戏：Europa Universalis V 1.3.11 (Pavia)，Steam Build 24187685
 
-二期计划：把同一互动扩展到包含殖民领与非殖民领在内的所有合格直属领土型附属国，将玩家展示名泛化为“献给白绮的附属地整合”，并在 0.2.0 发布时把正式缩略图替换为已选定的白绮人物关联图。用户已确认参考头像使用权；当前源码、metadata、Workshop 与 `VERSION` 仍是已发布的 `0.1.0`，尚未实现或发布二期；增量合同和分阶段门禁见 [`docs/requirements/colonial-region-transfer-phase-2.md`](../docs/requirements/colonial-region-transfer-phase-2.md)。
+宗主可在“附属国行动”中选择任意合格的直属领土型附属国，把该目标首都所在 Region
+内由宗主及其任意层级附属国持有的全部可拥有地点，一次性整合给目标。殖民领和非殖民领
+使用同一个互动；building、pop、army 型附属对象以及没有有效首都的对象不会进入候选。
 
-宗主可在附属国互动中选择“整理殖民领地区”，把目标殖民领首都所在 Region 内由宗主及其任意层级附属国持有的全部可拥有地点划给目标殖民领。
+## 二期 0.2.0
 
-## 当前状态
+- 保留公开脚本 key xcrt_cleanup_colonial_region、stable ID
+  xenoamess.colonial_region_transfer 与 Workshop item 3800505751。
+- 候选从直属附属国按领土能力和有效首都筛选，不维护 18 类型硬编码 allowlist。
+- 目标必须直属宗主；更下层附属国仍可作为地点 donor，但不能越级成为目标。
+- 土司批量转让使用双重原子门禁：选择器按待转让数量计算最终地点数，效果侧再以冻结列表
+  的 list_size 复核；执行后不得超过 15 个地点。
+- 效果先冻结 xcrt_transfer_locations，再复核目标、战争、Region、工作量和类型上限，
+  任一条件变化时不转让任何地点。
+- 11 种内置语言的玩家文案已泛化；简体中文是唯一实机与 OCR 验收语言。
+- 0.2.0 的正式 Workshop 缩略图使用白绮人物形象与附属地汇聚主题的新图，旧发布媒体继续
+  作为 0.1.0 历史证据保留。
 
-P 脚本、11 种语言本地化和当前 EU5 Mod Tools 原生 metadata 已实现。Build `24187685` 的隔离简中实机主路径、存档 owner、重载后审计、无工作量重复执行禁用、OCR、日志归因与真实玩家 userdir 保护均已通过；详见 [`docs/acceptance-report.md`](docs/acceptance-report.md)。
+完整增量合同见
+[二期需求分析与实施计划](../docs/requirements/colonial-region-transfer-phase-2.md)。
 
-`0.1.0` 已完成主成功路径、战争禁用、宗主首都同 Region 禁用、存档重载、简中 OCR、日志和所有权审计，并已公开发布到 [Steam Workshop item 3800505751](https://steamcommunity.com/sharedfiles/filedetails/?id=3800505751)。三张实机截图已嵌入页面，fresh Workshop cache 与上传投影严格一致。Open Kaishek EU5 profile 缺失继续如实记为独立的 `tool-coverage RED`，不改变已经关闭的产品与发布门禁。
+## 行为边界
 
-白绮是人名；所有非中文本地化统一写作 `Vivhite`。当前 EU5 build 的 11 种内置语言都提供完整互动本地化；简体中文是唯一实机与 OCR 验收语言。
-
-计划写入 metadata/平台的展示标题：
-
-| 语言 | 展示标题 |
-| --- | --- |
-| 简体中文 | 献给白绮的殖民领版图整理 |
-| English | For Vivhite: Colonial Border Cleanup |
-| Português do Brasil | Para Vivhite: Organização das Fronteiras Coloniais |
-| Français | Pour Vivhite : Nettoyage des frontières coloniales |
-| Deutsch | Für Vivhite: Koloniale Grenzbereinigung |
-| 日本語 | Vivhiteに捧げる植民地国境整理 |
-| 한국어 | Vivhite를 위한 식민지 국경 정리 |
-| Polski | Dla Vivhite: Porządkowanie granic kolonialnych |
-| Русский | Для Vivhite: Упорядочение колониальных границ |
-| Español | Para Vivhite: Orden de fronteras coloniales |
-| Türkçe | Vivhite İçin: Sömürge Sınırı Düzenleme |
-
-静态校验：
-
-```powershell
-python tools/validate_colonial_region_transfer_static.py
-```
-
-release builder 会拒绝 metadata 缺失、工作树不干净或 HEAD 未绑定精确产品 tag 的构建：
-
-```powershell
-python tools/build_colonial_region_transfer_release.py
-```
-
-## 行为摘要
-
-- 只允许选择玩家的直属殖民领附属国。
-- 目标地理范围固定为该殖民领首都所在 Region。
+- 地理范围固定为目标首都所在 Region。
 - 转让宗主及其任意层级附属国在该 Region 内持有的全部可拥有地点。
 - 不触碰体系外国家或 Region 外地点。
-- 宗主、目标或受影响 donor 处于战争中时禁用。
+- 宗主、目标或持有待转让地点的 donor 处于战争中时禁用。
 - 宗主与目标首都在同一 Region 时禁用，避免误转宗主首都区。
+- 无工作量时禁用；取消确认不会改变所有权。
 - AI 永不主动使用。
-- 全量转让包括其他附属国首都，可能导致迁都或国家消失；确认文案会明确警告。
+- 转让可能包括其他附属国首都或最后地点，可能引发迁都或国家清理；确认文案明确警告。
 
-完整合同与验收矩阵见 [`docs/requirements/colonial-region-transfer.md`](../docs/requirements/colonial-region-transfer.md) 和 [`docs/acceptance-plan.md`](docs/acceptance-plan.md)。
+## 验收与构建
+
+静态验证：
+
+    python tools/validate_colonial_region_transfer_static.py --require-metadata --require-open-kaishek
+    python -m unittest tests.test_colonial_region_transfer_tools
+
+隔离实机计划与历史证据：
+
+- [0.2.0 验收计划](docs/acceptance-plan.md)
+- [0.1.0 已发布验收报告](docs/acceptance-report.md)
+- [0.2.0 验收报告](docs/acceptance-report-0.2.0.md)
+
+正式 release builder 会拒绝 metadata 缺失、Open Kaishek profile 未通过、工作树不干净
+或 HEAD 未绑定精确产品 tag 的构建：
+
+    python tools/build_colonial_region_transfer_release.py
+
+Workshop：[item 3800505751](https://steamcommunity.com/sharedfiles/filedetails/?id=3800505751)

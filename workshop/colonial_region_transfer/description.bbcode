@@ -1,46 +1,44 @@
-[center][h1]献给白绮的殖民领版图整理[/h1]
-[b]For Vivhite: Colonial Border Cleanup[/b][/center]
+[center][h1]献给白绮的附属地整合[/h1]
+[b]For Vivhite: Subject Territory Consolidation[/b][/center]
 
-[img]https://raw.githubusercontent.com/XenoAmess/xenoamess_europa5_dev/master/workshop/colonial_region_transfer/media/game-interaction-zh-cn.png[/img]
+[img]https://raw.githubusercontent.com/XenoAmess/xenoamess_europa5_dev/master/workshop/colonial_region_transfer/media/icon-vivhite-subject-consolidation-v2-512.png[/img]
 
 [h2]它做什么[/h2]
-在直属殖民领的“附属国行动”中增加“整理殖民领地区”。确认后，目标殖民领会取得其首都所在 Region 内，由宗主及宗主所有层级附属国持有的全部地点。
+在合格直属附属国的“附属国行动”中增加“整合附属地”。确认后，目标附属国会取得其首都所在 Region 内，由宗主及宗主所有层级附属国持有的全部合格地点。
 
 [list]
-[*]只允许选择直属殖民领。
-[*]范围固定为目标殖民领首都所在 Region。
+[*]殖民领和非殖民领一视同仁；支持所有合格的直属领土型附属国。
+[*]范围固定为目标附属国首都所在 Region。
 [*]覆盖宗主、直属附属国和更深层附属国持有的地点。
 [*]不会直接转让 Region 外地点或体系外国家的地点。
-[*]战争、无可转让地点或宗主首都位于同一 Region 时禁用。
+[*]building、pop、army 型附属对象和没有有效首都的对象不能成为目标。
+[*]战争、无可转让地点、宗主首都位于同一 Region，或目标会违反自身地点上限时禁用。
+[*]土司整合后的地点总数不会超过 15；批量操作不会部分执行。
 [*]AI 不会主动使用。
 [/list]
-
-[img]https://raw.githubusercontent.com/XenoAmess/xenoamess_europa5_dev/master/workshop/colonial_region_transfer/media/game-confirmation-zh-cn.png[/img]
 
 [h2]重要警告[/h2]
 [b]互动会转让其他附属国的首都，也可能转走其最后一个地点。[/b]
 EU5 可能因此迁都、暂时保留失效首都指针，或在存档重载时清理该国。确认窗口会再次提示，操作不可撤销；建议先保存游戏。
 
-[img]https://raw.githubusercontent.com/XenoAmess/xenoamess_europa5_dev/master/workshop/colonial_region_transfer/media/game-result-zh-cn.png[/img]
-
 [h2]使用方法[/h2]
 [olist]
-[*]打开直属殖民领的国家面板。
+[*]打开一个合格直属附属国的国家面板。
 [*]展开“附属国行动”。
-[*]选择“整理殖民领地区”。
+[*]选择“整合附属地”。
 [*]阅读确认警告并执行。
 [/olist]
 
 [h2]兼容与语言[/h2]
-面向 Europa Universalis V 1.3.11 (Pavia)，Steam Build 24187685。Mod 只追加一个 country interaction，不使用 replace path。
+面向 Europa Universalis V 1.3.11 (Pavia)，Steam Build 24187685。Mod 只追加一个 country interaction 及其脚本触发器，不使用 replace path。
 
-提供简体中文、English、Português do Brasil、Français、Deutsch、日本語、한국어、Polski、Русский、Español 和 Türkçe 本地化。简体中文已完成实机与 OCR 验收；其他语言为静态覆盖。
+提供简体中文、English、Português do Brasil、Français、Deutsch、日本語、한국어、Polski、Русский、Español 和 Türkçe 本地化。简体中文进行实机与 OCR 验收；其他语言为静态覆盖。
 
 [hr][/hr]
 
 [h2]English[/h2]
-Adds a subject action that consolidates every eligible location held by you or any level of your subject hierarchy inside the direct colonial subject capital's Region. Locations outside that Region and locations held by unrelated countries are not directly transferred.
+Adds a subject action that consolidates every eligible location held by you or any level of your subject hierarchy inside a direct territorial subject's capital Region. Colonial and non-colonial subjects are treated alike. Locations outside that Region and locations held by unrelated countries are not directly transferred.
+
+Building, pop, and army subject objects—and subjects without a valid capital—cannot be targets. Type-specific limits remain enforced: a Tusi, for example, cannot exceed 15 locations, and the batch is never partially applied.
 
 [b]Warning:[/b] this includes other subjects' capitals and last locations. EU5 may relocate their capitals or remove those countries, including during save reload. The action is irreversible, is blocked during war, and is never used by the AI.
-
-[i]The screenshots are captured from the Simplified Chinese runtime acceptance build. Fixture-arranged images, if used, are explicitly presented as in-game feature demonstrations.[/i]
