@@ -102,7 +102,8 @@ class ColonialRegionTransferToolTests(unittest.TestCase):
             int(current): int(maximum)
             for current, maximum in self.validator.re.findall(
                 r"num_locations\s*=\s*(\d+)\s+"
-                r"xcrt_has_at_most_transferable_locations\s*=\s*\{\s*MAX\s*=\s*(\d+)\s*\}",
+                r"capital\.region\s*=\s*\{\s*any_location_in_region\s*=\s*\{\s*"
+                r"count\s*<=\s*(\d+)\s+xcrt_is_transferable_location\s*=\s*yes\s*\}\s*\}",
                 triggers,
             )
         }
@@ -118,6 +119,7 @@ class ColonialRegionTransferToolTests(unittest.TestCase):
         expected = {current: 15 - current for current in range(1, 15)}
         self.assertEqual(expected, selector_pairs)
         self.assertEqual(expected, snapshot_pairs)
+        self.assertNotIn("$MAX$", triggers)
 
     def test_transfer_set_is_snapshotted_before_mutation(self) -> None:
         script_path = self.validator.PRODUCT_ROOT / self.validator.SCRIPT_REL

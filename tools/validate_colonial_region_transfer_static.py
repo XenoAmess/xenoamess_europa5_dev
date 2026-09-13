@@ -122,7 +122,7 @@ REQUIRED_TRIGGER_FRAGMENTS = (
     "is_subject_or_below_of = scope:actor",
     "xcrt_recipient_respects_tusi_cap = {",
     "is_subject_type = tusi",
-    "count <= $MAX$",
+    "count <= 1",
     "xcrt_frozen_transfer_list_respects_tusi_cap = {",
     "list_size = { name = xcrt_transfer_locations value <= 1 }",
 )
@@ -407,7 +407,8 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
         int(location_count): int(maximum)
         for location_count, maximum in re.findall(
             r"num_locations\s*=\s*(\d+)\s+"
-            r"xcrt_has_at_most_transferable_locations\s*=\s*\{\s*MAX\s*=\s*(\d+)\s*\}",
+            r"capital\.region\s*=\s*\{\s*any_location_in_region\s*=\s*\{\s*"
+            r"count\s*<=\s*(\d+)\s+xcrt_is_transferable_location\s*=\s*yes\s*\}\s*\}",
             triggers,
         )
     }
@@ -416,6 +417,8 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
         errors.append(
             f"selector Tusi cap matrix mismatch: expected {expected_tusi_pairs}, got {tusi_pairs}"
         )
+    if "$MAX$" in triggers:
+        errors.append("selector Tusi cap must use runtime-verified literal count limits")
     frozen_tusi_pairs = {
         int(location_count): int(maximum)
         for location_count, maximum in re.findall(

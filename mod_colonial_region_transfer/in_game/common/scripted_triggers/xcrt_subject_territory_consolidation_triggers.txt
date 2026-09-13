@@ -21,16 +21,6 @@ xcrt_is_transferable_location = {
 	}
 }
 
-# Root: candidate recipient country. Named scopes: actor and recipient.
-xcrt_has_at_most_transferable_locations = {
-	capital.region = {
-		any_location_in_region = {
-			count <= $MAX$
-			xcrt_is_transferable_location = yes
-		}
-	}
-}
-
 # Root: candidate recipient country. Used by the selector before the snapshot exists.
 xcrt_recipient_respects_tusi_cap = {
 	trigger_if = {
@@ -38,20 +28,20 @@ xcrt_recipient_respects_tusi_cap = {
 			is_subject_type = tusi
 		}
 		OR = {
-			AND = { num_locations = 1 xcrt_has_at_most_transferable_locations = { MAX = 14 } }
-			AND = { num_locations = 2 xcrt_has_at_most_transferable_locations = { MAX = 13 } }
-			AND = { num_locations = 3 xcrt_has_at_most_transferable_locations = { MAX = 12 } }
-			AND = { num_locations = 4 xcrt_has_at_most_transferable_locations = { MAX = 11 } }
-			AND = { num_locations = 5 xcrt_has_at_most_transferable_locations = { MAX = 10 } }
-			AND = { num_locations = 6 xcrt_has_at_most_transferable_locations = { MAX = 9 } }
-			AND = { num_locations = 7 xcrt_has_at_most_transferable_locations = { MAX = 8 } }
-			AND = { num_locations = 8 xcrt_has_at_most_transferable_locations = { MAX = 7 } }
-			AND = { num_locations = 9 xcrt_has_at_most_transferable_locations = { MAX = 6 } }
-			AND = { num_locations = 10 xcrt_has_at_most_transferable_locations = { MAX = 5 } }
-			AND = { num_locations = 11 xcrt_has_at_most_transferable_locations = { MAX = 4 } }
-			AND = { num_locations = 12 xcrt_has_at_most_transferable_locations = { MAX = 3 } }
-			AND = { num_locations = 13 xcrt_has_at_most_transferable_locations = { MAX = 2 } }
-			AND = { num_locations = 14 xcrt_has_at_most_transferable_locations = { MAX = 1 } }
+			AND = { num_locations = 1 capital.region = { any_location_in_region = { count <= 14 xcrt_is_transferable_location = yes } } }
+			AND = { num_locations = 2 capital.region = { any_location_in_region = { count <= 13 xcrt_is_transferable_location = yes } } }
+			AND = { num_locations = 3 capital.region = { any_location_in_region = { count <= 12 xcrt_is_transferable_location = yes } } }
+			AND = { num_locations = 4 capital.region = { any_location_in_region = { count <= 11 xcrt_is_transferable_location = yes } } }
+			AND = { num_locations = 5 capital.region = { any_location_in_region = { count <= 10 xcrt_is_transferable_location = yes } } }
+			AND = { num_locations = 6 capital.region = { any_location_in_region = { count <= 9 xcrt_is_transferable_location = yes } } }
+			AND = { num_locations = 7 capital.region = { any_location_in_region = { count <= 8 xcrt_is_transferable_location = yes } } }
+			AND = { num_locations = 8 capital.region = { any_location_in_region = { count <= 7 xcrt_is_transferable_location = yes } } }
+			AND = { num_locations = 9 capital.region = { any_location_in_region = { count <= 6 xcrt_is_transferable_location = yes } } }
+			AND = { num_locations = 10 capital.region = { any_location_in_region = { count <= 5 xcrt_is_transferable_location = yes } } }
+			AND = { num_locations = 11 capital.region = { any_location_in_region = { count <= 4 xcrt_is_transferable_location = yes } } }
+			AND = { num_locations = 12 capital.region = { any_location_in_region = { count <= 3 xcrt_is_transferable_location = yes } } }
+			AND = { num_locations = 13 capital.region = { any_location_in_region = { count <= 2 xcrt_is_transferable_location = yes } } }
+			AND = { num_locations = 14 capital.region = { any_location_in_region = { count <= 1 xcrt_is_transferable_location = yes } } }
 		}
 	}
 }

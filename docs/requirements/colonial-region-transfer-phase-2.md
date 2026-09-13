@@ -67,6 +67,8 @@
 
 实现前还要复核 current exact build 是否存在其他由原版地点转让路径施加的接收限制。发现新限制时，以目标自身规则优先，并把条件和可见禁用原因追加到本合同；不得静默绕过。
 
+2026-09-14 的首轮简中实机验收发现：在 Build `24187685` 的互动选择器调用链中，把迭代器数量上限写成参数化 scripted trigger（`count <= $MAX$`）会在土司 14 地点、Region 内有 2 个候选地点时错误通过；同一状态下直接写出的字面量 `count <= 1` 正确失败，`count > 1` 正确通过。证据保存在 RED run `xcrt-20260913T212843Z-phase2-acceptance` 的 `tusi-count-diagnostic-actor-scoped.png`。因此二期的选择器门禁必须展开为 14 组字面量数量比较；参数化 helper 禁止用于此处。effect 侧仍对冻结列表使用同一组字面量上限，形成执行前后双重保护。
+
 ## 二期缩略图替换合同
 
 - 人物参考：用户提供的白绮头像，来源为 <https://i0.hdslb.com/bfs/face/718c36bc01a173d0c42c0d1131f67e31055244c7.jpg>，调查副本 SHA-256 `b52b0624a3c2b2114f66a6c7ba839880d1dc89adaa91de0f5ca6bfc302160ca6`。参考原图不进入产品源码、release staging 或 Workshop cache。
