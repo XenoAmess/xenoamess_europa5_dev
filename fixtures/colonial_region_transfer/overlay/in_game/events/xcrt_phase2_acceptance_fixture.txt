@@ -118,9 +118,9 @@ xcrt_acceptance.9 = {
 	}
 }
 
-# Fresh-game Tusi scenario. CHI reparents the historical GYT Tusi, temporarily
-# moves its capital to the isolated Caribbean Region, and brings it to 14
-# locations while two transferable locations remain in that Region.
+# Fresh-game Tusi scenario. LNG keeps its historical direct GYT Tusi relation,
+# temporarily moves GYT's capital to the isolated Caribbean Region, and brings
+# it to 14 locations while two transferable locations remain in that Region.
 xcrt_acceptance.10 = {
 	type = country_event
 	title = xcrt_acceptance.10.title
@@ -132,19 +132,14 @@ xcrt_acceptance.10 = {
 	option = {
 		name = xcrt_acceptance.10.a
 		trigger = {
-			tag = CHI
+			tag = LNG
 			c:GYT = {
+				is_subject_of = root
 				is_subject_type = tusi
 				num_locations = 3
 			}
 		}
 
-		c:GYT = {
-			make_subject_of = {
-				target = root
-				type = subject_type:tusi
-			}
-		}
 		location:tortuga = { discover_location = root change_location_owner = c:GYT }
 		c:GYT = { set_capital = location:tortuga }
 		location:iguamuco = {

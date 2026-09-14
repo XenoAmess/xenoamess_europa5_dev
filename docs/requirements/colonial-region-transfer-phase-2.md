@@ -67,7 +67,7 @@
 
 实现前还要复核 current exact build 是否存在其他由原版地点转让路径施加的接收限制。发现新限制时，以目标自身规则优先，并把条件和可见禁用原因追加到本合同；不得静默绕过。
 
-2026-09-14 的首轮简中实机验收暴露了两项必须分别保留的事实。第一，参数化数量 helper 的诊断结果不稳定，因此产品的选择器与 effect 门禁都采用显式 `OR = { NOT = { is_subject_type = tusi } AND = { is_subject_type = tusi ... } }`，并展开为 14 组字面量数量比较；参数化 helper 不再用于这两处保护。第二，runs `xcrt-20260913T212843Z-phase2-acceptance`、`xcrt-20260913T231422Z-phase2-tusi-fixed` 与 `xcrt-20260914T004551Z-phase2-tusi-explicit` 使用法国在加勒比调用 `create_country_from_location { subject_type = tusi }`，违反原版 `can_country_have_tusi` / `is_country_valid_for_tusi_subject` 创建条件；引擎实际创建的是非土司附属对象。第三个 run 的最小诊断明确显示 `NOT = { is_subject_type = tusi }`，故先前把 14→16 归因于 `trigger_if` 的结论撤回，这三次尝试按 `fixture/harness RED` 保留且不得作为产品语义证据。修订夹具必须从 1337 开局的真实 `GYT` 土司出发，由 `CHI` 作为直属宗主，将目标首都暂移至隔离的加勒比 Region，再验证 14→15 成功以及 14→16、15→16 禁用；只有目标类型审计、真实互动和后置数量同时成立才能关闭土司门禁。
+2026-09-14 的首轮简中实机验收暴露了两项必须分别保留的事实。第一，参数化数量 helper 的诊断结果不稳定，因此产品的选择器与 effect 门禁都采用显式 `OR = { NOT = { is_subject_type = tusi } AND = { is_subject_type = tusi ... } }`，并展开为 14 组字面量数量比较；参数化 helper 不再用于这两处保护。第二，runs `xcrt-20260913T212843Z-phase2-acceptance`、`xcrt-20260913T231422Z-phase2-tusi-fixed` 与 `xcrt-20260914T004551Z-phase2-tusi-explicit` 使用法国在加勒比调用 `create_country_from_location { subject_type = tusi }`，违反原版 `can_country_have_tusi` / `is_country_valid_for_tusi_subject` 创建条件；引擎实际创建的是非土司附属对象。第三个 run 的最小诊断明确显示 `NOT = { is_subject_type = tusi }`，故先前把 14→16 归因于 `trigger_if` 的结论撤回，这三次尝试按 `fixture/harness RED` 保留且不得作为产品语义证据。run `xcrt-20260914T033418Z-phase2-tusi-historical` 又证明，把真实 `GYT` 从 `LNG` 改挂到 `CHI` 会在 `make_subject_of` 时将关系降级为非土司；该 run 同样按 `fixture/harness RED` 保留。最终夹具必须保持 1337 开局原生的 `LNG`→`GYT` 土司关系不变，只把 `GYT` 首都暂移至隔离的加勒比 Region，再验证 14→15 成功以及 14→16、15→16 禁用；只有目标类型审计、真实互动和后置数量同时成立才能关闭土司门禁。
 
 ## 二期缩略图替换合同
 

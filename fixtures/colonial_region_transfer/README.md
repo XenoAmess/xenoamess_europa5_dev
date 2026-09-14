@@ -2,13 +2,13 @@
 
 本目录只用于一次性隔离实机验收，不属于 Mod 产品，也不得进入 release staging、ZIP 或 Workshop。
 
-`overlay/` 叠加到按 run ID 创建的本地 Mod 树。使用 `tools/prepare_colonial_region_transfer_acceptance.py --write-playset` 同时生成只启用该投影的 ASCII/UTF-8 `playsets.json`；不要通过本地化名称做 PowerShell 文本往返。殖民领、普通附庸与类型矩阵以葡萄牙等首都不在加勒比的国家开局；土司场景必须先用 `tag CHI` 切换为中华皇帝再运行 `.10`。夹具使用当前锁定 EU5 Build `24187685` 的原生 `create_country_from_location`、`create_building_country_in_location`、`make_subject_of`、`set_capital`、`define_unique_country_tag` 和 `change_location_owner` 方言。实机确认 `create_country_from_location` 要求地点已有有效 owner 或调用显式提供 overlord，因此独立对照国也要先把地点临时交给玩家，再从该地点创建国家。
+`overlay/` 叠加到按 run ID 创建的本地 Mod 树。使用 `tools/prepare_colonial_region_transfer_acceptance.py --write-playset` 同时生成只启用该投影的 ASCII/UTF-8 `playsets.json`；不要通过本地化名称做 PowerShell 文本往返。殖民领、普通附庸与类型矩阵以葡萄牙等首都不在加勒比的国家开局；土司场景必须先用 `tag LNG` 切换为原版 `GYT` 的直属宗主再运行 `.10`。夹具使用当前锁定 EU5 Build `24187685` 的原生 `create_country_from_location`、`create_building_country_in_location`、`make_subject_of`、`set_capital`、`define_unique_country_tag` 和 `change_location_owner` 方言。实机确认 `create_country_from_location` 要求地点已有有效 owner 或调用显式提供 overlord，因此独立对照国也要先把地点临时交给玩家，再从该地点创建国家。
 
 每个主场景必须从全新 1337 开局开始，不能在同一存档重复布置：
 
 - `event xcrt_acceptance.1`：0.1.0 殖民领回归主路径；`.3` 前置审计，`.2` 后置审计。
 - `event xcrt_acceptance.8`：普通 `vassal` 目标的同构二期主路径；真实互动后用 `.9` 审计。
-- `tag CHI` 后执行 `event xcrt_acceptance.10`：把 1337 开局中已由引擎建立的真实 `GYT` 土司改为 `CHI` 的直属土司，暂迁首都到 `tortuga`，并布置 14→16 禁用；`.11` 调整为 14→15 后执行真实互动，`.12` 审计；`.13` 再建立 15→16 禁用，`.14` 审计没有部分转让。`.10` 的按钮同时要求 `GYT` 在布置前确为三地点土司，防止错误国家或重复运行污染证据。
+- `tag LNG` 后执行 `event xcrt_acceptance.10`：保持 1337 开局中引擎已建立的原生 `LNG`→`GYT` 土司关系，暂迁 `GYT` 首都到 `tortuga`，并布置 14→16 禁用；`.11` 调整为 14→15 后执行真实互动，`.12` 审计；`.13` 再建立 15→16 禁用，`.14` 审计没有部分转让。`.10` 的按钮同时要求 `GYT` 在布置前确为 `LNG` 的三地点直属土司，防止错误国家或重复运行污染证据；不得在该路径调用 `make_subject_of`，因为实机证明重新挂接会把关系降级。
 - `event xcrt_acceptance.20`：18 种领土型直属附属国与 `state_bank`/`trade_company` 两种 building 型直属附属对象的候选矩阵；`.21` 审计夹具结构，再从真实互动选择器核对前 18 种出现且后 2 种不出现。
 
 | 地点 | 初始持有者 | 作用 | 互动后的期望 |
