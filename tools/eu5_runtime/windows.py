@@ -136,7 +136,11 @@ def ensure_foreground(binding: WindowBinding, *, timeout_seconds: float = 3.0) -
     _psutil, win32con, win32gui, _win32process = _imports()
     if not win32gui.IsWindow(binding.hwnd):
         raise WindowBindingError(f"target HWND no longer exists: {binding.hwnd}")
-    win32gui.ShowWindow(binding.hwnd, win32con.SW_RESTORE)
+    # SW_RESTORE also unmaximizes an already visible maximized window. That changes
+    # the client geometry between binding and input, so restore only real minimized
+    # windows and always resolve geometry again immediately before an action.
+    if win32gui.IsIconic(binding.hwnd):
+        win32gui.ShowWindow(binding.hwnd, win32con.SW_RESTORE)
     win32gui.BringWindowToTop(binding.hwnd)
     try:
         win32gui.SetForegroundWindow(binding.hwnd)
@@ -150,15 +154,39 @@ def ensure_foreground(binding: WindowBinding, *, timeout_seconds: float = 3.0) -
     raise WindowBindingError(f"target HWND {binding.hwnd} did not become foreground")
 
 
+def _current_client_geometry(binding: WindowBinding) -> tuple[tuple[int, int], tuple[int, int]]:
+    _psutil, _win32con, win32gui, _win32process = _imports()
+    if not win32gui.IsWindow(binding.hwnd):
+        raise WindowBindingError(f"target HWND no longer exists: {binding.hwnd}")
+    left, top, right, bottom = win32gui.GetClientRect(binding.hwnd)
+    size = (right - left, bottom - top)
+    if size[0] <= 0 or size[1] <= 0:
+        raise WindowBindingError(f"target HWND {binding.hwnd} has no usable client area")
+    return win32gui.ClientToScreen(binding.hwnd, (0, 0)), size
+
+
+def _current_binding(binding: WindowBinding) -> WindowBinding:
+    origin, size = _current_client_geometry(binding)
+    return WindowBinding(
+        binding.process_name,
+        binding.executable,
+        binding.pid,
+        binding.hwnd,
+        binding.title,
+        origin,
+        size,
+    )
+
+
 def _screen_point(binding: WindowBinding, x: int, y: int, coordinate_space: str) -> tuple[int, int]:
     if coordinate_space == "screen":
         return x, y
     if coordinate_space != "client":
         raise ValueError("coordinate space must be 'client' or 'screen'")
-    width, height = binding.client_size
+    origin, (width, height) = _current_client_geometry(binding)
     if not 0 <= x < width or not 0 <= y < height:
         raise ValueError(f"client point {(x, y)} is outside client size {(width, height)}")
-    return binding.client_origin[0] + x, binding.client_origin[1] + y
+    return origin[0] + x, origin[1] + y
 
 
 def capture(binding: WindowBinding, output: Path, *, coordinate_space: str = "client") -> dict[str, object]:
@@ -169,8 +197,7 @@ def capture(binding: WindowBinding, output: Path, *, coordinate_space: str = "cl
     if output.exists():
         raise FileExistsError(f"refusing to overwrite screenshot: {output}")
     if coordinate_space == "client":
-        left, top = binding.client_origin
-        width, height = binding.client_size
+        (left, top), (width, height) = _current_client_geometry(binding)
         bbox = (left, top, left + width, top + height)
         image = ImageGrab.grab(bbox=bbox, all_screens=True)
         origin = [left, top]
@@ -212,14 +239,14 @@ def click(
 
 def post_click(binding: WindowBinding, x: int, y: int) -> tuple[int, int]:
     _psutil, win32con, win32gui, _win32process = _imports()
-    width, height = binding.client_size
+    origin, (width, height) = _current_client_geometry(binding)
     if not 0 <= x < width or not 0 <= y < height:
         raise ValueError(f"client point {(x, y)} is outside client size {(width, height)}")
     packed = (y << 16) | (x & 0xFFFF)
     win32gui.PostMessage(binding.hwnd, win32con.WM_MOUSEMOVE, 0, packed)
     win32gui.PostMessage(binding.hwnd, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, packed)
     win32gui.PostMessage(binding.hwnd, win32con.WM_LBUTTONUP, 0, packed)
-    return binding.client_origin[0] + x, binding.client_origin[1] + y
+    return origin[0] + x, origin[1] + y
 
 
 def hover(
@@ -288,7 +315,7 @@ def action_receipt(
         "schema": 1,
         "sent_at_utc": utc_now(),
         "action": action,
-        "target": binding.to_dict(),
+        "target": _current_binding(binding).to_dict(),
         "details": details,
         "post_action_screenshot": screenshot,
         "claim_boundary": "input-sent-only",

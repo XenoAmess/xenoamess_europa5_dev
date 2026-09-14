@@ -7,6 +7,7 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 
 REPOSITORY = Path(__file__).resolve().parents[1]
@@ -25,7 +26,11 @@ from eu5_runtime.ocr import (  # noqa: E402
     recognize_image,
     validate_session_providers,
 )
-from eu5_runtime.windows import WindowBindingError, select_unique_window  # noqa: E402
+from eu5_runtime.windows import (  # noqa: E402
+    WindowBindingError,
+    ensure_foreground,
+    select_unique_window,
+)
 from prune_runtime_evidence import resolve_target  # noqa: E402
 
 
@@ -111,6 +116,33 @@ class WindowTests(unittest.TestCase):
     def test_select_unique_window_refuses_ambiguity(self) -> None:
         with self.assertRaises(WindowBindingError):
             select_unique_window([self.first, self.second])
+
+    def test_foreground_does_not_restore_visible_maximized_window(self) -> None:
+        gui = mock.Mock()
+        gui.IsWindow.return_value = True
+        gui.IsIconic.return_value = False
+        gui.GetForegroundWindow.return_value = self.first.hwnd
+        constants = mock.Mock(SW_RESTORE=9)
+        with mock.patch(
+            "eu5_runtime.windows._imports",
+            return_value=(mock.Mock(), constants, gui, mock.Mock()),
+        ):
+            ensure_foreground(self.first)
+        gui.ShowWindow.assert_not_called()
+        gui.BringWindowToTop.assert_called_once_with(self.first.hwnd)
+
+    def test_foreground_restores_minimized_window(self) -> None:
+        gui = mock.Mock()
+        gui.IsWindow.return_value = True
+        gui.IsIconic.return_value = True
+        gui.GetForegroundWindow.return_value = self.first.hwnd
+        constants = mock.Mock(SW_RESTORE=9)
+        with mock.patch(
+            "eu5_runtime.windows._imports",
+            return_value=(mock.Mock(), constants, gui, mock.Mock()),
+        ):
+            ensure_foreground(self.first)
+        gui.ShowWindow.assert_called_once_with(self.first.hwnd, constants.SW_RESTORE)
 
 
 class CliTests(unittest.TestCase):
