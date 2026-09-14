@@ -2,7 +2,7 @@
 
 本目录只用于一次性隔离实机验收，不属于 Mod 产品，也不得进入 release staging、ZIP 或 Workshop。
 
-`overlay/` 叠加到按 run ID 创建的本地 Mod 树。使用 `tools/prepare_colonial_region_transfer_acceptance.py --write-playset` 同时生成只启用该投影的 ASCII/UTF-8 `playsets.json`；不要通过本地化名称做 PowerShell 文本往返。殖民领、普通附庸与类型矩阵以葡萄牙等首都不在加勒比的国家开局；土司场景必须先用 `tag LNG` 切换为原版 `GYT` 的直属宗主再运行 `.10`。夹具使用当前锁定 EU5 Build `24187685` 的原生 `create_country_from_location`、`create_building_country_in_location`、`make_subject_of`、`set_capital`、`define_unique_country_tag` 和 `change_location_owner` 方言。实机确认 `create_country_from_location` 要求地点已有有效 owner 或调用显式提供 overlord，因此独立对照国也要先把地点临时交给玩家，再从该地点创建国家。
+`overlay/` 叠加到按 run ID 创建的本地 Mod 树。使用 `tools/prepare_colonial_region_transfer_acceptance.py --write-playset` 同时生成只启用该投影的 ASCII/UTF-8 `playsets.json`；不要通过本地化名称做编码不安全的 shell 文本往返。殖民领、普通附庸与类型矩阵以葡萄牙等首都不在加勒比的国家开局；土司场景必须先用 `tag LNG` 切换为原版 `GYT` 的直属宗主再运行 `.10`。夹具使用当前锁定 EU5 Build `24187685` 的原生 `create_country_from_location`、`create_building_country_in_location`、`make_subject_of`、`set_capital`、`define_unique_country_tag` 和 `change_location_owner` 方言。实机确认 `create_country_from_location` 要求地点已有有效 owner 或调用显式提供 overlord，因此独立对照国也要先把地点临时交给玩家，再从该地点创建国家。
 
 每个主场景必须从全新 1337 开局开始，不能在同一存档重复布置：
 

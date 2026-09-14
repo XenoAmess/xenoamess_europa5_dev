@@ -11,6 +11,7 @@
 
 - [当前 EU5 exact-build 静态基线](exact-build-baseline.md)
 - [当前 OCR 后端与算力基线](ocr-backend-baseline.md)
+- [Python 自动化迁移合同](python-automation-migration.md)
 - [产品登记表](products.md)
 - [产品合同模板](product-contract-template.md)
 - [献给白绮的殖民领版图整理：需求分析与产品合同](requirements/colonial-region-transfer.md)

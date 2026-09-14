@@ -9,8 +9,8 @@
 
 云端或离线测试只属于 L0，不能声明 EU5 已加载、UI 已显示或玩法已通过。
 
-当前产品工具测试：
+全部工具与自动化门禁测试：
 
-```powershell
-python -m unittest tests.test_colonial_region_transfer_tools
+```text
+python -m unittest discover -s tests
 ```

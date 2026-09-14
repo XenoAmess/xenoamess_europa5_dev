@@ -44,6 +44,16 @@
 - 获得授权后，启动前仍须轮询共享任务总线，确认没有屏幕或 EU5 资源冲突；不得抢占、关闭或向其他任务的程序发送输入。
 - 当前 EU5 验收不要求 MCP。不得为了开始产品开发而先扩张 MCP、注入器或原生桥工程。
 
+## 禁止 PowerShell 与 Python 自动化硬规则
+
+- 本项目禁止任何 PowerShell。如果发现历史已有的 PowerShell，必须整改为 Python。其他语言不动；只是禁止 PowerShell。
+- 本仓库禁止新增或调用 PowerShell 脚本、模块、可执行文件或内联命令。构建、验证、验收、OCR、截图、输入、启动、发布辅助和运行证据处理以受版本控制的 Python 代码为主体。
+- 该禁令不是全仓单语言改造：Open Kaishek 等既有 Java 组件、Java 测试与 Java 接口继续保持 Java；不得为了“Python 化”重写正常工作的 Java 组件。
+- Windows 原生能力通过 Python 标准库、`ctypes`、pywin32、Pillow、PyAutoGUI、RapidOCR 或其他明确登记的 Python 依赖访问。临时会话命令不得成为未提交的第二套自动化实现。
+- `tools/eu5_acceptance.py` 是屏幕与验收自动化的统一入口。任何新动作必须先扩展该入口及测试，不得在 `_runtime/` 放置可执行助手。
+- OCR 默认使用 CUDA execution provider 并验证 detector、classifier、recognizer 的实际 provider；缺少 CUDA 时失败闭锁。只有显式诊断命令可以选择 CPU，且产物必须记录实际 provider，不能作为 GPU 验收证据。
+- 测试必须扫描仓库中的 PowerShell 脚本扩展名和 Python 子进程调用，防止被禁止的 shell 自动化重新进入仓库。
+
 ## Steam 在线状态硬规则
 
 - Steam 默认保持离线模式。除非当前动作确实需要 Steam 在线能力（例如上传 Mod），禁止将 Steam 调整为在线模式。
