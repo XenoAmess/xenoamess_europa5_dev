@@ -118,8 +118,9 @@ xcrt_acceptance.9 = {
 	}
 }
 
-# Fresh-game Tusi scenario. The target starts with 14 locations while two
-# transferable locations remain in its capital Region.
+# Fresh-game Tusi scenario. CHI reparents the historical GYT Tusi, temporarily
+# moves its capital to the isolated Caribbean Region, and brings it to 14
+# locations while two transferable locations remain in that Region.
 xcrt_acceptance.10 = {
 	type = country_event
 	title = xcrt_acceptance.10.title
@@ -130,17 +131,22 @@ xcrt_acceptance.10 = {
 
 	option = {
 		name = xcrt_acceptance.10.a
-
-		location:tortuga = {
-			discover_location = root
-			create_country_from_location = {
-				overlord = root
-				subject_type = subject_type:tusi
-				define_unique_country_tag = XCRTT
-				change_country_name = XCRTT
-				change_country_adjective = XCRTT
+		trigger = {
+			tag = CHI
+			c:GYT = {
+				is_subject_type = tusi
+				num_locations = 3
 			}
 		}
+
+		c:GYT = {
+			make_subject_of = {
+				target = root
+				type = subject_type:tusi
+			}
+		}
+		location:tortuga = { discover_location = root change_location_owner = c:GYT }
+		c:GYT = { set_capital = location:tortuga }
 		location:iguamuco = {
 			discover_location = root
 			change_location_owner = root
@@ -151,19 +157,16 @@ xcrt_acceptance.10 = {
 			}
 		}
 
-		location:torres_vedras = { discover_location = root change_location_owner = c:XCRTT }
-		location:santarem = { discover_location = root change_location_owner = c:XCRTT }
-		location:evora = { discover_location = root change_location_owner = c:XCRTT }
-		location:setubal = { discover_location = root change_location_owner = c:XCRTT }
-		location:alcacer_do_sal = { discover_location = root change_location_owner = c:XCRTT }
-		location:beja = { discover_location = root change_location_owner = c:XCRTT }
-		location:sines = { discover_location = root change_location_owner = c:XCRTT }
-		location:odemira = { discover_location = root change_location_owner = c:XCRTT }
-		location:ourique = { discover_location = root change_location_owner = c:XCRTT }
-		location:elvas = { discover_location = root change_location_owner = c:XCRTT }
-		location:moura = { discover_location = root change_location_owner = c:XCRTT }
-		location:portalegre = { discover_location = root change_location_owner = c:XCRTT }
-		location:castelo_branco = { discover_location = root change_location_owner = c:XCRTT }
+		location:torres_vedras = { discover_location = root change_location_owner = c:GYT }
+		location:santarem = { discover_location = root change_location_owner = c:GYT }
+		location:evora = { discover_location = root change_location_owner = c:GYT }
+		location:setubal = { discover_location = root change_location_owner = c:GYT }
+		location:alcacer_do_sal = { discover_location = root change_location_owner = c:GYT }
+		location:beja = { discover_location = root change_location_owner = c:GYT }
+		location:sines = { discover_location = root change_location_owner = c:GYT }
+		location:odemira = { discover_location = root change_location_owner = c:GYT }
+		location:ourique = { discover_location = root change_location_owner = c:GYT }
+		location:elvas = { discover_location = root change_location_owner = c:GYT }
 		location:marien = { discover_location = root change_location_owner = root }
 		location:guahaba = { discover_location = root change_location_owner = root }
 
@@ -188,7 +191,7 @@ xcrt_acceptance.11 = {
 		name = xcrt_acceptance.11.a
 		trigger = {
 			has_global_variable = xcrt_acceptance_phase2_tusi_ready
-			c:XCRTT = {
+			c:GYT = {
 				is_subject_type = tusi
 				num_locations = 14
 			}
@@ -211,9 +214,9 @@ xcrt_acceptance.12 = {
 		name = xcrt_acceptance.12.pass
 		trigger = {
 			has_global_variable = xcrt_acceptance_phase2_tusi_ready
-			location:marien = { owner = c:XCRTT }
+			location:marien = { owner = c:GYT }
 			location:guahaba = { owner = c:XCRTI }
-			c:XCRTT = {
+			c:GYT = {
 				is_subject_type = tusi
 				is_subject_of = global_var:xcrt_acceptance_actor
 				num_locations = 15
@@ -227,9 +230,9 @@ xcrt_acceptance.12 = {
 		trigger = {
 			NOT = {
 				has_global_variable = xcrt_acceptance_phase2_tusi_ready
-				location:marien = { owner = c:XCRTT }
+				location:marien = { owner = c:GYT }
 				location:guahaba = { owner = c:XCRTI }
-				c:XCRTT = {
+				c:GYT = {
 					is_subject_type = tusi
 					is_subject_of = global_var:xcrt_acceptance_actor
 					num_locations = 15
@@ -252,7 +255,7 @@ xcrt_acceptance.13 = {
 	option = {
 		name = xcrt_acceptance.13.a
 		trigger = {
-			c:XCRTT = {
+			c:GYT = {
 				is_subject_type = tusi
 				num_locations = 15
 			}
@@ -275,7 +278,7 @@ xcrt_acceptance.14 = {
 		name = xcrt_acceptance.14.pass
 		trigger = {
 			location:guahaba = { owner = global_var:xcrt_acceptance_actor }
-			c:XCRTT = {
+			c:GYT = {
 				is_subject_type = tusi
 				num_locations = 15
 			}
@@ -288,7 +291,7 @@ xcrt_acceptance.14 = {
 		trigger = {
 			NOT = {
 				location:guahaba = { owner = global_var:xcrt_acceptance_actor }
-				c:XCRTT = {
+				c:GYT = {
 					is_subject_type = tusi
 					num_locations = 15
 				}
