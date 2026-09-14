@@ -118,9 +118,9 @@ xcrt_acceptance.9 = {
 	}
 }
 
-# Fresh-game Tusi scenario. LNG keeps its historical direct GYT Tusi relation,
-# temporarily moves GYT's capital to the isolated Caribbean Region, and brings
-# it to 14 locations while two transferable locations remain in that Region.
+# Fresh-game Tusi scenario. LNG keeps its historical direct GYT Tusi relation
+# and native Nixi capital, brings GYT to 14 locations, and leaves two actor
+# locations in Nixi's South China Region.
 xcrt_acceptance.10 = {
 	type = country_event
 	title = xcrt_acceptance.10.title
@@ -141,7 +141,6 @@ xcrt_acceptance.10 = {
 		}
 
 		location:tortuga = { discover_location = root change_location_owner = c:GYT }
-		c:GYT = { set_capital = location:tortuga }
 		location:iguamuco = {
 			discover_location = root
 			change_location_owner = root
@@ -162,8 +161,9 @@ xcrt_acceptance.10 = {
 		location:odemira = { discover_location = root change_location_owner = c:GYT }
 		location:ourique = { discover_location = root change_location_owner = c:GYT }
 		location:elvas = { discover_location = root change_location_owner = c:GYT }
-		location:marien = { discover_location = root change_location_owner = root }
-		location:guahaba = { discover_location = root change_location_owner = root }
+		location:tongan_lijiang = { discover_location = root change_location_owner = root }
+		location:linxi = { discover_location = root change_location_owner = root }
+		location:porto_santo = { discover_location = root change_location_owner = root }
 
 		set_global_variable = {
 			name = xcrt_acceptance_actor
@@ -191,7 +191,7 @@ xcrt_acceptance.11 = {
 				num_locations = 14
 			}
 		}
-		location:guahaba = {
+		location:linxi = {
 			change_location_owner = c:XCRTI
 		}
 	}
@@ -209,8 +209,9 @@ xcrt_acceptance.12 = {
 		name = xcrt_acceptance.12.pass
 		trigger = {
 			has_global_variable = xcrt_acceptance_phase2_tusi_ready
-			location:marien = { owner = c:GYT }
-			location:guahaba = { owner = c:XCRTI }
+			location:tongan_lijiang = { owner = c:GYT }
+			location:linxi = { owner = c:XCRTI }
+			location:porto_santo = { owner = global_var:xcrt_acceptance_actor }
 			c:GYT = {
 				is_subject_type = tusi
 				is_subject_of = global_var:xcrt_acceptance_actor
@@ -225,8 +226,9 @@ xcrt_acceptance.12 = {
 		trigger = {
 			NOT = {
 				has_global_variable = xcrt_acceptance_phase2_tusi_ready
-				location:marien = { owner = c:GYT }
-				location:guahaba = { owner = c:XCRTI }
+				location:tongan_lijiang = { owner = c:GYT }
+				location:linxi = { owner = c:XCRTI }
+				location:porto_santo = { owner = global_var:xcrt_acceptance_actor }
 				c:GYT = {
 					is_subject_type = tusi
 					is_subject_of = global_var:xcrt_acceptance_actor
@@ -255,7 +257,7 @@ xcrt_acceptance.13 = {
 				num_locations = 15
 			}
 		}
-		location:guahaba = {
+		location:linxi = {
 			change_location_owner = root
 		}
 	}
@@ -272,7 +274,9 @@ xcrt_acceptance.14 = {
 	option = {
 		name = xcrt_acceptance.14.pass
 		trigger = {
-			location:guahaba = { owner = global_var:xcrt_acceptance_actor }
+			location:tongan_lijiang = { owner = c:GYT }
+			location:linxi = { owner = global_var:xcrt_acceptance_actor }
+			location:porto_santo = { owner = global_var:xcrt_acceptance_actor }
 			c:GYT = {
 				is_subject_type = tusi
 				num_locations = 15
@@ -285,7 +289,9 @@ xcrt_acceptance.14 = {
 		name = xcrt_acceptance.14.fail
 		trigger = {
 			NOT = {
-				location:guahaba = { owner = global_var:xcrt_acceptance_actor }
+				location:tongan_lijiang = { owner = c:GYT }
+				location:linxi = { owner = global_var:xcrt_acceptance_actor }
+				location:porto_santo = { owner = global_var:xcrt_acceptance_actor }
 				c:GYT = {
 					is_subject_type = tusi
 					num_locations = 15

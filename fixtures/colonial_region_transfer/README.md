@@ -8,7 +8,7 @@
 
 - `event xcrt_acceptance.1`：0.1.0 殖民领回归主路径；`.3` 前置审计，`.2` 后置审计。
 - `event xcrt_acceptance.8`：普通 `vassal` 目标的同构二期主路径；真实互动后用 `.9` 审计。
-- `tag LNG` 后执行 `event xcrt_acceptance.10`：保持 1337 开局中引擎已建立的原生 `LNG`→`GYT` 土司关系，暂迁 `GYT` 首都到 `tortuga`，并布置 14→16 禁用；`.11` 调整为 14→15 后执行真实互动，`.12` 审计；`.13` 再建立 15→16 禁用，`.14` 审计没有部分转让。`.10` 的按钮同时要求 `GYT` 在布置前确为 `LNG` 的三地点直属土司，防止错误国家或重复运行污染证据；不得在该路径调用 `make_subject_of`，因为实机证明重新挂接会把关系降级。
+- `tag LNG` 后执行 `event xcrt_acceptance.10`：保持 1337 开局中引擎已建立的原生 `LNG`→`GYT` 土司关系与 `nixi` 首都，在 `south_china_region` 布置 14→16 禁用；`.11` 调整为 14→15 后执行真实互动，`.12` 审计；`.13` 再建立 15→16 禁用，`.14` 审计没有部分转让。`.10` 的按钮同时要求 `GYT` 在布置前确为 `LNG` 的三地点直属土司，防止错误国家或重复运行污染证据；不得在该路径调用 `make_subject_of` 或把首都迁出土司允许的 Region，因为两者均已由实机证明会使关系降级。
 - `event xcrt_acceptance.20`：18 种领土型直属附属国与 `state_bank`/`trade_company` 两种 building 型直属附属对象的候选矩阵；`.21` 审计夹具结构，再从真实互动选择器核对前 18 种出现且后 2 种不出现。
 
 | 地点 | 初始持有者 | 作用 | 互动后的期望 |
@@ -20,7 +20,7 @@
 | `iguamuco` | `XCRTI` | 同 Region 体系外国家 | 保持 `XCRTI` |
 | `porto_santo` | `XCRTD` | Region 外生命周期对照地点 | 不被互动直接转给 `XCRTT`；记录引擎选择迁都或清理 `XCRTD` 的实际结果 |
 
-土司场景复用同一加勒比边界，但目标是原版真实标签 `GYT`：其三个云南地点连同 `tortuga` 和十个葡萄牙地点组成初始 14 地点，`marien` / `guahaba` 是两个候选地点，`iguamuco` 仍为体系外对照。把真实土司首都暂迁到 `tortuga` 只服务于隔离候选集合；它不用于证明原版土司创建条件。
+土司场景的目标是原版真实标签 `GYT`：其三个云南地点连同 `tortuga` 和十个葡萄牙地点组成初始 14 地点，首都继续是原版 `nixi`；同属 `south_china_region/dali_area/lijiang_province` 的 `tongan_lijiang` / `linxi` 是两个宗主候选地点，`iguamuco` 仍为体系外对照，`porto_santo` 是 Region 外宗主对照。`.11` 把 `linxi` 交给体系外对照国，只留下 `tongan_lijiang` 供真实互动转让；`.13` 再把 `linxi` 交还宗主以建立 15→16 禁用。
 
 上述五个加勒比地点都属于原版 `caribbean_region/hispaniola_area/marien_province`；`porto_santo` 属于 `macaronesia_region/south_macaronesia_area/madeira_province`。具体定义来自当前 exact build 的 `game/in_game/map_data/definitions.txt`。
 

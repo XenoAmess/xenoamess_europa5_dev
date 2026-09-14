@@ -36,7 +36,7 @@
  xcrt_acceptance.phase2_vassal.pass.tt: "普通附庸作为目标完成了与殖民领相同的整合，体系外和 Region 外边界保持。"
  xcrt_acceptance.phase2.fail.tt: "二期后置条件不完整。保留本次 run 的日志、截图和存档，不得覆盖后重试。"
  xcrt_acceptance.10.title: "二期验收：土司批量上限"
- xcrt_acceptance.10.desc: "在全新开局中创建拥有14个地点的土司目标，并在其首都 Region 放置两个待转让地点。"
+ xcrt_acceptance.10.desc: "保留全新开局中的原生直属土司与其原首都，把目标配置为14个地点，并在其首都 Region 放置两个待转让地点。"
  xcrt_acceptance.10.a: "布置土司14→16禁用场景"
  xcrt_acceptance.11.title: "二期验收：土司恰好15"
  xcrt_acceptance.11.desc: "移走一个待转让地点，把场景调整为14→15；随后必须通过真实互动执行。"
