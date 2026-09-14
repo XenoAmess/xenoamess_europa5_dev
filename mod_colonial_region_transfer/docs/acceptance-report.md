@@ -2,7 +2,7 @@
 
 状态：`FULL_ACCEPTANCE_GREEN / WORKSHOP_RELEASED`
 
-本报告记录正式版本 `0.1.0` 的隔离实机结果。过程证据位于被 Git 忽略的 `_runtime/<run-id>/`；报告列出的 SHA-256 用于证明证据未被后续改写。
+本报告记录正式版本 `0.1.0` 的隔离实机结果。原始过程证据在场景闭合前位于被 Git 忽略的 `_runtime/<run-id>/`；闭合后永久保留下述结论、失败记录和 SHA-256，并清理已被替代的完整运行目录。
 
 ## 当前结论
 
@@ -60,16 +60,24 @@
 | `evidence/runtime-log-audit.json` | `b2d1d591e9287933731d56b88da17baeee081526e67d4642c72d3be4d4cedfdb` |
 | `evidence/protected-userdir-diff.json` | `2846a63ef73e676f71ff219adfc95369c9298a5baf8ce766c94289710b543c2a` |
 
-## 保留的失败 attempt
+## 永久保留的失败记录
 
-| Run ID | 分类 | 原因 |
-| --- | --- | --- |
-| `xcrt-20260912T014550-dev-runtime` | `fixture/harness RED` | 进程启动后才启用投影。 |
-| `xcrt-20260912T044017-dev-runtime` | `fixture/harness RED` | 播放集 JSON 经错误编码往返后损坏。 |
-| `xcrt-20260912T055849-dev-runtime` | `fixture/harness RED` | 独立国家创建前没有有效地点 owner。 |
-| `xcrt-20260912T062234-dev-runtime` | `product RED` | 互动默认消息类型未定义；产品已用原版 `show_message = no` / `show_message_to_target = no` 修复。 |
+| Run ID | 分类 | 原因 | 替代结果 | 关键摘要 SHA-256 |
+| --- | --- | --- | --- | --- |
+| `xcrt-20260912T014550-dev-runtime` | `fixture/harness RED` | 进程启动后才启用投影。 | `xcrt-20260912T064111-dev-runtime` GREEN | `CA08B36490A1EEB438D4AE439F74AA7D391D4D608D35D001C0532ED34D30148C` (`evidence/report.json`) |
+| `xcrt-20260912T043731Z-negative-media-runtime` | `fixture/harness RED` | 准备阶段中止，只留下空的 stdout，产品未启动。 | `xcrt-20260912T044732Z-full-gates-runtime` GREEN | `E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855` (`evidence/prepare-stdout.json`) |
+| `xcrt-20260912T043848Z-negative-media-runtime` | `environment RED` | fresh 隔离 profile 打开法律文档页，产品未执行。 | `xcrt-20260912T044732Z-full-gates-runtime` GREEN | `3AEAF33769B61B32CB0E6D4168C00025A624BC668A27C6805701DCC6F5C544CC` (`evidence/attempt-status.json`) |
+| `xcrt-20260912T044017-dev-runtime` | `fixture/harness RED` | 播放集 JSON 经错误编码往返后损坏。 | `xcrt-20260912T064111-dev-runtime` GREEN | `CA25290D72988040D9DE155BA2648DAD41B7D4F237A4EFA616C7A409ACA1935D` (`evidence/report.json`) |
+| `xcrt-20260912T055849-dev-runtime` | `fixture/harness RED` | 独立国家创建前没有有效地点 owner。 | `xcrt-20260912T064111-dev-runtime` GREEN | `762D896B407CBC8DF31A02AB2A8464CA75D618B4A368B2C8FEAA1789FB33BD63` (`evidence/report.json`) |
+| `xcrt-20260912T062234-dev-runtime` | `product RED` | 互动默认消息类型未定义；产品已用原版 `show_message = no` / `show_message_to_target = no` 修复。 | `xcrt-20260912T064111-dev-runtime` GREEN | `8D6B9961DE87EEFB66F4199D585BD73A21B28A3D82CCBA23F126762C24CEB761` (`evidence/report.json`) |
 
-失败 run 永久保留，不会用成功 run 覆盖。
+表中的失败记录永久保留，不会用成功 run 覆盖或改写；0.1.0 场景闭合后，已被替代的完整运行目录按仓库保留策略清理。
+
+## 0.1.0 完整运行证据清理
+
+2026-09-15 按更新后的保留策略完成清理：删除 10 个已闭合的 metadata、实机验收与发布工作目录（包括上述失败 run、两个最终 GREEN run 和 `xcrt-publish-20260913T025500`），以及已被报告或正式媒体替代的 Steam 过程截图、失效指针和图像生成临时目录，共释放约 7.28 GiB。该操作不可从 Git 恢复原始 `_runtime/` 文件；本报告、发布记录、关键 SHA-256、Workshop manifest 和仓库内三张正式实机媒体继续永久保留。
+
+二期 `phase2` run 均未删除；土司场景尚未闭合，其完整运行证据继续保留。
 
 ## 发布判定
 

@@ -74,8 +74,9 @@ OCR 只证明玩家可见状态；所有权、关系、类型和数量必须由�
 4. 殖民回归主路径继续覆盖 donor 最后地点、donor 首都、国家清理、Region 外保护；完成
    后保存并重载，owner、目标关系、生命周期结果保持。
 
-每次失败 attempt 永久保留并按 product、fixture/harness、environment 或 tool-coverage
-分类；重试必须新建 run。
+每次失败 attempt 必须按 product、fixture/harness、environment 或 tool-coverage 分类，
+并将 run ID、原因、替代结果和关键证据哈希永久写入受 Git 管理的报告；重试必须新建
+run。完整运行证据仅保留至对应场景闭合，报告落盘后清理已被替代的完整 run。
 
 ## P Workshop 发布验收
 
