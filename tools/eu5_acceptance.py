@@ -327,9 +327,19 @@ def _cmd_hotkey(args: argparse.Namespace) -> int:
 
 
 def _cmd_paste(args: argparse.Namespace) -> int:
+    if args.text_file is not None:
+        text = args.text_file.resolve().read_text(encoding="utf-8-sig")
+        text_source: dict[str, object] = {
+            "path": str(args.text_file.resolve()),
+            "sha256": sha256_file(args.text_file.resolve()),
+        }
+    else:
+        text = args.text
+        text_source = {"inline": True}
     binding = _binding(args)
     details: dict[str, object] = {
-        "text_length": len(args.text),
+        "text_length": len(text),
+        "text_source": text_source,
         "select_all": args.select_all,
     }
     if (args.x is None) != (args.y is None):
@@ -343,7 +353,7 @@ def _cmd_paste(args: argparse.Namespace) -> int:
                 "coordinate_space": args.space,
             }
         )
-    paste_text(binding, args.text, select_all=args.select_all)
+    paste_text(binding, text, select_all=args.select_all)
     return _finish_action(args, binding, "paste", details)
 
 
@@ -500,11 +510,13 @@ def build_parser() -> argparse.ArgumentParser:
     paste = commands.add_parser("paste", help="paste text through the clipboard")
     _add_target(paste)
     _add_action_evidence(paste)
-    paste.add_argument("--text", required=True)
     paste.add_argument("--select-all", action="store_true")
     paste.add_argument("--x", type=int)
     paste.add_argument("--y", type=int)
     paste.add_argument("--space", choices=("client", "screen"), default="client")
+    paste_text_source = paste.add_mutually_exclusive_group(required=True)
+    paste_text_source.add_argument("--text")
+    paste_text_source.add_argument("--text-file", type=Path)
     paste.set_defaults(handler=_cmd_paste)
 
     console = commands.add_parser("console", help="run one EU5 console command")

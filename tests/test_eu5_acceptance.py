@@ -173,6 +173,21 @@ class CliTests(unittest.TestCase):
         with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
             build_parser().parse_args(["click", "--x", "1", "--y", "2"])
 
+    def test_paste_accepts_a_text_file_as_single_source(self) -> None:
+        args = build_parser().parse_args(
+            [
+                "paste",
+                "--text-file",
+                "description.bbcode",
+                "--receipt",
+                "receipt.json",
+                "--screenshot",
+                "screen.png",
+            ]
+        )
+        self.assertEqual(Path("description.bbcode"), args.text_file)
+        self.assertIsNone(args.text)
+
 
 class RepositoryPolicyTests(unittest.TestCase):
     def test_no_powershell_files_exist(self) -> None:
