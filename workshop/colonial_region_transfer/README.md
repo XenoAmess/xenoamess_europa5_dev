@@ -1,15 +1,18 @@
-# 献给白绮的殖民领版图整理：Workshop 发布合同
+# 献给白绮的附属地整合：Workshop 发布合同
 
 本目录保存 Workshop 页面与媒体的仓库真源，不进入 Mod runtime ZIP。
 
-当前公开条目：[`3800505751`](https://steamcommunity.com/sharedfiles/filedetails/?id=3800505751)。`0.1.0` 的上传与回读事实见 [`release-record-0.1.0.md`](release-record-0.1.0.md)。
+当前公开条目：[`3800505751`](https://steamcommunity.com/sharedfiles/filedetails/?id=3800505751)。
+`0.1.0` 的上传与回读事实见 [`release-record-0.1.0.md`](release-record-0.1.0.md)，
+`0.2.0` 见 [`release-record-0.2.0.md`](release-record-0.2.0.md)。
 
 ## 发布材料
 
 - `description.bbcode`：中英双语商店说明；实机图使用公开仓库的 raw URL，可在首次发布时直接嵌入。
 - `media/icon-source.png`：原创图标母版。
 - `media/icon-512.png`：`0.1.0` 已由当前 EU5 Mod Tools/Steam 上传流程接受并用作正式预览图。
-- `media/icon-vivhite-subject-consolidation-v2-*.png`：把白绮人物形象与附属地汇聚主题结合的二期缩略图，用户已确认参考使用权并选定用于 0.2.0 替换；当前尚未发布，提示、来源、状态与哈希见媒体 README 和独立 candidate manifest。
+- `media/icon-vivhite-subject-consolidation-v2-*.png`：把白绮人物形象与附属地汇聚主题结合的二期缩略图，用户已确认参考使用权；512 px 投影已于 0.2.0 发布并经远端原图与 fresh cache 双重哈希回读，提示、来源、状态与哈希见媒体 README 和独立 manifest。
+- `change-note-0.2.0.txt`：0.2.0 已发布的 Workshop 改动说明真源。
 - `media/game-*.png`：简中实机互动入口、确认警告和执行结果三张功能展示图；来源与哈希见 `media/manifest.json`。
 
 验收 fixture 可以用来构造可复现演示局，但对外截图不得出现 debug 面板、控制台、审计事件或 `XCRT` 测试标签。若场景由 fixture 布置，BBCode 图片说明必须明确写“实机功能演示场景”，不得暗示来自自然推进的普通存档。
@@ -22,5 +25,5 @@
 4. 先创建非公开 Workshop item，记录 stable item ID；遇到新 EULA 立即停止等待所有者处理。
 5. 上传图标，预览并确认 BBCode 中公开仓库托管的三张实机图可以正常显示。
 6. 回读标题、说明、标签、版本、图标、媒体和可见性；全部正确后再公开。
-7. 上传任务结束后第一时间把 Steam 恢复为离线模式。
-8. 从空路径取得 fresh Workshop cache，严格比对 manifest 并完成简中复验。
+7. 从空路径取得 fresh Workshop cache，严格比对 manifest，并完成发布所需的简中复验。
+8. 远端与 fresh-cache 发布门禁关闭后，第一时间把 Steam 恢复为离线模式。

@@ -24,9 +24,9 @@ Constraints: no text, no letters, no flags, no people, no UI screenshot, no Euro
 
 `icon-source.png` 为生成母版；`icon-512.png` 是高质量双三次缩放的上传候选。最终上传接受情况由当前 EU5 Mod Tools/Steam 回读确认。
 
-## 二期“白绮关联”缩略图候选
+## 二期“白绮关联”正式缩略图
 
-状态：`selected-for-phase-2 / not-published`
+状态：`published-for-phase-2 / verified`
 
 日期：2026-09-14。
 
@@ -63,7 +63,13 @@ Avoid: generic fantasy princess styling, realistic photography, exaggerated clea
 - 64 px 临时审阅：人物浅冰蓝短发、紫红眼睛、圆眼镜和黑金发饰仍可辨认；外围碎片、金色汇聚线路和底部完整 Region 保持清晰的主次关系；无文字、字母、旗帜、平台标志或水印。
 - 完整机器可读记录见 `icon-vivhite-subject-consolidation-v2.manifest.json`。
 
-该图没有覆盖 0.1.0 的 `icon-source.png`、`icon-512.png` 或任何已发布事实。用户已确认画面、参考使用权，并将其选定为二期正式缩略图替换输入；当前状态仍是“已选定、未发布”，由后续明确的二期发布任务更新 metadata/Workshop 并完成平台回读。
+该图没有覆盖 0.1.0 的 `icon-source.png`、`icon-512.png` 或任何已发布事实。用户已确认
+画面、参考使用权，并将其选定为二期正式缩略图替换输入。2026-09-15，该图随 0.2.0
+上传到 Workshop item `3800505751`；最终内容 manifest 为 `3814704094601715750`。
+匿名页面回读的远端原图为 737,585 字节，SHA-256
+`ebb1c217d594235070e51bf221b89b156c5fb7a2389e337821f022201027189a`；从空路径重新下载的
+Workshop cache 中 `.metadata/thumbnail.png` 与该远端原图、仓库输入逐字节一致。旧 0.1.0
+图和 manifest 仍保留为历史事实。
 
 ## 实机截图
 

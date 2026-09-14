@@ -1,10 +1,11 @@
 # 献给白绮的附属地整合：二期需求分析与实施计划
 
-状态：`implementation-in-progress / 0.2.0 source-complete / runtime-and-publication-pending`
+状态：`implementation-in-progress / 0.2.0 published / runtime-acceptance-in-progress`
 
 分析日期：2026-09-14
 
-实施版本：`0.2.0`（`VERSION` 与 metadata 已更新；Workshop 远端仍须在 P4 上传后回读）
+实施版本：`0.2.0`（`VERSION` 与 metadata 已更新；Workshop P4 已上传并完成远端及
+fresh-cache 回读）
 
 沿用产品 key：`colonial_region_transfer`
 
@@ -14,7 +15,11 @@
 
 二期英文工作名：For Vivhite: Subject Territory Consolidation
 
-本文件是已发布 [0.1.0 产品合同](colonial-region-transfer.md)的增量合同与实施计划，不改写 0.1.0 的历史事实。截至 2026-09-14，二期源码、版本、metadata、11 种本地化、外置验收夹具、静态工具与新缩略图输入已经落地；Open Kaishek exact-build profile 与 L0 已通过，隔离实机、发布构建、Workshop 上传和 fresh-cache 回读仍须按 P3/P4 完成。
+本文件是已发布 [0.1.0 产品合同](colonial-region-transfer.md)的增量合同与实施计划，不改写
+0.1.0 的历史事实。截至 2026-09-15，二期源码、版本、metadata、11 种本地化、外置验收
+夹具、静态工具与新缩略图输入已经落地；Open Kaishek exact-build profile 与 L0 已通过，
+P4 的发布构建、Workshop 上传、远端页面、新缩略图和 fresh-cache 回读已经完成。P3 隔离
+实机矩阵仍在继续，发布通过不替代未关闭的运行时场景。
 
 ## 原始二期需求
 
@@ -179,7 +184,7 @@
 
 退出条件：简中 UI/OCR、owner 真值、fresh 日志和重载存档共同支持合同；失败记录永久保留并正确分类，完整运行证据仅保留至对应场景闭合。
 
-### P4：候选与发布（仅在用户另行明确要求时）
+### P4：候选与发布（已由用户明确授权并完成）
 
 - 写 `docs/release-changelogs/colonial_region_transfer/0.2.0.md`，从 clean commit 构建可复现 staging、manifest 和 ZIP。
 - 绑定 `colonial_region_transfer-v0.2.0` tag，更新同一 Workshop item，不创建新产品身份。
@@ -187,7 +192,9 @@
 - 回读远端页面，确认显示的是白绮人物关联图而非旧制图徽章；从空路径取得 fresh Workshop cache，要求 `.metadata/thumbnail.png` 与选定输入逐字节一致，并执行必要的简中回归。
 - 完成 GitHub commit/push；GitHub Release 仍需单独明确指令。
 
-退出条件：只有发布门禁全部通过，才能把本文件状态从 `planned` 改为 `released`。本次文档任务不授权 P4。
+退出条件：发布门禁已全部通过；0.2.0 内容、标题、说明、改动说明与新缩略图已更新到
+原 Workshop item，匿名页面与空路径 fresh cache 均通过。整个二期仍须等待 P3 运行时矩阵
+闭合后才能标记为全局验收完成。
 
 ## 二期最低验收矩阵
 

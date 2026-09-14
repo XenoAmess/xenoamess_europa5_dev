@@ -1,7 +1,7 @@
 {
   "schema": "xcrt.media-candidate.v1",
   "candidate": "vivhite_subject_consolidation_v2",
-  "status": "selected_for_phase_2_not_published",
+  "status": "published_for_phase_2",
   "created_on": "2026-09-14",
   "generator": "Codex built-in image generation tool",
   "reference": {
@@ -15,7 +15,10 @@
     "selected_for": "colonial_region_transfer 0.2.0 official thumbnail replacement",
     "selected_on": "2026-09-14",
     "reference_usage_rights_confirmed_by_user": true,
-    "published": false
+    "published": true,
+    "published_on": "2026-09-15",
+    "workshop_item_id": "3800505751",
+    "steam_content_manifest": "3814704094601715750"
   },
   "images": [
     {
@@ -28,13 +31,20 @@
     },
     {
       "path": "icon-vivhite-subject-consolidation-v2-512.png",
-      "purpose": "Non-published 512px Workshop thumbnail candidate",
+      "purpose": "Published 0.2.0 Workshop thumbnail",
       "width": 512,
       "height": 512,
       "bytes": 737585,
       "sha256": "ebb1c217d594235070e51bf221b89b156c5fb7a2389e337821f022201027189a"
     }
   ],
+  "publication_verification": {
+    "remote_original_bytes": 737585,
+    "remote_original_sha256": "ebb1c217d594235070e51bf221b89b156c5fb7a2389e337821f022201027189a",
+    "fresh_cache_path": ".metadata/thumbnail.png",
+    "fresh_cache_sha256": "ebb1c217d594235070e51bf221b89b156c5fb7a2389e337821f022201027189a",
+    "remote_and_fresh_cache_match_source": true
+  },
   "review": {
     "identity_features_visible": true,
     "territory_fragments_and_convergence_visible": true,
