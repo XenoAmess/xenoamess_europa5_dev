@@ -120,6 +120,8 @@ class ColonialRegionTransferToolTests(unittest.TestCase):
         self.assertEqual(expected, selector_pairs)
         self.assertEqual(expected, snapshot_pairs)
         self.assertNotIn("$MAX$", triggers)
+        self.assertNotIn("trigger_if", triggers)
+        self.assertEqual(2, triggers.count("NOT = { is_subject_type = tusi }"))
 
     def test_transfer_set_is_snapshotted_before_mutation(self) -> None:
         script_path = self.validator.PRODUCT_ROOT / self.validator.SCRIPT_REL

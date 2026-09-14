@@ -23,11 +23,11 @@ xcrt_is_transferable_location = {
 
 # Root: candidate recipient country. Used by the selector before the snapshot exists.
 xcrt_recipient_respects_tusi_cap = {
-	trigger_if = {
-		limit = {
+	OR = {
+		NOT = { is_subject_type = tusi }
+		AND = {
 			is_subject_type = tusi
-		}
-		OR = {
+			OR = {
 			AND = { num_locations = 1 capital.region = { any_location_in_region = { count <= 14 xcrt_is_transferable_location = yes } } }
 			AND = { num_locations = 2 capital.region = { any_location_in_region = { count <= 13 xcrt_is_transferable_location = yes } } }
 			AND = { num_locations = 3 capital.region = { any_location_in_region = { count <= 12 xcrt_is_transferable_location = yes } } }
@@ -42,17 +42,18 @@ xcrt_recipient_respects_tusi_cap = {
 			AND = { num_locations = 12 capital.region = { any_location_in_region = { count <= 3 xcrt_is_transferable_location = yes } } }
 			AND = { num_locations = 13 capital.region = { any_location_in_region = { count <= 2 xcrt_is_transferable_location = yes } } }
 			AND = { num_locations = 14 capital.region = { any_location_in_region = { count <= 1 xcrt_is_transferable_location = yes } } }
+			}
 		}
 	}
 }
 
 # Root: recipient country. xcrt_transfer_locations must already be frozen.
 xcrt_frozen_transfer_list_respects_tusi_cap = {
-	trigger_if = {
-		limit = {
+	OR = {
+		NOT = { is_subject_type = tusi }
+		AND = {
 			is_subject_type = tusi
-		}
-		OR = {
+			OR = {
 			AND = { num_locations = 1 list_size = { name = xcrt_transfer_locations value <= 14 } }
 			AND = { num_locations = 2 list_size = { name = xcrt_transfer_locations value <= 13 } }
 			AND = { num_locations = 3 list_size = { name = xcrt_transfer_locations value <= 12 } }
@@ -67,6 +68,7 @@ xcrt_frozen_transfer_list_respects_tusi_cap = {
 			AND = { num_locations = 12 list_size = { name = xcrt_transfer_locations value <= 3 } }
 			AND = { num_locations = 13 list_size = { name = xcrt_transfer_locations value <= 2 } }
 			AND = { num_locations = 14 list_size = { name = xcrt_transfer_locations value <= 1 } }
+			}
 		}
 	}
 }

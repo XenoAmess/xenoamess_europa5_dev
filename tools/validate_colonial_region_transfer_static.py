@@ -419,6 +419,8 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
         )
     if "$MAX$" in triggers:
         errors.append("selector Tusi cap must use runtime-verified literal count limits")
+    if "trigger_if" in triggers:
+        errors.append("Tusi cap must use runtime-verified explicit boolean branches")
     frozen_tusi_pairs = {
         int(location_count): int(maximum)
         for location_count, maximum in re.findall(

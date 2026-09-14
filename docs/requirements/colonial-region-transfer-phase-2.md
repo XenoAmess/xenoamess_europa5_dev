@@ -67,7 +67,7 @@
 
 实现前还要复核 current exact build 是否存在其他由原版地点转让路径施加的接收限制。发现新限制时，以目标自身规则优先，并把条件和可见禁用原因追加到本合同；不得静默绕过。
 
-2026-09-14 的首轮简中实机验收发现：在 Build `24187685` 的互动选择器调用链中，把迭代器数量上限写成参数化 scripted trigger（`count <= $MAX$`）会在土司 14 地点、Region 内有 2 个候选地点时错误通过；同一状态下直接写出的字面量 `count <= 1` 正确失败，`count > 1` 正确通过。证据保存在 RED run `xcrt-20260913T212843Z-phase2-acceptance` 的 `tusi-count-diagnostic-actor-scoped.png`。因此二期的选择器门禁必须展开为 14 组字面量数量比较；参数化 helper 禁止用于此处。effect 侧仍对冻结列表使用同一组字面量上限，形成执行前后双重保护。
+2026-09-14 的首轮简中实机验收发现：在 Build `24187685` 的互动选择器调用链中，把迭代器数量上限写成参数化 scripted trigger（`count <= $MAX$`）会在土司 14 地点、Region 内有 2 个候选地点时错误通过；同一状态下直接写出的字面量 `count <= 1` 正确失败，`count > 1` 正确通过。随后 run `xcrt-20260913T231422Z-phase2-tusi-fixed` 进一步证明：参数 helper 与包裹它的完整 helper 均错误通过，并且即使 selector 改为字面量，使用 `trigger_if` 包裹的 effect 冻结列表门禁仍允许 14→16。证据为两个 RED run 的 `tusi-count-diagnostic-full-scopes.png`、`tusi-parameter-vs-trigger-if-diagnostic.png` 和 `tusi-14-16-after-confirm-fixed.png`。因此二期的选择器与 effect 门禁均必须使用显式 `OR = { NOT = { is_subject_type = tusi } AND = { is_subject_type = tusi ... } }`，并展开为 14 组字面量数量比较；参数化 helper 和 `trigger_if` 禁止用于这两处保护。
 
 ## 二期缩略图替换合同
 
