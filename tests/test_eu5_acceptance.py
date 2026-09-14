@@ -28,6 +28,7 @@ from eu5_runtime.ocr import (  # noqa: E402
 )
 from eu5_runtime.windows import (  # noqa: E402
     WindowBindingError,
+    action_receipt,
     ensure_foreground,
     select_unique_window,
 )
@@ -143,6 +144,15 @@ class WindowTests(unittest.TestCase):
         ):
             ensure_foreground(self.first)
         gui.ShowWindow.assert_called_once_with(self.first.hwnd, constants.SW_RESTORE)
+
+    def test_receipt_preserves_target_when_dialog_closes(self) -> None:
+        with mock.patch(
+            "eu5_runtime.windows._current_binding",
+            side_effect=WindowBindingError("dialog closed"),
+        ):
+            receipt = action_receipt(self.first, "click", {}, {"path": "screen.png"})
+        self.assertTrue(receipt["target"]["closed_after_action"])
+        self.assertEqual(self.first.hwnd, receipt["target"]["hwnd"])
 
 
 class CliTests(unittest.TestCase):

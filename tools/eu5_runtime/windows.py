@@ -311,11 +311,20 @@ def action_receipt(
     details: dict[str, object],
     screenshot: dict[str, object],
 ) -> dict[str, object]:
+    try:
+        target = _current_binding(binding).to_dict()
+        target["closed_after_action"] = False
+    except WindowBindingError:
+        # Native pickers and confirmation dialogs commonly destroy their HWND as
+        # the successful result of a click. Preserve the pre-action binding and
+        # make that lifecycle explicit instead of losing the receipt.
+        target = binding.to_dict()
+        target["closed_after_action"] = True
     return {
         "schema": 1,
         "sent_at_utc": utc_now(),
         "action": action,
-        "target": _current_binding(binding).to_dict(),
+        "target": target,
         "details": details,
         "post_action_screenshot": screenshot,
         "claim_boundary": "input-sent-only",
