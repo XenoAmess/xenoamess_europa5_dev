@@ -297,9 +297,18 @@ def paste_text(binding: WindowBinding, text: str, *, select_all: bool = False) -
     pyperclip.copy(text)
     try:
         if select_all:
-            pyautogui.hotkey("ctrl", "a")
-        pyautogui.hotkey("ctrl", "v")
-        time.sleep(0.15)
+            pyautogui.keyDown("ctrl")
+            time.sleep(0.1)
+            pyautogui.press("a")
+            time.sleep(0.1)
+            pyautogui.keyUp("ctrl")
+            time.sleep(0.1)
+        pyautogui.keyDown("ctrl")
+        time.sleep(0.1)
+        pyautogui.press("v")
+        time.sleep(0.1)
+        pyautogui.keyUp("ctrl")
+        time.sleep(1.0)
     finally:
         if previous is not None:
             pyperclip.copy(previous)
