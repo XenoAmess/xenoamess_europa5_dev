@@ -8,7 +8,16 @@
 
 - `event xcrt_acceptance.1`：0.1.0 殖民领回归主路径；`.3` 前置审计，`.2` 后置审计。
 - `event xcrt_acceptance.8`：普通 `vassal` 目标的同构二期主路径；真实互动后用 `.9` 审计。
-- `tag LNG` 后执行 `event xcrt_acceptance.10`：保持 1337 开局中引擎已建立的原生 `LNG`→`GYT` 土司关系与 `nixi` 首都，在 `south_china_region` 布置 14→16 禁用；`.11` 调整为 14→15 后执行真实互动，`.12` 审计；`.13` 再建立 15→16 禁用，`.14` 审计没有部分转让。`.10` 的按钮同时要求 `GYT` 在布置前确为 `LNG` 的三地点直属土司，防止错误国家或重复运行污染证据；不得在该路径调用 `make_subject_of` 或把首都迁出土司允许的 Region，因为两者均已由实机证明会使关系降级。
+- `tag LNG` 后执行 `event xcrt_acceptance.10`：保持 1337 开局中引擎已建立的原生
+  `LNG`→`GYT` 土司关系与 `nixi` 首都，在 `south_china_region` 布置 14→16 禁用；
+  此时 `LNG` 首都也在目标 Region，故该负向场景还受到产品既有的宗主首都保护。
+  `.11` 移走一个候选，把 `LNG` 首都迁到其 Region 外自有地点 `porto_santo`，并将
+  原生附属树在目标 Region 的其他合格 donor 地点隔离给独立对照国 `XCRTI`；
+  只在只读诊断 `.15` 确认全 Region 的合格候选确实仅剩一个、双方和平
+  后，才能以真实互动验证 14→15；`.12` 审计成功结果；`.13` 再建立 15→16
+  禁用，`.14` 审计没有部分转让。`.10` 的按钮同时要求 `GYT` 在布置前确为 `LNG` 的
+  三地点直属土司，防止错误国家或重复运行污染证据；不得在该路径调用
+  `make_subject_of` 或迁移 `GYT` 首都，因为两者均已由实机证明会使关系降级。
 - `event xcrt_acceptance.20`：18 种领土型直属附属国与 `state_bank`/`trade_company` 两种 building 型直属附属对象的候选矩阵；`.21` 审计夹具结构，再从真实互动选择器核对前 18 种出现且后 2 种不出现。
 
 | 地点 | 初始持有者 | 作用 | 互动后的期望 |
@@ -20,7 +29,20 @@
 | `iguamuco` | `XCRTI` | 同 Region 体系外国家 | 保持 `XCRTI` |
 | `porto_santo` | `XCRTD` | Region 外生命周期对照地点 | 不被互动直接转给 `XCRTT`；记录引擎选择迁都或清理 `XCRTD` 的实际结果 |
 
-土司场景的目标是原版真实标签 `GYT`：其三个云南地点连同 `tortuga` 和十个葡萄牙地点组成初始 14 地点，首都继续是原版 `nixi`；同属 `south_china_region/dali_area/lijiang_province` 的 `tongan_lijiang` / `linxi` 是两个宗主候选地点，`iguamuco` 仍为体系外对照，`porto_santo` 是 Region 外宗主对照。`.11` 把 `linxi` 交给体系外对照国，只留下 `tongan_lijiang` 供真实互动转让；`.13` 再把 `linxi` 交还宗主以建立 15→16 禁用。
+土司场景的目标是原版真实标签 `GYT`：其三个云南地点连同 `tortuga` 和十个葡萄牙地点
+组成初始 14 地点，首都继续是原版 `nixi`；同属
+`south_china_region/dali_area/lijiang_province` 的 `tongan_lijiang` / `linxi` 是两个宗主
+候选地点，`iguamuco` 仍为体系外对照，`porto_santo` 是 Region 外宗主对照及 14→15
+成功路径使用的临时宗主首都。`.11` 把 `linxi` 交给体系外对照国、把 `LNG` 首都迁至
+`porto_santo`；`LNG` 在实机有 63 个附属国，隔离前的只读 `.15` 已明确显示整个
+`south_china_region` 还有多个合格候选，不能根据两处手动地点推断仅剩
+`tongan_lijiang`。修正后的 `.11` 在迁都之后仅把其他宗主附属树 donor 地点交给
+独立 `XCRTI`，显式排除 `GYT` 的全部原有地点及 `tongan_lijiang`；这是为了独立
+验收夹具的目标 Region 状态隔离，其他原生 donor 的生命周期不属于本场景验收对象。
+`.15` 在玩家国家 `LNG` 的当前状态只读诊断双方战争状态、首都 Region 和整个附属树
+的候选数量；新 run 若仍发现多个 donor，该场景保持 `fixture/harness RED`，
+不得执行成功路径或把通用 tooltip 归咎于产品。
+`.13` 仅在成功后把 `linxi` 交还宗主以建立 15→16 禁用。
 
 上述五个加勒比地点都属于原版 `caribbean_region/hispaniola_area/marien_province`；`porto_santo` 属于 `macaronesia_region/south_macaronesia_area/madeira_province`。具体定义来自当前 exact build 的 `game/in_game/map_data/definitions.txt`。
 

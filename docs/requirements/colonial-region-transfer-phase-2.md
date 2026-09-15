@@ -74,6 +74,53 @@ P4 的发布构建、Workshop 上传、远端页面、新缩略图和 fresh-cach
 
 2026-09-14 的首轮简中实机验收暴露了四项必须分别保留的事实。第一，参数化数量 helper 的诊断结果不稳定，因此产品的选择器与 effect 门禁都采用显式 `OR = { NOT = { is_subject_type = tusi } AND = { is_subject_type = tusi ... } }`，并展开为 14 组字面量数量比较；参数化 helper 不再用于这两处保护。第二，runs `xcrt-20260913T212843Z-phase2-acceptance`、`xcrt-20260913T231422Z-phase2-tusi-fixed` 与 `xcrt-20260914T004551Z-phase2-tusi-explicit` 使用法国在加勒比调用 `create_country_from_location { subject_type = tusi }`，违反原版 `can_country_have_tusi` / `is_country_valid_for_tusi_subject` 创建条件；引擎实际创建的是非土司附属对象。第三个 run 的最小诊断明确显示 `NOT = { is_subject_type = tusi }`，故先前把 14→16 归因于 `trigger_if` 的结论撤回，这三次尝试按 `fixture/harness RED` 保留且不得作为产品语义证据。第三，run `xcrt-20260914T033418Z-phase2-tusi-historical` 证明，把真实 `GYT` 从 `LNG` 改挂到 `CHI` 会在 `make_subject_of` 时将关系降级为非土司。第四，run `xcrt-20260914T065741Z-phase2-tusi-native-relation` 保留原生宗属关系，但把 `GYT` 首都迁往加勒比后，诊断显示其已不再是土司；这与原版 `is_country_valid_for_tusi_subject` 要求首都位于中国、藏区或印度支那 Region 的定义一致。后两次 run 同样按 `fixture/harness RED` 保留。最终夹具必须同时保持 1337 开局原生的 `LNG`→`GYT` 土司关系和 `nixi` 首都不变，在 `south_china_region` 内设置两个候选地点，再验证 14→15 成功以及 14→16、15→16 禁用；只有目标类型审计、真实互动和后置数量同时成立才能关闭土司门禁。
 
+2026-09-15 的最小诊断进一步确认：原生宗主 `LNG` 的首都与 `GYT` 的 `nixi` 同属
+`south_china_region`，所以 14→16 的初始负向场景同时满足产品既有的宗主首都保护；只把
+候选降为一个并不足以建立 14→15 成功前置。`.11` 在移走第二候选后还须把 `LNG` 首都
+迁往其 Region 外自有地点 `porto_santo`，只解除这一无关门禁，同时不改动 `GYT` 的原生
+关系、土司类型或 `nixi` 首都。该结果把当前异常分类为 `fixture/harness RED`，不构成已确认
+的产品缺陷。
+
+2026-09-15 实机 run `xcrt-20260914T230900Z-phase2-tusi-native-actor-capital-outside-r2`
+进一步证明 `.11` 的迁都确实生效：玩家国家 `LNG` 的首都已由原地点改为圣港
+（`porto_santo`），`GYT` 仍为直属土司、14 地点、泥西首都；但 14→15 的真实互动仍显示
+通用“条件未满足”。因此上段所述“夹具问题”的具体成因仍待补充，不能宣告 Tusi 成功路径
+闭合，也不能仅凭通用 tooltip 宣告产品缺陷。下一步由外置诊断事件 `.15` 分别判断宗主、
+目标战争状态，宗主首都 Region 门禁，以及 **整个** `south_china_region` 内宗主及其所有
+下层附属国持有的合格待转让地点是否真的只有一个。`LNG` 在当前 UI 中显示 63 个附属国，
+所以把两个手动候选减为一个，并不能推导整个附属体系在同一 Region 的数量恰好为一。
+诊断只给出各前置条件的真/假按钮，不改变玩家状态；发现额外 donor 后，夹具须隔离它们，
+保留原生 `LNG`→`GYT` 关系与泥西首都，再建立可证伪的 14→15 成功场景。
+
+隔离 run `xcrt-20260915T115400Z-phase2-tusi-native-diagnostics` 的简中真实事件 `.15`
+现给出前后对照：`.10` 后宗主/目标和平、宗主首都在目标 Region、全 Region 合格候选多于
+一个；执行 `.11` 后宗主/目标仍和平、宗主首都在目标 Region 外、全 Region 合格候选依然
+多于一个。由此确认 14→15 的通用禁用源于夹具没有隔离 `LNG` 原生附属树的额外 donor，
+属于 `fixture/harness RED`，不是已确认的产品缺陷。下一版夹具只改变 `.11`：在把
+`linxi` 交给体系外对照国、迁走 `LNG` 首都后，用当前 build 原版已存在的
+`capital.region = { every_location_in_region = { limit = { ... } ... } }` 方言，把目标
+Region 中宗主及下层附属国持有的其他合格地点交给隔离的独立 `XCRTI`；必须明确排除
+原生目标 `GYT` 的既有地点与唯一宗主候选 `tongan_lijiang`。不动产品逻辑、`GYT`
+直属土司类型、`nixi` 首都、目标 14 地点以及 Region 外边界。此变更是仅供独立
+验收 userdir 使用的 fixture/harness 状态隔离；其他原生 donor 的生命周期不是该夹具
+的验收目标。退出标准：新 run 先由 `.15` 显示双方和平、首都在目标 Region 外、
+全 Region 合格候选最多一个，随后由真实 UI 与 `.12` 同时证明 14→15、再验证
+15→16 禁用及无部分转让；否则保留失败 run 并重新诊断，不得直接宣布产品通过。
+
+对应的 Open Kaishek EU5 事件语法切片已在独立工具仓库 commit `64cd4e0` 同步演进：
+以本机 exact-build 原版 `events/readme` 和事件源码为真源，补足 namespace、国家事件、
+option、动态 scope 与触发器/effect 校验。完整外置夹具及产品正式的互动和触发器三份
+文件现均为 syntax diagnostics 0、semantic diagnostics 0、`VALIDATED`；这个此前的
+tool-coverage RED 已关闭为该切片 GREEN。静态 schema 结果不证明 `.15` 的玩家可见
+诊断按钮或土司真实互动通过，仍须由新隔离 run 和引擎状态复核。
+
+新增夹具隔离地点的国家首都 Region scope 又揭示一处工具覆盖缺口，Open Kaishek 已在
+独立仓库 `23e1f4a` 增加有限 `c:<tag>.capital.region = {}` 静态支持并推送；但当前
+原版源码没有完整组合左值的实例，该支持明确只是同 build 已存在的组件方言组合推断，
+不能背书运行时。实际 `.11` 因此使用当前 `.15` 已实机呈现的逐层
+`c:GYT = { capital.region = { ... } }`，把工具的推断风险与实机夹具风险分开；
+修改后完整夹具再次为 `VALIDATED` 且语法/语义诊断均 0。
+
 ## 二期缩略图替换合同
 
 - 人物参考：用户提供的白绮头像，来源为 <https://i0.hdslb.com/bfs/face/718c36bc01a173d0c42c0d1131f67e31055244c7.jpg>，调查副本 SHA-256 `b52b0624a3c2b2114f66a6c7ba839880d1dc89adaa91de0f5ca6bfc302160ca6`。参考原图不进入产品源码、release staging 或 Workshop cache。

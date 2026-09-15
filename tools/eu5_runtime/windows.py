@@ -278,6 +278,25 @@ def press_key(binding: WindowBinding, key: str) -> None:
     pyautogui.press(key)
 
 
+def press_scan_code(binding: WindowBinding, scan_code: int) -> None:
+    """Press one physical keyboard key independent of the active layout."""
+    import ctypes
+
+    if not 0 <= scan_code <= 0xFF:
+        raise ValueError(f"scan code is outside the one-byte range: {scan_code}")
+    ensure_foreground(binding)
+    keyeventf_keyup = 0x0002
+    keyeventf_scancode = 0x0008
+    ctypes.windll.user32.keybd_event(0, scan_code, keyeventf_scancode, 0)
+    time.sleep(0.05)
+    ctypes.windll.user32.keybd_event(
+        0,
+        scan_code,
+        keyeventf_scancode | keyeventf_keyup,
+        0,
+    )
+
+
 def hotkey(binding: WindowBinding, keys: list[str]) -> None:
     import pyautogui
 

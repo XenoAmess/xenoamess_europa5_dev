@@ -132,6 +132,24 @@ class ColonialRegionTransferToolTests(unittest.TestCase):
         self.assertLess(snapshot, replay)
         self.assertLess(replay, mutation)
 
+    def test_native_tusi_fixture_isolates_other_donors_after_freezing_them(self) -> None:
+        fixture = (
+            REPO_ROOT
+            / "fixtures/colonial_region_transfer/overlay/in_game/events/"
+            "xcrt_phase2_acceptance_fixture.txt"
+        ).read_text(encoding="utf-8-sig")
+        scenario = fixture.split("xcrt_acceptance.11 = {", 1)[1].split(
+            "xcrt_acceptance.12 = {", 1
+        )[0]
+        self.assertIn("set_capital = location:porto_santo", scenario)
+        self.assertIn("NOT = { owner ?= c:GYT }", scenario)
+        self.assertIn("NOT = { this = location:tongan_lijiang }", scenario)
+        freeze = scenario.index("add_to_list = xcrt_acceptance_extra_donors_to_isolate")
+        replay = scenario.index("list = xcrt_acceptance_extra_donors_to_isolate")
+        isolation = scenario.index("change_location_owner = c:XCRTI", replay)
+        self.assertLess(freeze, replay)
+        self.assertLess(replay, isolation)
+
     def test_interaction_suppresses_undefined_post_action_messages(self) -> None:
         script_path = self.validator.PRODUCT_ROOT / self.validator.SCRIPT_REL
         script = script_path.read_text(encoding="utf-8-sig")

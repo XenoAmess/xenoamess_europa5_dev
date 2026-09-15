@@ -173,7 +173,9 @@ xcrt_acceptance.10 = {
 	}
 }
 
-# Turn the 14 -> 16 disabled setup into a 14 -> 15 success setup.
+# Turn the 14 -> 16 disabled setup into a 14 -> 15 success setup. Keep GYT's
+# native relation and Nixi capital, move LNG's capital out of South China, and
+# isolate other LNG subject-tree donors in this Region from the one test donor.
 xcrt_acceptance.11 = {
 	type = country_event
 	title = xcrt_acceptance.11.title
@@ -192,6 +194,29 @@ xcrt_acceptance.11 = {
 			}
 		}
 		location:linxi = {
+			change_location_owner = c:XCRTI
+		}
+		set_capital = location:porto_santo
+		c:GYT = {
+			capital.region = {
+				every_location_in_region = {
+					limit = {
+						is_ownable = yes
+						NOT = { owner ?= c:GYT }
+						NOT = { this = location:tongan_lijiang }
+						owner ?= {
+							OR = {
+								this = root
+								is_subject_or_below_of = root
+							}
+						}
+					}
+					add_to_list = xcrt_acceptance_extra_donors_to_isolate
+				}
+			}
+		}
+		every_in_list = {
+			list = xcrt_acceptance_extra_donors_to_isolate
 			change_location_owner = c:XCRTI
 		}
 	}
@@ -299,6 +324,85 @@ xcrt_acceptance.14 = {
 			}
 		}
 		custom_tooltip = xcrt_acceptance.phase2.fail.tt
+	}
+}
+
+# Read-only diagnostic of every independent gate for the native Tusi path.
+# Enumerate the whole overlord subject tree, not just the two explicit actor
+# locations placed by .10. Each pass/fail pair is mutually exclusive.
+xcrt_acceptance.15 = {
+	type = country_event
+	title = xcrt_acceptance.15.title
+	desc = xcrt_acceptance.15.desc
+	outcome = neutral
+	orphan = yes
+	trigger = { always = no }
+
+	option = {
+		name = xcrt_acceptance.15.actor_peace_pass
+		trigger = { at_war = no }
+	}
+	option = {
+		name = xcrt_acceptance.15.actor_peace_fail
+		trigger = { at_war = yes }
+	}
+	option = {
+		name = xcrt_acceptance.15.target_peace_pass
+		trigger = { c:GYT = { at_war = no } }
+	}
+	option = {
+		name = xcrt_acceptance.15.target_peace_fail
+		trigger = { c:GYT = { at_war = yes } }
+	}
+	option = {
+		name = xcrt_acceptance.15.capital_pass
+		trigger = { capital = { NOT = { region = c:GYT.capital.region } } }
+	}
+	option = {
+		name = xcrt_acceptance.15.capital_fail
+		trigger = { capital = { region = c:GYT.capital.region } }
+	}
+	option = {
+		name = xcrt_acceptance.15.candidates_one_or_less
+		trigger = {
+			c:GYT = {
+				capital.region = {
+					any_location_in_region = {
+						count <= 1
+						is_ownable = yes
+						NOT = { owner ?= c:GYT }
+						owner ?= {
+							OR = {
+								this = root
+								is_subject_or_below_of = root
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	option = {
+		name = xcrt_acceptance.15.candidates_more_than_one
+		trigger = {
+			NOT = {
+				c:GYT = {
+					capital.region = {
+						any_location_in_region = {
+							count <= 1
+							is_ownable = yes
+							NOT = { owner ?= c:GYT }
+							owner ?= {
+								OR = {
+									this = root
+									is_subject_or_below_of = root
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 }
 

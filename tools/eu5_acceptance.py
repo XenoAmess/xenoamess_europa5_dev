@@ -34,6 +34,7 @@ from eu5_runtime.windows import (
     paste_text,
     post_click,
     press_key,
+    press_scan_code,
     wheel,
 )
 
@@ -320,6 +321,17 @@ def _cmd_key(args: argparse.Namespace) -> int:
     return _finish_action(args, binding, "key", {"key": args.key})
 
 
+def _cmd_scan_key(args: argparse.Namespace) -> int:
+    binding = _binding(args)
+    press_scan_code(binding, args.scan_code)
+    return _finish_action(
+        args,
+        binding,
+        "scan-key",
+        {"scan_code": f"0x{args.scan_code:02x}"},
+    )
+
+
 def _cmd_hotkey(args: argparse.Namespace) -> int:
     binding = _binding(args)
     hotkey(binding, args.keys)
@@ -358,20 +370,43 @@ def _cmd_paste(args: argparse.Namespace) -> int:
 
 
 def _cmd_console(args: argparse.Namespace) -> int:
+    if args.command_file is not None:
+        command = args.command_file.resolve().read_text(encoding="utf-8-sig").rstrip("\r\n")
+        command_source: dict[str, object] = {
+            "path": str(args.command_file.resolve()),
+            "sha256": sha256_file(args.command_file.resolve()),
+        }
+    else:
+        command = args.console_command
+        command_source = {"inline": True}
+    if not command:
+        raise ValueError("console command must not be empty")
     binding = _binding(args)
-    press_key(binding, "`")
+    # The physical key above Tab has scan code 0x29. Sending the scan code
+    # avoids active-layout failures from translating the printable '`' glyph.
+    press_scan_code(binding, 0x29)
     time.sleep(0.15)
-    paste_text(binding, args.command)
-    press_key(binding, "enter")
+    paste_text(binding, command, select_all=True)
+    press_scan_code(binding, 0x1C)
     time.sleep(args.command_delay)
     if not args.keep_open:
-        press_key(binding, "`")
+        # EU5 keeps the command input focused after submission. While it owns
+        # focus, the physical grave key is inserted as text instead of closing
+        # the console, so first defocus on the console history pane.
+        click(binding, 20, 300, coordinate_space="client")
+        time.sleep(0.15)
+        press_scan_code(binding, 0x29)
     return _finish_action(
         args,
         binding,
         "console",
         {
-            "command": args.command,
+            "command": command,
+            "command_source": command_source,
+            "toggle_scan_code": "0x29",
+            "submit_scan_code": "0x1c",
+            "input_replaced": True,
+            "close_defocus_point": [20, 300] if not args.keep_open else None,
             "command_delay": args.command_delay,
             "keep_open": args.keep_open,
         },
@@ -501,6 +536,14 @@ def build_parser() -> argparse.ArgumentParser:
     key_parser.add_argument("--key", required=True)
     key_parser.set_defaults(handler=_cmd_key)
 
+    scan_key_parser = commands.add_parser(
+        "scan-key", help="press one physical keyboard scan code"
+    )
+    _add_target(scan_key_parser)
+    _add_action_evidence(scan_key_parser)
+    scan_key_parser.add_argument("--scan-code", required=True, type=lambda value: int(value, 0))
+    scan_key_parser.set_defaults(handler=_cmd_scan_key)
+
     hotkey_parser = commands.add_parser("hotkey", help="press a key chord")
     _add_target(hotkey_parser)
     _add_action_evidence(hotkey_parser)
@@ -522,7 +565,9 @@ def build_parser() -> argparse.ArgumentParser:
     console = commands.add_parser("console", help="run one EU5 console command")
     _add_target(console)
     _add_action_evidence(console)
-    console.add_argument("--command", required=True)
+    console_command_source = console.add_mutually_exclusive_group(required=True)
+    console_command_source.add_argument("--command", dest="console_command")
+    console_command_source.add_argument("--command-file", type=Path)
     console.add_argument("--command-delay", type=float, default=0.5)
     console.add_argument("--keep-open", action="store_true")
     console.set_defaults(handler=_cmd_console)

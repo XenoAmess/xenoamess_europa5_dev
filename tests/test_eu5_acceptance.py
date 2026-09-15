@@ -188,6 +188,35 @@ class CliTests(unittest.TestCase):
         self.assertEqual(Path("description.bbcode"), args.text_file)
         self.assertIsNone(args.text)
 
+    def test_console_accepts_a_command_file_as_single_source(self) -> None:
+        args = build_parser().parse_args(
+            [
+                "console",
+                "--command-file",
+                "command.txt",
+                "--receipt",
+                "receipt.json",
+                "--screenshot",
+                "screen.png",
+            ]
+        )
+        self.assertEqual(Path("command.txt"), args.command_file)
+        self.assertIsNone(args.console_command)
+
+    def test_scan_key_accepts_hexadecimal_scan_code(self) -> None:
+        args = build_parser().parse_args(
+            [
+                "scan-key",
+                "--scan-code",
+                "0x29",
+                "--receipt",
+                "receipt.json",
+                "--screenshot",
+                "screen.png",
+            ]
+        )
+        self.assertEqual(0x29, args.scan_code)
+
 
 class RepositoryPolicyTests(unittest.TestCase):
     def test_no_powershell_files_exist(self) -> None:
@@ -207,7 +236,7 @@ class RepositoryPolicyTests(unittest.TestCase):
         offenders: list[str] = []
         for path in REPOSITORY.rglob("*.py"):
             if path == Path(__file__).resolve() or any(
-                part in {".git", ".venv", "__pycache__"} for part in path.parts
+                part in {".git", ".venv", "__pycache__", "_runtime"} for part in path.parts
             ):
                 continue
             source = path.read_text(encoding="utf-8", errors="replace").casefold()
