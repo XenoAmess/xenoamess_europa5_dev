@@ -186,6 +186,25 @@ run `xcrt-20260916T185200Z-phase2-subject-matrix-diagnostics` 使用 fresh 简�
 在后续 fresh run 重新验证 `.21` 为 GREEN 后，才进入真实产品目标列表。完整运行目录仅
 保留到该矩阵诊断/替代场景闭合。
 
+## 附属类型矩阵：首次替代夹具重试 RED
+
+run `xcrt-20260916T203500Z-phase2-subject-matrix-retry` 使用 fresh 简中隔离 profile、
+离线 Steam 与投影 Mod 树 SHA-256
+`44b94373ec7b9e4eb25a48a358de6b813734a6e81b50c1002d3b5af1bbb0d596`。
+该版本先创建独立 location 国家，再在同一 event option 中以新定义的 `c:XM*` tag
+重新取 scope 并调用 `make_subject_of`。`.21` 与 `.22` 仍显示同五类失败；日志在夹具
+对应行明确报告动态 tag 尚未注册，随后 `make_subject_of` 得到空 scope。故该 attempt
+永久分类为 `fixture/harness RED`，证明失败点是夹具的 option 内 scope 时序，不是产品。
+
+聚合 FAIL 与逐类型 FAIL 截图 SHA-256 分别为
+`8451d634f41115f5e7465c16bc406ed1159f24acec3e54e5bcd2be5f988f57a7` 与
+`2a84d5291b2919b478e87455703db58ff66d231bb2cd11e20ab8b742f132d2d9`；诊断时
+`game.log` / `error.log` SHA-256 分别为
+`3e1ceaa150d55d5b682b8ee47767046d6402cf7049c101ef4a1e5f0aa3dd94c8` 与
+`6c9eab8fe5145edf07285d720b559088df944d7b5211decf4715a5785845ba29`。
+下一版替代夹具把 `make_subject_of` 放回 `create_country_from_location` 所提供的新国家
+scope 内执行；仍须以新的 fresh run 重做聚合审计。完整运行目录仅保留到矩阵场景闭合。
+
 ## Workshop 发布证据
 
 - 发布 run：`xcrt-publish-20260914T164500Z-0.2.0`；Workshop item：

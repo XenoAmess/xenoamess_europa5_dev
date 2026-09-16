@@ -16,8 +16,10 @@
   聚合 FAIL 猜测产品问题。Build `24187685` 实机已证明 `appanage`、
   `hanseatic_member`、`direct_imperial_free_city`、`march`、`tributary` 不能可靠地通过
   `create_country_from_location` 的 `overlord + subject_type` 一步式路径建立；这五种类型
-  必须先创建独立 location 国家，再以 `make_subject_of` 明确建立关系。该差异只属于夹具
-  布置机制，不改变产品的类型 allowlist。
+  必须先创建独立 location 国家，并在 `create_country_from_location` 的新国家 scope 内以
+  `hidden_effect + make_subject_of` 明确建立关系。不得在同一 option 紧接着用新定义的
+  `c:XM*` tag 重新取 scope：Build `24187685` 会在 option 完成前把该 tag 视为未注册。
+  该差异只属于夹具布置机制，不改变产品的类型 allowlist。
 - `tag LNG` 后执行 `event xcrt_acceptance.10`：保持 1337 开局中引擎已建立的原生
   `LNG`→`GYT` 土司关系与 `nixi` 首都，在 `south_china_region` 布置 14→16 禁用；
   此时 `LNG` 首都也在目标 Region，故该负向场景还受到产品既有的宗主首都保护。
