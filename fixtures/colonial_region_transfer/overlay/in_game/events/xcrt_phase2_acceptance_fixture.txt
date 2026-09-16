@@ -558,7 +558,10 @@ orphan = yes
 		location:torres_vedras = {
 			discover_location = root
 			change_location_owner = root
-			create_country_from_location = { overlord = root subject_type = subject_type:appanage define_unique_country_tag = XMAPP change_country_name = XMAPP }
+			create_country_from_location = { define_unique_country_tag = XMAPP change_country_name = XMAPP }
+		}
+		c:XMAPP = {
+			make_subject_of = { target = scope:xcrt_matrix_actor type = subject_type:appanage }
 		}
 		location:santarem = {
 			discover_location = root
@@ -583,7 +586,10 @@ orphan = yes
 		location:beja = {
 			discover_location = root
 			change_location_owner = root
-			create_country_from_location = { overlord = root subject_type = subject_type:hanseatic_member define_unique_country_tag = XMHAN change_country_name = XMHAN }
+			create_country_from_location = { define_unique_country_tag = XMHAN change_country_name = XMHAN }
+		}
+		c:XMHAN = {
+			make_subject_of = { target = scope:xcrt_matrix_actor type = subject_type:hanseatic_member }
 		}
 		location:sines = {
 			discover_location = root
@@ -593,12 +599,18 @@ orphan = yes
 		location:odemira = {
 			discover_location = root
 			change_location_owner = root
-			create_country_from_location = { overlord = root subject_type = subject_type:direct_imperial_free_city define_unique_country_tag = XMDIFC change_country_name = XMDIFC }
+			create_country_from_location = { define_unique_country_tag = XMDIFC change_country_name = XMDIFC }
+		}
+		c:XMDIFC = {
+			make_subject_of = { target = scope:xcrt_matrix_actor type = subject_type:direct_imperial_free_city }
 		}
 		location:ourique = {
 			discover_location = root
 			change_location_owner = root
-			create_country_from_location = { overlord = root subject_type = subject_type:march define_unique_country_tag = XMMAR change_country_name = XMMAR }
+			create_country_from_location = { define_unique_country_tag = XMMAR change_country_name = XMMAR }
+		}
+		c:XMMAR = {
+			make_subject_of = { target = scope:xcrt_matrix_actor type = subject_type:march }
 		}
 		location:elvas = {
 			discover_location = root
@@ -608,7 +620,10 @@ orphan = yes
 		location:moura = {
 			discover_location = root
 			change_location_owner = root
-			create_country_from_location = { overlord = root subject_type = subject_type:tributary define_unique_country_tag = XMTRI change_country_name = XMTRI }
+			create_country_from_location = { define_unique_country_tag = XMTRI change_country_name = XMTRI }
+		}
+		c:XMTRI = {
+			make_subject_of = { target = scope:xcrt_matrix_actor type = subject_type:tributary }
 		}
 		location:portalegre = {
 			discover_location = root

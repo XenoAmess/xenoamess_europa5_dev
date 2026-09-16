@@ -59,7 +59,10 @@ fresh error.log 中不得出现归因于 xcrt_、interaction 或 scripted trigge
    目标出现，state_bank 与 trade_company 不出现，列表无坏 capital scope 提示。若 .21
    聚合审计失败，必须在同一状态调用 .22；.22 对每个 tag 分别核对直属关系、精确
    subject type、country_type 与领土型 capital，并只显示失败类型。该诊断只能分类和修复
-   fixture/harness，不能代替后续真实目标列表验收。
+   fixture/harness，不能代替后续真实目标列表验收。若失败类型受原版
+   `subject_creation_enabled` / 创建入口约束，则夹具先建立独立 location 国家，再用
+   `make_subject_of` 赋予精确关系；修正后必须从全新 run 重做 `.20` / `.21`，不能复用
+   已失败的世界状态。
 4. 禁用路径：复用 0.1.0 的战争、同首都 Region、无工作量路径；每项保存简中禁用原因、
    前后 owner 与 fresh 日志。
 5. 关系层级：殖民回归场景的 XCRTS 是 XCRTD 的下层附属；它的地点可作为 donor，但

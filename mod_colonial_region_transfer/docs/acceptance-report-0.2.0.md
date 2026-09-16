@@ -163,6 +163,29 @@ attempt 永久分类为 `fixture/harness RED`，不得改写为产品 RED 或后
 后续 fresh run 必须使用新增只读 `.22` 逐类型诊断，再修正夹具并重新开始矩阵；完整
 运行目录仅保留到该矩阵诊断/替代场景闭合。
 
+## 附属类型矩阵：逐类型诊断 RED
+
+run `xcrt-20260916T185200Z-phase2-subject-matrix-diagnostics` 使用 fresh 简中隔离 profile、
+离线 Steam 与投影 Mod 树 SHA-256
+`39e7253ce1d305dd78ccf499947aa02e65b49f8f9a457f37b3c8959f85c5e1c8`。
+`.20` 布置后 `.21` 再次显示聚合失败；同一世界状态的只读 `.22` 将失败精确收敛为
+`appanage (XMAPP)`、`hanseatic_member (XMHAN)`、
+`direct_imperial_free_city (XMDIFC)`、`march (XMMAR)` 与
+`tributary (XMTRI)`。这一步尚未打开产品真实目标列表，故该 attempt 永久分类为
+`fixture/harness RED`，不是产品 RED。
+
+聚合 FAIL 与逐类型 FAIL 截图 SHA-256 分别为
+`818adaead3a118be2daca2d0411044a5d6eb35bd1d031b862adeb373fb38482a` 与
+`f58eac57d3a72905e7839f54fbed4c03e67f7a8b2e1272a82f9bc6c64fab3354`；诊断时
+`game.log` / `error.log` SHA-256 分别为
+`1c071de0846b1537694707b6fb426b6d05ecf1463703a006c6fbad1f94cf022c` 与
+`c43e96b679b54dbcd932d3e8bd8dfdf5b916ab819965e1b4035323799a54701d`。
+日志另明确报告 tag `XMDIFC` 无法解析，证明该对象未创建；其余四类至少有一项合同不成立。
+结合 exact-build 的 `common/subject_types` 定义，这五类均不适合继续使用夹具原有的一步式
+创建路径。替代夹具先建立独立 location 国家，再以 `make_subject_of` 建立精确关系；必须
+在后续 fresh run 重新验证 `.21` 为 GREEN 后，才进入真实产品目标列表。完整运行目录仅
+保留到该矩阵诊断/替代场景闭合。
+
 ## Workshop 发布证据
 
 - 发布 run：`xcrt-publish-20260914T164500Z-0.2.0`；Workshop item：

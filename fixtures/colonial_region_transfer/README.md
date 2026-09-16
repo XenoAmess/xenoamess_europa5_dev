@@ -13,7 +13,11 @@
 - `event xcrt_acceptance.20`：建立 18 个领土型与两个 building 型直属附属对象；先用
   `.21` 做聚合审计。若 `.21` 失败，必须在同一 run 调用 `.22`；`.22` 只显示未满足
   `直属关系 + 精确 subject type + country_type + capital` 合同的具体类型，禁止仅凭
-  聚合 FAIL 猜测产品问题。
+  聚合 FAIL 猜测产品问题。Build `24187685` 实机已证明 `appanage`、
+  `hanseatic_member`、`direct_imperial_free_city`、`march`、`tributary` 不能可靠地通过
+  `create_country_from_location` 的 `overlord + subject_type` 一步式路径建立；这五种类型
+  必须先创建独立 location 国家，再以 `make_subject_of` 明确建立关系。该差异只属于夹具
+  布置机制，不改变产品的类型 allowlist。
 - `tag LNG` 后执行 `event xcrt_acceptance.10`：保持 1337 开局中引擎已建立的原生
   `LNG`→`GYT` 土司关系与 `nixi` 首都，在 `south_china_region` 布置 14→16 禁用；
   此时 `LNG` 首都也在目标 Region，故该负向场景还受到产品既有的宗主首都保护。
