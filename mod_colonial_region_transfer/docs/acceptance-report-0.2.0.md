@@ -13,7 +13,7 @@
 | Open Kaishek | PASS (static) | eu5-1.3.11-build-24187685 profile 对 interaction 与 scripted triggers 均返回 VALIDATED；profile 明确不声明 runtime 语义。 |
 | L1 隔离加载 | IN_PROGRESS | 简中 fresh 隔离运行能加载产品和夹具；全场景日志门禁与重载仍待关闭。夹具启动早期出现本地化 key 预载警告，玩家事件 UI 后续显示正确中文；原版市场 law 报错亦随夹具大范围 donor 隔离出现，均不能冒充产品脚本错误或无错误的 L1 GREEN。 |
 | L2 玩家行为 | IN_PROGRESS | 原生土司通过真实“附属国行动”完成 14→15；普通直属附庸通过同一真实入口完成 1→4，独立国与 Region 外地点边界保持。殖民回归、18+2 类型矩阵、关系层级和其余禁用路径仍待关闭。 |
-| L3 高风险路径 | IN_PROGRESS | 原生直属土司 14→15 成功并通过 owner/数量/关系审计；15→16 真实 UI 禁用且审计证明无部分转让。普通直属附庸正向路径及两个排除边界已关闭；取消后 UI 数量保持，但夹具 fail 分支没有形成可见精确 owner 审计，因此取消、生命周期与保存重载仍待完成。 |
+| L3 高风险路径 | IN_PROGRESS | 原生直属土司 14→15 成功并通过 owner/数量/关系审计；15→16 真实 UI 禁用且审计证明无部分转让。普通直属附庸正向路径、两个排除边界及真实确认框取消均已关闭；生命周期与保存重载仍待完成。 |
 | Workshop 发布 | PASS | 0.2.0 内容、标题、说明、改动说明与白绮主题缩略图已更新；匿名回读、远端原图及空路径 fresh cache 均通过。 |
 
 ## L0 证据
@@ -24,7 +24,7 @@
 - interaction SHA-256：ecc9c26bc2643c8f97714bc075e7489e88e81624e31c0171aef7a0cbe91cff8f。
 - scripted triggers SHA-256：
   e5e2b974a67a464f2c7448db2caac4fff722a229572ee2c74ca388e71fcc00cb。
-- 32 项 Python 工具测试通过（外置夹具额外 donor 冻结/隔离与历史证据策略亦纳入回归）。
+- 33 项 Python 工具测试通过（外置夹具额外 donor 冻结/隔离、精确补集审计与历史证据策略亦纳入回归）。
 - Open Kaishek 聚合测试通过，其中 EU5 profile 5 项测试通过。
 - 选择器和效果侧的土司矩阵均为：既有 1..14 个地点时最多接收 14..1 个地点；
   既有 15 个地点没有成功分支。
@@ -85,7 +85,7 @@ fresh 原生土司 run，不得把任何历史 RED attempt 改写为 GREEN。仅
 | `20260914T230900Z-phase2-tusi-native-actor-capital-outside-r2` | `fixture/harness`：宗主迁都后 14→15 仍禁用，原生附属树 donor 未隔离 | `457d707440edf5d733b249dc81d67af42c482248e01f8c84ad7759265202b6bd` |
 | `20260915T115400Z-phase2-tusi-native-diagnostics` | `fixture/harness`：`.15` 后置诊断证明整个目标 Region 仍有多个 donor | `bb59f31e299f166637f9942da54c2d6985704e838c07ecf1cbee90da5e2f5085` |
 
-## 普通直属附庸：正向路径已关闭，取消精确审计待补
+## 普通直属附庸：正向路径与取消路径均已关闭
 
 run `xcrt-20260915T232000Z-phase2-vassal-fresh` 使用同一 exact build、简中、
 2560×1440、离线 Steam 与隔离 userdir；投影 Mod 树 SHA-256 仍为
@@ -96,8 +96,8 @@ run `xcrt-20260915T232000Z-phase2-vassal-fresh` 使用同一 exact build、简�
 
 玩家在真正的外交“附属国行动”中搜索“整合”，目标按钮可用。第一次进入确认框后选择
 取消，国家面板仍显示 `XCRTT` 只有 1 个地点；但只读 `.9` 在这个部分满足状态没有形成
-可见 fail 选项，因此该次夹具审计不能证明每一个 owner 均未变化，取消的精确审计继续
-保持 IN_PROGRESS。第二次从同一真实入口确认后，`XCRTT` 面板显示 4 个地点且仍明确是
+可见 fail 选项，因此该次夹具审计不能证明每一个 owner 均未变化。第二次从同一真实入口
+确认后，`XCRTT` 面板显示 4 个地点且仍明确是
 葡萄牙直属附庸；地图 tooltip 显示 Iguamuco 仍是独立同名国家的首都，Porto Santo
 仍属于另一个葡萄牙直属附庸 `XCRTD`，该 donor 仍只有 1 个地点。由此普通附庸正向
 1→4、独立国排除和 Region 外排除均通过；没有发现产品缺陷，不需要 0.2.1 或再次发布。
@@ -118,8 +118,33 @@ Porto Santo 仍属 1 地点 `XCRTD`
 `fixture/harness RED`，不能把本 run 用作完整 L1 GREEN，也不能把历史错误嫁接为产品 RED。
 `.9` 不可见的关键截图 SHA-256 为
 `6043777b7a3086e09317fb56cfd16dfc64d48d6169e6d94e10943c4b7fda5687`；
-它由后续 UI/地图边界检查替代了正向后置审计，但没有替代取消的精确 owner 审计。
-完整 run 证据在取消补审计场景闭合前继续保留。
+它由后续 UI/地图边界检查替代了正向后置审计。该 run 的 `.9` 夹具失败永久维持
+`fixture/harness RED`，不得因后续成功而改写；完整运行目录只保留到下面的新取消场景闭合。
+
+取消补审计 run `xcrt-20260916T084500Z-phase2-vassal-cancel-audit` 从 fresh profile
+重新建立同一状态，投影 Mod 树 SHA-256 为
+`29c3028c2cab66179b800774a41e50197d39a5a4c068aee0db79135d1f35ad28`。
+新增只读 `.16` 使用 exact-build `NAND` 表达完整条件的精确补集；布置后它只显示 PASS，
+玩家随后从真实“管理附属国 → 附属国行动 → 整合附属地”进入确认框并点击取消，第二次
+`.16` 仍只显示 PASS。这同时证明 Tortuga、Marien、Guahaba、Baynoa、Iguamuco、
+Porto Santo 的 owner，`XCRTT`/`XCRTD`/`XCRTS` 的地点数量，以及直属、下层附属和
+独立关系均无变化；取消路径因此 GREEN。
+
+关键截图 SHA-256：操作前 `.16` 精确审计
+`38f16de0b364ac64fa03a2417bdb5e6dc138e0e9dcbc680d5545e66fa7e0a4ae`；
+真实互动选择页 `9d856bea45dd2cdb6a40765afb27fa37938b6a170bb405e6a3a8ae3fd68f577f`；
+确认框取消 `756a7d9235fcfe61bd78051670febf7cb6ed71cf3fe11c8a46faca54911fd932`；
+取消后 `.16` 精确审计
+`d1c990536b63873724f41acdc23ae302c72c28a3a92ae6ccf7d00f9e7cb62f54`。
+本 run 的 `game.log` / `error.log` SHA-256 分别为
+`c30a56f62034bf2dc9f741f45e5b2273668a85f877d4c795c68d36e8f6577c36` 与
+`7c85ed93b36edf9c41fb2ae8d07fc084c189e44cc6a7b32d654c91ccedc914bd`。
+启动首轮事件数据库加载仍报告外置夹具 `xcrt_acceptance.*` 本地化 key 尚未识别，进入
+游戏后的事件标题、正文和按钮实际显示正确中文；日志没有命中产品
+`xcrt_colonial_region_transfer` key。其余命中为离线 DLC/Workshop、原版重复名称与
+原版数据错误，故这些噪声继续分类为 `fixture/harness` 或 `environment`，不冒充产品 RED，
+也不据此宣称完整 L1 GREEN。场景已经闭合；失败摘要与上述哈希永久保留，完整运行证据
+可按证据策略清理。
 
 ## Workshop 发布证据
 

@@ -7,7 +7,9 @@
 每个主场景必须从全新 1337 开局开始，不能在同一存档重复布置：
 
 - `event xcrt_acceptance.1`：0.1.0 殖民领回归主路径；`.3` 前置审计，`.2` 后置审计。
-- `event xcrt_acceptance.8`：普通 `vassal` 目标的同构二期主路径；真实互动后用 `.9` 审计。
+- `event xcrt_acceptance.8`：普通 `vassal` 目标的同构二期主路径；布置后及真实取消后
+  分别用 `.16` 精确审计所有 owner、数量和关系均为初始状态，真实确认后用 `.9`
+  审计同构结果。
 - `tag LNG` 后执行 `event xcrt_acceptance.10`：保持 1337 开局中引擎已建立的原生
   `LNG`→`GYT` 土司关系与 `nixi` 首都，在 `south_china_region` 布置 14→16 禁用；
   此时 `LNG` 首都也在目标 Region，故该负向场景还受到产品既有的宗主首都保护。
@@ -47,6 +49,10 @@
 上述五个加勒比地点都属于原版 `caribbean_region/hispaniola_area/marien_province`；`porto_santo` 属于 `macaronesia_region/south_macaronesia_area/madeira_province`。具体定义来自当前 exact build 的 `game/in_game/map_data/definitions.txt`。
 
 殖民回归场景布置后执行 `event xcrt_acceptance.3`，只显示一个由引擎 trigger 判定的“初始状态通过/失败”按钮。通过玩家可见的“整合附属地”互动完成动作后执行 `event xcrt_acceptance.2`；该审计同样只显示一个“通过/失败”按钮，并逐项检查目标 Region 地点 owner、体系边界、Region 外地点未被直接转给目标、下层 donor 消失以及目标附属关系。`XCRTD` 失去首都后的迁都或清理由日志、存档和重载前后状态单独记录，不由夹具强行规定。所有审计事件只观察和呈现状态，不执行产品互动，也不修正结果。
+
+所有多条件审计的失败选项使用当前 exact build 原版脚本已经采用的 `NAND`，表示
+“并非全部条件成立”。不得用 `NOT` 直接包住多个并列条件；该写法会要求所有子条件
+都不成立，导致部分满足状态下通过与失败选项可能同时不可见。
 
 负向路径使用 `event xcrt_acceptance.4` 将宗主首都移到马里恩，使用 `event xcrt_acceptance.5` 恢复里斯本首都，使用 `event xcrt_acceptance.6` 对体系外对照国开战。若同一进程还要继续主成功路径，可用 `event xcrt_acceptance.7` 仅对该对照战争执行无条件和平。这四个事件只建立或恢复验收前置状态，禁用结果仍必须从真实产品互动界面观察。
 

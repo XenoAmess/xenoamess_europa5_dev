@@ -150,6 +150,50 @@ class ColonialRegionTransferToolTests(unittest.TestCase):
         self.assertLess(freeze, replay)
         self.assertLess(replay, isolation)
 
+    def test_acceptance_audits_use_exact_complements_and_cancel_audit(self) -> None:
+        base = (
+            REPO_ROOT
+            / "fixtures/colonial_region_transfer/overlay/in_game/events/"
+            "xcrt_acceptance_fixture.txt"
+        ).read_text(encoding="utf-8-sig")
+        phase2 = (
+            REPO_ROOT
+            / "fixtures/colonial_region_transfer/overlay/in_game/events/"
+            "xcrt_phase2_acceptance_fixture.txt"
+        ).read_text(encoding="utf-8-sig")
+        for option_name in (
+            "xcrt_acceptance.2.fail",
+            "xcrt_acceptance.3.fail",
+        ):
+            option = base.split(f"name = {option_name}", 1)[1].split("custom_tooltip", 1)[0]
+            self.assertIn("NAND = {", option)
+        for option_name in (
+            "xcrt_acceptance.9.fail",
+            "xcrt_acceptance.12.fail",
+            "xcrt_acceptance.14.fail",
+            "xcrt_acceptance.16.fail",
+            "xcrt_acceptance.21.fail",
+        ):
+            option = phase2.split(f"name = {option_name}", 1)[1].split(
+                "custom_tooltip", 1
+            )[0]
+            self.assertIn("NAND = {", option)
+
+        cancel = phase2.split("xcrt_acceptance.16 = {", 1)[1].split(
+            "xcrt_acceptance.20 = {", 1
+        )[0]
+        for expected in (
+            "location:tortuga = { owner = c:XCRTT }",
+            "location:marien = { owner = global_var:xcrt_acceptance_actor }",
+            "location:guahaba = { owner = c:XCRTD }",
+            "location:baynoa = { owner = c:XCRTS }",
+            "location:iguamuco = { owner = c:XCRTI }",
+            "location:porto_santo = { owner = c:XCRTD }",
+            "num_locations = 1",
+            "num_locations = 2",
+        ):
+            self.assertIn(expected, cancel)
+
     def test_interaction_suppresses_undefined_post_action_messages(self) -> None:
         script_path = self.validator.PRODUCT_ROOT / self.validator.SCRIPT_REL
         script = script_path.read_text(encoding="utf-8-sig")

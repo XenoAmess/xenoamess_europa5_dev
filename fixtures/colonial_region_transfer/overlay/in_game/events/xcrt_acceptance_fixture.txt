@@ -105,7 +105,7 @@ xcrt_acceptance.2 = {
 	option = {
 		name = xcrt_acceptance.2.fail
 		trigger = {
-			NOT = {
+			NAND = {
 				has_global_variable = xcrt_acceptance_ready
 				location:tortuga = { owner = c:XCRTT }
 				location:marien = { owner = c:XCRTT }
@@ -151,7 +151,7 @@ xcrt_acceptance.3 = {
 	option = {
 		name = xcrt_acceptance.3.fail
 		trigger = {
-			NOT = {
+			NAND = {
 				has_global_variable = xcrt_acceptance_ready
 				location:tortuga = { owner = c:XCRTT }
 				location:marien = { owner = global_var:xcrt_acceptance_actor }

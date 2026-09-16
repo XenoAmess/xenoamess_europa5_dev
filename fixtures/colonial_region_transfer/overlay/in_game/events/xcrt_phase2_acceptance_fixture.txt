@@ -100,7 +100,7 @@ xcrt_acceptance.9 = {
 	option = {
 		name = xcrt_acceptance.9.fail
 		trigger = {
-			NOT = {
+			NAND = {
 				has_global_variable = xcrt_acceptance_phase2_vassal_ready
 				location:tortuga = { owner = c:XCRTT }
 				location:marien = { owner = c:XCRTT }
@@ -249,7 +249,7 @@ xcrt_acceptance.12 = {
 	option = {
 		name = xcrt_acceptance.12.fail
 		trigger = {
-			NOT = {
+			NAND = {
 				has_global_variable = xcrt_acceptance_phase2_tusi_ready
 				location:tongan_lijiang = { owner = c:GYT }
 				location:linxi = { owner = c:XCRTI }
@@ -313,7 +313,7 @@ xcrt_acceptance.14 = {
 	option = {
 		name = xcrt_acceptance.14.fail
 		trigger = {
-			NOT = {
+			NAND = {
 				location:tongan_lijiang = { owner = c:GYT }
 				location:linxi = { owner = global_var:xcrt_acceptance_actor }
 				location:porto_santo = { owner = global_var:xcrt_acceptance_actor }
@@ -403,6 +403,80 @@ xcrt_acceptance.15 = {
 				}
 			}
 		}
+	}
+}
+
+# Read-only exact audit for the normal-vassal state. Run once immediately after
+# .8 and again after cancelling the real interaction; both observations must
+# select the pass option before the success path may continue.
+xcrt_acceptance.16 = {
+	type = country_event
+	title = xcrt_acceptance.16.title
+	desc = xcrt_acceptance.16.desc
+	outcome = neutral
+	orphan = yes
+	trigger = { always = no }
+
+	option = {
+		name = xcrt_acceptance.16.pass
+		trigger = {
+			has_global_variable = xcrt_acceptance_phase2_vassal_ready
+			location:tortuga = { owner = c:XCRTT }
+			location:marien = { owner = global_var:xcrt_acceptance_actor }
+			location:guahaba = { owner = c:XCRTD }
+			location:baynoa = { owner = c:XCRTS }
+			location:iguamuco = { owner = c:XCRTI }
+			location:porto_santo = { owner = c:XCRTD }
+			c:XCRTT = {
+				is_subject_of = global_var:xcrt_acceptance_actor
+				is_subject_type = vassal
+				num_locations = 1
+			}
+			c:XCRTD = {
+				is_subject_of = global_var:xcrt_acceptance_actor
+				is_subject_type = vassal
+				num_locations = 2
+			}
+			c:XCRTS = {
+				is_subject_of = c:XCRTD
+				is_subject_type = vassal
+				num_locations = 1
+			}
+			c:XCRTI = { NOT = { is_subject_of = global_var:xcrt_acceptance_actor } }
+		}
+		custom_tooltip = xcrt_acceptance.phase2_vassal_cancel.pass.tt
+	}
+
+	option = {
+		name = xcrt_acceptance.16.fail
+		trigger = {
+			NAND = {
+				has_global_variable = xcrt_acceptance_phase2_vassal_ready
+				location:tortuga = { owner = c:XCRTT }
+				location:marien = { owner = global_var:xcrt_acceptance_actor }
+				location:guahaba = { owner = c:XCRTD }
+				location:baynoa = { owner = c:XCRTS }
+				location:iguamuco = { owner = c:XCRTI }
+				location:porto_santo = { owner = c:XCRTD }
+				c:XCRTT = {
+					is_subject_of = global_var:xcrt_acceptance_actor
+					is_subject_type = vassal
+					num_locations = 1
+				}
+				c:XCRTD = {
+					is_subject_of = global_var:xcrt_acceptance_actor
+					is_subject_type = vassal
+					num_locations = 2
+				}
+				c:XCRTS = {
+					is_subject_of = c:XCRTD
+					is_subject_type = vassal
+					num_locations = 1
+				}
+				c:XCRTI = { NOT = { is_subject_of = global_var:xcrt_acceptance_actor } }
+			}
+		}
+		custom_tooltip = xcrt_acceptance.phase2.fail.tt
 	}
 }
 
@@ -586,7 +660,7 @@ xcrt_acceptance.21 = {
 	option = {
 		name = xcrt_acceptance.21.fail
 		trigger = {
-			NOT = {
+			NAND = {
 				has_global_variable = xcrt_acceptance_phase2_matrix_ready
 				c:XMAPP = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = appanage country_type = location exists = capital }
 				c:XMCOL = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = colonial_nation country_type = location exists = capital }

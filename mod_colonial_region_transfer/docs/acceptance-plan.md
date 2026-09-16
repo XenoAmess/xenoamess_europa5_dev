@@ -50,8 +50,10 @@ fresh error.log 中不得出现归因于 xcrt_、interaction 或 scripted trigge
 1. 殖民领回归：全新葡萄牙开局执行 event xcrt_acceptance.1，使用 .3 审计前置；
    真实互动选择白绮附属地，先取消一次并核对 owner 不变，再确认执行；用 .2 审计 Region
    内宗主、直属 donor、下层 donor 均转让，体系外与 Region 外不变。
-2. 普通附庸主路径：全新开局执行 event xcrt_acceptance.8；真实互动选择 vassal
-   目标并执行，以 .9 审计同构结果。
+2. 普通附庸主路径：全新开局执行 event xcrt_acceptance.8，以 .16 审计完整初始状态；
+   真实互动选择 vassal 目标，先取消并再次以 .16 精确核对 owner、数量和关系不变，
+   再确认执行，以 .9 审计同构结果。审计的失败选项必须用 exact-build 原版已采用的
+   `NAND` 表达“至少一个条件不成立”，不得使用多子项 `NOT`。
 3. 全类型矩阵：全新开局执行 event xcrt_acceptance.20，以 .21 确认夹具建立 18 个
    location 型直属附属和两个 building 型直属附属；在真实目标列表逐项确认 18 种领土型
    目标出现，state_bank 与 trade_company 不出现，列表无坏 capital scope 提示。
