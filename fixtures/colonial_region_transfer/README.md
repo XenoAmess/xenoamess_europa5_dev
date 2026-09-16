@@ -10,6 +10,10 @@
 - `event xcrt_acceptance.8`：普通 `vassal` 目标的同构二期主路径；布置后及真实取消后
   分别用 `.16` 精确审计所有 owner、数量和关系均为初始状态，真实确认后用 `.9`
   审计同构结果。
+- `event xcrt_acceptance.20`：建立 18 个领土型与两个 building 型直属附属对象；先用
+  `.21` 做聚合审计。若 `.21` 失败，必须在同一 run 调用 `.22`；`.22` 只显示未满足
+  `直属关系 + 精确 subject type + country_type + capital` 合同的具体类型，禁止仅凭
+  聚合 FAIL 猜测产品问题。
 - `tag LNG` 后执行 `event xcrt_acceptance.10`：保持 1337 开局中引擎已建立的原生
   `LNG`→`GYT` 土司关系与 `nixi` 首都，在 `south_china_region` 布置 14→16 禁用；
   此时 `LNG` 首都也在目标 Region，故该负向场景还受到产品既有的宗主首都保护。

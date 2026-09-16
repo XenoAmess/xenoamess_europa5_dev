@@ -194,6 +194,49 @@ class ColonialRegionTransferToolTests(unittest.TestCase):
         ):
             self.assertIn(expected, cancel)
 
+    def test_subject_matrix_has_per_type_failure_diagnostics(self) -> None:
+        phase2 = (
+            REPO_ROOT
+            / "fixtures/colonial_region_transfer/overlay/in_game/events/"
+            "xcrt_phase2_acceptance_fixture.txt"
+        ).read_text(encoding="utf-8-sig")
+        diagnostics = phase2.split("xcrt_acceptance.22 = {", 1)[1]
+        expected = {
+            "XMAPP": "appanage",
+            "XMCOL": "colonial_nation",
+            "XMCON": "conquistador",
+            "XMDOM": "dominion",
+            "XMFIE": "fiefdom",
+            "XMHAN": "hanseatic_member",
+            "XMIFC": "imperial_free_city",
+            "XMDIFC": "direct_imperial_free_city",
+            "XMMAR": "march",
+            "XMSEC": "secessionists",
+            "XMTRI": "tributary",
+            "XMVAS": "vassal",
+            "XMPRN": "pronoia",
+            "XMSAM": "samanta",
+            "XMMHS": "maha_samanta",
+            "XMPMS": "pradhana_maha_samanta",
+            "XMTUS": "tusi",
+            "XMUBE": "uc_bey",
+            "XMBNK": "state_bank",
+            "XMTRD": "trade_company",
+        }
+        for tag, subject_type in expected.items():
+            option = diagnostics.split(
+                f"name = xcrt_acceptance.22.{subject_type}", 1
+            )[1].split("option =", 1)[0]
+            self.assertIn(f"c:{tag}", option)
+            self.assertIn(f"is_subject_type = {subject_type}", option)
+            self.assertIn("is_subject_of = global_var:xcrt_acceptance_actor", option)
+            expected_country_type = (
+                "building" if subject_type in {"state_bank", "trade_company"} else "location"
+            )
+            self.assertIn(f"country_type = {expected_country_type}", option)
+            if expected_country_type == "location":
+                self.assertIn("exists = capital", option)
+
     def test_interaction_suppresses_undefined_post_action_messages(self) -> None:
         script_path = self.validator.PRODUCT_ROOT / self.validator.SCRIPT_REL
         script = script_path.read_text(encoding="utf-8-sig")

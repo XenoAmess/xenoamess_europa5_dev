@@ -24,7 +24,7 @@
 - interaction SHA-256：ecc9c26bc2643c8f97714bc075e7489e88e81624e31c0171aef7a0cbe91cff8f。
 - scripted triggers SHA-256：
   e5e2b974a67a464f2c7448db2caac4fff722a229572ee2c74ca388e71fcc00cb。
-- 33 项 Python 工具测试通过（外置夹具额外 donor 冻结/隔离、精确补集审计与历史证据策略亦纳入回归）。
+- 34 项 Python 工具测试通过（外置夹具额外 donor 冻结/隔离、精确补集审计、逐类型矩阵诊断与历史证据策略亦纳入回归）。
 - Open Kaishek 聚合测试通过，其中 EU5 profile 5 项测试通过。
 - 选择器和效果侧的土司矩阵均为：既有 1..14 个地点时最多接收 14..1 个地点；
   既有 15 个地点没有成功分支。
@@ -145,6 +145,23 @@ Porto Santo 的 owner，`XCRTT`/`XCRTD`/`XCRTS` 的地点数量，以及直属�
 原版数据错误，故这些噪声继续分类为 `fixture/harness` 或 `environment`，不冒充产品 RED，
 也不据此宣称完整 L1 GREEN。场景已经闭合；失败摘要与上述哈希永久保留，完整运行证据
 可按证据策略清理。
+
+## 附属类型矩阵：首轮夹具聚合审计 RED
+
+run `xcrt-20260916T153700Z-phase2-subject-matrix` 使用 fresh 简中隔离 profile、离线
+Steam 与投影 Mod 树 SHA-256
+`29c3028c2cab66179b800774a41e50197d39a5a4c068aee0db79135d1f35ad28`。
+`.20` 完成布置后，`.21` 只显示“失败：至少一个类型未正确创建”。此时尚未进入产品
+真实目标列表，且 `.21` 只能聚合判断 20 个夹具对象，不能指出具体失败类型；因此该
+attempt 永久分类为 `fixture/harness RED`，不得改写为产品 RED 或后续 GREEN。
+
+聚合 FAIL 截图 SHA-256 为
+`7018f2c37ca04c5d6ecd8917cb81fb8502ba2bb4bc901c0ca68716f48ecfea40`；
+`game.log` / `error.log` SHA-256 分别为
+`3b49a77e0aba9ba12d39912caca338ccb12dcd05a355a744e4ad39bb6d419361` 与
+`c1a2fa74383daef4412673b01d33dccc80619550d340e2e9f29f8b0b92526de4`。
+后续 fresh run 必须使用新增只读 `.22` 逐类型诊断，再修正夹具并重新开始矩阵；完整
+运行目录仅保留到该矩阵诊断/替代场景闭合。
 
 ## Workshop 发布证据
 

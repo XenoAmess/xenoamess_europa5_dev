@@ -56,7 +56,10 @@ fresh error.log 中不得出现归因于 xcrt_、interaction 或 scripted trigge
    `NAND` 表达“至少一个条件不成立”，不得使用多子项 `NOT`。
 3. 全类型矩阵：全新开局执行 event xcrt_acceptance.20，以 .21 确认夹具建立 18 个
    location 型直属附属和两个 building 型直属附属；在真实目标列表逐项确认 18 种领土型
-   目标出现，state_bank 与 trade_company 不出现，列表无坏 capital scope 提示。
+   目标出现，state_bank 与 trade_company 不出现，列表无坏 capital scope 提示。若 .21
+   聚合审计失败，必须在同一状态调用 .22；.22 对每个 tag 分别核对直属关系、精确
+   subject type、country_type 与领土型 capital，并只显示失败类型。该诊断只能分类和修复
+   fixture/harness，不能代替后续真实目标列表验收。
 4. 禁用路径：复用 0.1.0 的战争、同首都 Region、无工作量路径；每项保存简中禁用原因、
    前后 owner 与 fresh 日志。
 5. 关系层级：殖民回归场景的 XCRTS 是 XCRTD 的下层附属；它的地点可作为 donor，但

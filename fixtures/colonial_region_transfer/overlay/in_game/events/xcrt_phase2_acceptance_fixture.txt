@@ -118,6 +118,66 @@ xcrt_acceptance.9 = {
 	}
 }
 
+# Per-type read-only diagnostics for an aggregate .21 failure. Only invalid
+# entries are visible; if every object is correct, the single all-pass option
+# is visible instead. These options never mutate the matrix.
+xcrt_acceptance.22 = {
+	type = country_event
+	title = xcrt_acceptance.22.title
+	desc = xcrt_acceptance.22.desc
+	outcome = neutral
+	orphan = yes
+	trigger = { always = no }
+
+	option = {
+		name = xcrt_acceptance.22.all_pass
+		trigger = {
+			has_global_variable = xcrt_acceptance_phase2_matrix_ready
+			c:XMAPP = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = appanage country_type = location exists = capital }
+			c:XMCOL = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = colonial_nation country_type = location exists = capital }
+			c:XMCON = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = conquistador country_type = location exists = capital }
+			c:XMDOM = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = dominion country_type = location exists = capital }
+			c:XMFIE = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = fiefdom country_type = location exists = capital }
+			c:XMHAN = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = hanseatic_member country_type = location exists = capital }
+			c:XMIFC = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = imperial_free_city country_type = location exists = capital }
+			c:XMDIFC = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = direct_imperial_free_city country_type = location exists = capital }
+			c:XMMAR = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = march country_type = location exists = capital }
+			c:XMSEC = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = secessionists country_type = location exists = capital }
+			c:XMTRI = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = tributary country_type = location exists = capital }
+			c:XMVAS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = vassal country_type = location exists = capital }
+			c:XMPRN = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = pronoia country_type = location exists = capital }
+			c:XMSAM = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = samanta country_type = location exists = capital }
+			c:XMMHS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = maha_samanta country_type = location exists = capital }
+			c:XMPMS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = pradhana_maha_samanta country_type = location exists = capital }
+			c:XMTUS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = tusi country_type = location exists = capital }
+			c:XMUBE = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = uc_bey country_type = location exists = capital }
+			c:XMBNK = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = state_bank country_type = building }
+			c:XMTRD = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = trade_company country_type = building }
+		}
+	}
+
+	option = { name = xcrt_acceptance.22.appanage trigger = { NOT = { c:XMAPP = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = appanage country_type = location exists = capital } } } }
+	option = { name = xcrt_acceptance.22.colonial_nation trigger = { NOT = { c:XMCOL = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = colonial_nation country_type = location exists = capital } } } }
+	option = { name = xcrt_acceptance.22.conquistador trigger = { NOT = { c:XMCON = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = conquistador country_type = location exists = capital } } } }
+	option = { name = xcrt_acceptance.22.dominion trigger = { NOT = { c:XMDOM = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = dominion country_type = location exists = capital } } } }
+	option = { name = xcrt_acceptance.22.fiefdom trigger = { NOT = { c:XMFIE = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = fiefdom country_type = location exists = capital } } } }
+	option = { name = xcrt_acceptance.22.hanseatic_member trigger = { NOT = { c:XMHAN = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = hanseatic_member country_type = location exists = capital } } } }
+	option = { name = xcrt_acceptance.22.imperial_free_city trigger = { NOT = { c:XMIFC = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = imperial_free_city country_type = location exists = capital } } } }
+	option = { name = xcrt_acceptance.22.direct_imperial_free_city trigger = { NOT = { c:XMDIFC = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = direct_imperial_free_city country_type = location exists = capital } } } }
+	option = { name = xcrt_acceptance.22.march trigger = { NOT = { c:XMMAR = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = march country_type = location exists = capital } } } }
+	option = { name = xcrt_acceptance.22.secessionists trigger = { NOT = { c:XMSEC = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = secessionists country_type = location exists = capital } } } }
+	option = { name = xcrt_acceptance.22.tributary trigger = { NOT = { c:XMTRI = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = tributary country_type = location exists = capital } } } }
+	option = { name = xcrt_acceptance.22.vassal trigger = { NOT = { c:XMVAS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = vassal country_type = location exists = capital } } } }
+	option = { name = xcrt_acceptance.22.pronoia trigger = { NOT = { c:XMPRN = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = pronoia country_type = location exists = capital } } } }
+	option = { name = xcrt_acceptance.22.samanta trigger = { NOT = { c:XMSAM = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = samanta country_type = location exists = capital } } } }
+	option = { name = xcrt_acceptance.22.maha_samanta trigger = { NOT = { c:XMMHS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = maha_samanta country_type = location exists = capital } } } }
+	option = { name = xcrt_acceptance.22.pradhana_maha_samanta trigger = { NOT = { c:XMPMS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = pradhana_maha_samanta country_type = location exists = capital } } } }
+	option = { name = xcrt_acceptance.22.tusi trigger = { NOT = { c:XMTUS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = tusi country_type = location exists = capital } } } }
+	option = { name = xcrt_acceptance.22.uc_bey trigger = { NOT = { c:XMUBE = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = uc_bey country_type = location exists = capital } } } }
+	option = { name = xcrt_acceptance.22.state_bank trigger = { NOT = { c:XMBNK = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = state_bank country_type = building } } } }
+	option = { name = xcrt_acceptance.22.trade_company trigger = { NOT = { c:XMTRD = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = trade_company country_type = building } } } }
+}
+
 # Fresh-game Tusi scenario. LNG keeps its historical direct GYT Tusi relation
 # and native Nixi capital, brings GYT to 14 locations, and leaves two actor
 # locations in Nixi's South China Region.
