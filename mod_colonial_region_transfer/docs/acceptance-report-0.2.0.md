@@ -12,8 +12,8 @@
 | L0 静态合同 | PASS | 12 项 exact-build 哈希、20 类型清单、metadata、脚本、11 种语言、土司双重原子矩阵、新缩略图与 release allowlist 通过。 |
 | Open Kaishek | PASS (static) | eu5-1.3.11-build-24187685 profile 对 interaction 与 scripted triggers 均返回 VALIDATED；profile 明确不声明 runtime 语义。 |
 | L1 隔离加载 | IN_PROGRESS | 简中 fresh 隔离运行能加载产品和夹具；全场景日志门禁与重载仍待关闭。夹具启动早期出现本地化 key 预载警告，玩家事件 UI 后续显示正确中文；原版市场 law 报错亦随夹具大范围 donor 隔离出现，均不能冒充产品脚本错误或无错误的 L1 GREEN。 |
-| L2 玩家行为 | IN_PROGRESS | 原生土司通过真实“附属国行动”完成 14→15；殖民回归、普通附庸、18+2 类型矩阵、关系层级和其余禁用路径仍待关闭。 |
-| L3 高风险路径 | IN_PROGRESS | 原生直属土司 14→15 成功并通过 owner/数量/关系审计；15→16 真实 UI 禁用且审计证明无部分转让。14→16 禁用此前已有实机证据，但初始夹具同时触发宗主首都保护，不能把它单独当作土司数量门禁证明；生命周期、取消与保存重载仍待完成。 |
+| L2 玩家行为 | IN_PROGRESS | 原生土司通过真实“附属国行动”完成 14→15；普通直属附庸通过同一真实入口完成 1→4，独立国与 Region 外地点边界保持。殖民回归、18+2 类型矩阵、关系层级和其余禁用路径仍待关闭。 |
+| L3 高风险路径 | IN_PROGRESS | 原生直属土司 14→15 成功并通过 owner/数量/关系审计；15→16 真实 UI 禁用且审计证明无部分转让。普通直属附庸正向路径及两个排除边界已关闭；取消后 UI 数量保持，但夹具 fail 分支没有形成可见精确 owner 审计，因此取消、生命周期与保存重载仍待完成。 |
 | Workshop 发布 | PASS | 0.2.0 内容、标题、说明、改动说明与白绮主题缩略图已更新；匿名回读、远端原图及空路径 fresh cache 均通过。 |
 
 ## L0 证据
@@ -84,6 +84,42 @@ fresh 原生土司 run，不得把任何历史 RED attempt 改写为 GREEN。仅
 | `20260914T184900Z-phase2-tusi-native-actor-capital-outside` | `tool-coverage`：输入法键位下旧字符方式不能稳定启闭游戏控制台，无法完成业务断言；后来 Python 物理 scan code 已补齐 | `161bca4c45b295591c13a3e8873cb7d58f7fbc517432c3b9c39e8979a5f37ffb` |
 | `20260914T230900Z-phase2-tusi-native-actor-capital-outside-r2` | `fixture/harness`：宗主迁都后 14→15 仍禁用，原生附属树 donor 未隔离 | `457d707440edf5d733b249dc81d67af42c482248e01f8c84ad7759265202b6bd` |
 | `20260915T115400Z-phase2-tusi-native-diagnostics` | `fixture/harness`：`.15` 后置诊断证明整个目标 Region 仍有多个 donor | `bb59f31e299f166637f9942da54c2d6985704e838c07ecf1cbee90da5e2f5085` |
+
+## 普通直属附庸：正向路径已关闭，取消精确审计待补
+
+run `xcrt-20260915T232000Z-phase2-vassal-fresh` 使用同一 exact build、简中、
+2560×1440、离线 Steam 与隔离 userdir；投影 Mod 树 SHA-256 仍为
+`fba842fcdd112243bb5c33524ec23e7558616b1e194363284f6e08fec862a8b0`。
+外置 `.8` 只负责建立确定性前置状态：`XCRTT` 是葡萄牙的普通直属附庸并持有 Tortuga；
+直属 donor `XCRTD` 持有 Guahaba 与 Region 外 Porto Santo；其下层附庸 `XCRTS`
+持有 Baynoa；独立 `XCRTI` 持有 Iguamuco；葡萄牙持有 Marien。
+
+玩家在真正的外交“附属国行动”中搜索“整合”，目标按钮可用。第一次进入确认框后选择
+取消，国家面板仍显示 `XCRTT` 只有 1 个地点；但只读 `.9` 在这个部分满足状态没有形成
+可见 fail 选项，因此该次夹具审计不能证明每一个 owner 均未变化，取消的精确审计继续
+保持 IN_PROGRESS。第二次从同一真实入口确认后，`XCRTT` 面板显示 4 个地点且仍明确是
+葡萄牙直属附庸；地图 tooltip 显示 Iguamuco 仍是独立同名国家的首都，Porto Santo
+仍属于另一个葡萄牙直属附庸 `XCRTD`，该 donor 仍只有 1 个地点。由此普通附庸正向
+1→4、独立国排除和 Region 外排除均通过；没有发现产品缺陷，不需要 0.2.1 或再次发布。
+
+关键截图 SHA-256：取消后目标仍为 1 个地点
+`6724a6387e41f90e9f0a582602c4ae350dcaecd08bc089507e8515b48762f38c`；
+真实确认后直属目标为 4 个地点
+`d457a66e5a6bbd6690862f5d1015558c87795d6899659c86e5f1ed4e63abdd94`；
+Iguamuco 独立首都边界
+`a83aa0fd5bf4fa79cefee0bd2f9d6d119af2fa7d457001dcd011519bfa001c3f`；
+Porto Santo 仍属 1 地点 `XCRTD`
+`f33f54c6f6048084c2662664ece1be273fe0638ec4faba37dbe01e5b237d8d1d`。
+本 profile 没有在当前启动前清空旧日志：整份 `game.log` / `error.log` SHA-256 分别为
+`1dea9fdc4533ede8cab9591499cf1ebfffc35bec899d7bc124e2a9e5adf2d1fe` 与
+`c1775623c5c6100be8f88001e294403dd8b81bab2845ebab46c287f84df4a62a`；
+检出的 `08:24`–`08:26` fixture 本地化错误早于当前 `10:19` 启动，当前启动段没有新增
+可归因于产品 interaction/trigger 的脚本错误。日志未清空与 `.9` 不可见共同分类为
+`fixture/harness RED`，不能把本 run 用作完整 L1 GREEN，也不能把历史错误嫁接为产品 RED。
+`.9` 不可见的关键截图 SHA-256 为
+`6043777b7a3086e09317fb56cfd16dfc64d48d6169e6d94e10943c4b7fda5687`；
+它由后续 UI/地图边界检查替代了正向后置审计，但没有替代取消的精确 owner 审计。
+完整 run 证据在取消补审计场景闭合前继续保留。
 
 ## Workshop 发布证据
 

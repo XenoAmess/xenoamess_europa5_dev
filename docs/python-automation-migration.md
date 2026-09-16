@@ -1,6 +1,6 @@
 # Python 自动化迁移合同
 
-状态：`implemented / screenshot-and-OCR parity verified / live-input parity pending`
+状态：`implemented / screenshot-OCR-live-input parity verified`
 
 日期：2026-09-15
 
@@ -48,3 +48,19 @@
 | `python-migration-ck3-stack-probe`、`-2`、`-3` | `tool-coverage` | 首版兼容层没有遍历旧 RapidOCR detector 的 `infer.session`，无法核对 detector provider；均在推理前停止。 | `e3103d2eb85c7e5aacd1ae5ec019f5879ca925f6d956191a780df46c94641289` / `732f7b027e99a9f0aea49479ce7e75a7fc1858f2e15db8d6e20a169f26d7b0ea` / `ae4d9cb43b02ecf55b5426070765a2f25997df4a520a94facd57800190144b7c` | `python-migration-final-cuda-probe` |
 
 最终 provider 探测、简中 OCR 与进程级 GPU 证据的 SHA-256 分别为 `bd8b82bd9b48e3e274c224f087236ed3e31939df5f6e33c948d219115b9f73c1`、`f8f2a0c752f6ec5283f4c7a21115c66c2a1acb61bb81108a08eb1895ce5cab27`、`189ba41cfb7afb9c4e97054d35c9597fed78017e1c4d2f671249a7427b0f98fe`。摘要事实已回写本文件与 OCR 基线；完整 JSON 不作为永久仓库资产。
+
+## 2026-09-16 当前 OCR 执行后端复核
+
+在普通附庸实机场景的 2560×1440 原始截图上连续执行 5 次 OCR。RapidOCR 请求
+`cuda`，ONNX Runtime 枚举到 TensorRT、CUDA 与 CPU provider；文字检测、方向分类、
+文字识别三个实际 session 的 provider 顺序均为
+`CUDAExecutionProvider, CPUExecutionProvider`。因此当前配置是 GPU 优先、CPU 回退，
+不是纯 CPU；这也不等于每一个算子都保证运行在 GPU。
+
+OCR 子进程被 NVIDIA 进程采样识别为 `C:\Python314\python.exe`，但本机 WDDM 返回的
+进程显存值为 `[N/A]`，无法据此量化显存或 GPU 利用率。5 次推理墙钟 13.199 秒、
+CPU 时间 13.906 秒，说明 CPU 仍参与预处理、后处理或 fallback。ONNX Runtime 同时输出
+`No registered plugin EP device found` 警告，但三个 session 均明确保留 CUDA 为首选，
+本次没有发生静默的纯 CPU 回退。完整证据 SHA-256 为
+`f6864f50b2b486bd3080d3339019d971242f9bc7b588ea40fb5ef8ea99cad4ec`；
+JSON 仅保留至对应普通附庸场景闭合。
