@@ -374,6 +374,32 @@ EU5 经游戏内菜单正常退出。最终 `game.log` / `error.log` SHA-256 分
 其中包括 `muscovite_succession_war.txt` 的原版脚本错误。本场景关闭为 GREEN，完整运行
 证据可按仓库策略清理；没有发现产品缺陷，因此不触发再次发布。
 
+## 原生 tributary：GREEN
+
+run `xcrt-20260917T221000Z-phase2-native-tributary` 使用全新隔离 profile、离线
+Steam 与投影 Mod 树 SHA-256
+`80bed38eef4fcd3cf80f34be984ff5d3bff52900d7d937b9de0e89e5ccd78893`。准备器在首次启动前
+写入 `System.language = "l_simp_chinese"`；`pdx_settings.json` SHA-256 为
+`89d64b7e8ece79d66ef900971328e6ad560b25203d992f96262abf1f8a92f0d1`，首次语言确认界面
+直接以简中显示。
+
+突尼斯开局的只读 `.32` 审计显示“通过：受限附属关系合同成立”，证明原生
+`TUN -> BTL tributary` 的直属关系、精确类型、`country_type = location` 与首都合同
+成立；截图与原始分辨率 OCR JSON SHA-256 分别为
+`58bae3d0c3db2c3da8d9a7ced4c768c57a4c8c23b0d4f52b3cd88299360f6431` 与
+`f035a985debc2702f3c8f4c9b0e608ac46b6923d49c485d000d0fe178b06f3f3`。随后从真实
+“管理附属国”入口选择原版简中名称“泰利斯伯国”，并在同一产品动作面板中检索到
+“整合附属地”；截图与 OCR JSON SHA-256 分别为
+`4a22501aba5a478f808fe06167dbef1fb02b865a8308ad2d7cb786ab93f9fc5c` 与
+`958c4ca2de4d4ff466875a49405e0ee57216a4c8babe5722fe99e15e854520d2`。
+
+EU5 经游戏内菜单正常退出。最终 `game.log` / `error.log` SHA-256 分别为
+`defbf99cad545c34e9e5fea81b30f9e6300209e121868197822957d8977e815e` 与
+`0fe5df6d7ec916503370d4a145fe3398864fbd962468a8da69549aa98a6f779d`；`error.log`
+没有任何 `xcrt` key、产品 key 或产品/fixture 路径。现有记录来自 exact-build 原版、
+离线后端与验收输入上下文，不构成产品错误。本场景关闭为 GREEN，完整运行证据可按仓库
+策略清理；没有发现产品缺陷，因此不触发再次发布。
+
 ## Workshop 发布证据
 
 - 发布 run：`xcrt-publish-20260914T164500Z-0.2.0`；Workshop item：
