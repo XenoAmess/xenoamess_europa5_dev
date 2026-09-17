@@ -141,10 +141,6 @@ xcrt_acceptance.22 = {
 			c:XMSEC = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = secessionists country_type = location exists = capital }
 			c:XMVAS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = vassal country_type = location exists = capital }
 			c:XMPRN = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = pronoia country_type = location exists = capital }
-			c:XMSAM = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = samanta country_type = location exists = capital }
-			c:XMMHS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = maha_samanta country_type = location exists = capital }
-			c:XMPMS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = pradhana_maha_samanta country_type = location exists = capital }
-			c:XMTUS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = tusi country_type = location exists = capital }
 			c:XMUBE = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = uc_bey country_type = location exists = capital }
 			c:XMBNK = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = state_bank country_type = building }
 			c:XMTRD = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = trade_company country_type = building }
@@ -159,10 +155,6 @@ xcrt_acceptance.22 = {
 	option = { name = xcrt_acceptance.22.secessionists trigger = { NOT = { c:XMSEC = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = secessionists country_type = location exists = capital } } } }
 	option = { name = xcrt_acceptance.22.vassal trigger = { NOT = { c:XMVAS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = vassal country_type = location exists = capital } } } }
 	option = { name = xcrt_acceptance.22.pronoia trigger = { NOT = { c:XMPRN = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = pronoia country_type = location exists = capital } } } }
-	option = { name = xcrt_acceptance.22.samanta trigger = { NOT = { c:XMSAM = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = samanta country_type = location exists = capital } } } }
-	option = { name = xcrt_acceptance.22.maha_samanta trigger = { NOT = { c:XMMHS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = maha_samanta country_type = location exists = capital } } } }
-	option = { name = xcrt_acceptance.22.pradhana_maha_samanta trigger = { NOT = { c:XMPMS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = pradhana_maha_samanta country_type = location exists = capital } } } }
-	option = { name = xcrt_acceptance.22.tusi trigger = { NOT = { c:XMTUS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = tusi country_type = location exists = capital } } } }
 	option = { name = xcrt_acceptance.22.uc_bey trigger = { NOT = { c:XMUBE = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = uc_bey country_type = location exists = capital } } } }
 	option = { name = xcrt_acceptance.22.state_bank trigger = { NOT = { c:XMBNK = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = state_bank country_type = building } } } }
 	option = { name = xcrt_acceptance.22.trade_company trigger = { NOT = { c:XMTRD = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = trade_company country_type = building } } } }
@@ -452,6 +444,70 @@ xcrt_acceptance.36 = {
 			NAND = {
 				has_global_variable = xcrt_acceptance_special_direct_ifc_ready
 				c:LUB = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = direct_imperial_free_city country_type = location exists = capital }
+			}
+		}
+	}
+}
+
+# India-only subject chain. Delhi starts with exact-build native samanta
+# subjects. Reuse the same make_subject_of transitions as the vanilla country
+# interactions instead of asking create_country_from_location to bypass the
+# Indian advance and creation_visible gates.
+xcrt_acceptance.37 = {
+	type = country_event
+	title = xcrt_acceptance.37.title
+	desc = xcrt_acceptance.special_setup.desc
+	outcome = neutral
+	orphan = yes
+	trigger = { always = no }
+	option = {
+		name = xcrt_acceptance.special_setup.apply
+		trigger = {
+			tag = DLH
+			c:GWA = { is_subject_of = root is_subject_type = samanta }
+			c:HAD = { is_subject_of = root is_subject_type = samanta }
+			c:MEW = { is_subject_of = root is_subject_type = samanta }
+		}
+		save_scope_as = xcrt_special_actor
+		c:HAD = {
+			lock_current_subject_type = yes
+			make_subject_of = { target = scope:xcrt_special_actor type = subject_type:maha_samanta }
+		}
+		c:MEW = {
+			lock_current_subject_type = yes
+			make_subject_of = { target = scope:xcrt_special_actor type = subject_type:maha_samanta }
+			lock_current_subject_type = yes
+			make_subject_of = { target = scope:xcrt_special_actor type = subject_type:pradhana_maha_samanta }
+		}
+		set_global_variable = { name = xcrt_acceptance_actor value = root }
+		set_global_variable = xcrt_acceptance_special_samanta_chain_ready
+	}
+}
+
+xcrt_acceptance.38 = {
+	type = country_event
+	title = xcrt_acceptance.38.title
+	desc = xcrt_acceptance.special_audit.desc
+	outcome = neutral
+	orphan = yes
+	trigger = { always = no }
+	option = {
+		name = xcrt_acceptance.special_audit.pass
+		trigger = {
+			has_global_variable = xcrt_acceptance_special_samanta_chain_ready
+			c:GWA = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = samanta country_type = location exists = capital }
+			c:HAD = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = maha_samanta country_type = location exists = capital }
+			c:MEW = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = pradhana_maha_samanta country_type = location exists = capital }
+		}
+	}
+	option = {
+		name = xcrt_acceptance.special_audit.fail
+		trigger = {
+			NAND = {
+				has_global_variable = xcrt_acceptance_special_samanta_chain_ready
+				c:GWA = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = samanta country_type = location exists = capital }
+				c:HAD = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = maha_samanta country_type = location exists = capital }
+				c:MEW = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = pradhana_maha_samanta country_type = location exists = capital }
 			}
 		}
 	}
@@ -819,9 +875,9 @@ xcrt_acceptance.16 = {
 	}
 }
 
-# Fresh-game baseline matrix: the 13 current-build territorial subject types
+# Fresh-game baseline matrix: the nine current-build territorial subject types
 # that can be constructed without mutually incompatible vanilla contexts are
-# direct subjects. The five restricted types use .30-.36. Two building
+# direct subjects. Restricted types use native/context-specific scenes. Two building
 # countries are direct state_bank/trade_company subjects and must stay hidden.
 xcrt_acceptance.20 = {
 	type = country_event
@@ -874,26 +930,6 @@ orphan = yes
 			discover_location = root
 			change_location_owner = root
 			create_country_from_location = { overlord = root subject_type = subject_type:pronoia define_unique_country_tag = XMPRN change_country_name = XMPRN }
-		}
-		location:lagos = {
-			discover_location = root
-			change_location_owner = root
-			create_country_from_location = { overlord = root subject_type = subject_type:samanta define_unique_country_tag = XMSAM change_country_name = XMSAM }
-		}
-		location:tavira = {
-			discover_location = root
-			change_location_owner = root
-			create_country_from_location = { overlord = root subject_type = subject_type:maha_samanta define_unique_country_tag = XMMHS change_country_name = XMMHS }
-		}
-		location:faro = {
-			discover_location = root
-			change_location_owner = root
-			create_country_from_location = { overlord = root subject_type = subject_type:pradhana_maha_samanta define_unique_country_tag = XMPMS change_country_name = XMPMS }
-		}
-		location:avis = {
-			discover_location = root
-			change_location_owner = root
-			create_country_from_location = { overlord = root subject_type = subject_type:tusi define_unique_country_tag = XMTUS change_country_name = XMTUS }
 		}
 		location:guarda = {
 			discover_location = root
@@ -956,10 +992,6 @@ xcrt_acceptance.21 = {
 			c:XMSEC = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = secessionists country_type = location exists = capital }
 			c:XMVAS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = vassal country_type = location exists = capital }
 			c:XMPRN = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = pronoia country_type = location exists = capital }
-			c:XMSAM = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = samanta country_type = location exists = capital }
-			c:XMMHS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = maha_samanta country_type = location exists = capital }
-			c:XMPMS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = pradhana_maha_samanta country_type = location exists = capital }
-			c:XMTUS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = tusi country_type = location exists = capital }
 			c:XMUBE = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = uc_bey country_type = location exists = capital }
 			c:XMBNK = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = state_bank country_type = building }
 			c:XMTRD = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = trade_company country_type = building }
@@ -980,10 +1012,6 @@ xcrt_acceptance.21 = {
 				c:XMSEC = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = secessionists country_type = location exists = capital }
 				c:XMVAS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = vassal country_type = location exists = capital }
 				c:XMPRN = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = pronoia country_type = location exists = capital }
-				c:XMSAM = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = samanta country_type = location exists = capital }
-				c:XMMHS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = maha_samanta country_type = location exists = capital }
-				c:XMPMS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = pradhana_maha_samanta country_type = location exists = capital }
-				c:XMTUS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = tusi country_type = location exists = capital }
 				c:XMUBE = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = uc_bey country_type = location exists = capital }
 				c:XMBNK = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = state_bank country_type = building }
 				c:XMTRD = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = trade_company country_type = building }

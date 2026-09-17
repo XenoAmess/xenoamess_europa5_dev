@@ -55,16 +55,19 @@ fresh error.log 中不得出现归因于 xcrt_、interaction 或 scripted trigge
    再确认执行，以 .9 审计同构结果。审计的失败选项必须用 exact-build 原版已采用的
    `NAND` 表达“至少一个条件不成立”，不得使用多子项 `NOT`。
 3. 全类型矩阵按原版合法上下文拆分，不再要求一个虚构宗主同时持有互斥的受限关系：
-   全新塞尔维亚开局执行 `.20`，以 `.21` 确认 13 个可通用构造的 location 型直属附属和
-   `state_bank` / `trade_company` 两个 building 型直属附属；真实目标列表必须出现 13 个
-   领土型目标而排除两个 building 对象。其余五类分别使用 exact-build 合法上下文：法国
+   全新塞尔维亚开局执行 `.20`，以 `.21` 确认 9 个可通用构造的 location 型直属附属和
+   `state_bank` / `trade_company` 两个 building 型直属附属；真实目标列表必须出现 9 个
+   领土型目标而排除两个 building 对象。五类分别使用既定 exact-build 合法上下文：法国
    的原生 `ALE appanage`、HSA 的原生 `LUB hanseatic_member`、突尼斯的原生
    `BTL tributary`、显式降为 county 后再授予塞尔维亚的 `march`，以及先启用 HRE 直属
-   自由市状态、再由原版皇帝 `UBV` 持有的 `direct_imperial_free_city`。每一类先通过只读
-   关系/类型/country_type/capital 审计，再从真实产品目标列表确认可见；18 类结果合并构成
-   完整矩阵，不能用静态 allowlist 或事件弹窗代替真实 UI。
+   自由市状态、再由原版皇帝 `UBV` 持有的 `direct_imperial_free_city`。印度链另用原生
+   `DLH`→`GWA/HAD/MEW samanta` 关系：`.37` 保留 `GWA samanta`，按原版升级 effect 把
+   `HAD` 变为 `maha_samanta`、把 `MEW` 依次变为 `maha_samanta` 和
+   `pradhana_maha_samanta`，再由 `.38` 审计。`tusi` 复用已闭合的原生 `LNG`→`GYT`
+   场景。每一类先通过只读关系/类型/country_type/capital 审计，再从真实产品目标列表确认
+   可见；18 类结果合并构成完整矩阵，不能用静态 allowlist 或事件弹窗代替真实 UI。
 
-   若 `.21` 聚合审计失败，必须在同一状态调用 `.22`；`.22` 只诊断当前 13+2 基线对象。
+   若 `.21` 聚合审计失败，必须在同一状态调用 `.22`；`.22` 只诊断当前 9+2 基线对象。
    历史 `.23`–`.28` 保留为失败 attempt 的只读根因诊断：它们已经证明在无合法上下文时，
    `appanage`、`hanseatic_member`、`march` 与 `tributary` 会被引擎规范化为普通 `vassal`，
    `direct_imperial_free_city` 会被清理。该结果只能归类 fixture/harness，不能冒充产品 RED。

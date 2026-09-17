@@ -210,10 +210,6 @@ class ColonialRegionTransferToolTests(unittest.TestCase):
             "XMSEC": "secessionists",
             "XMVAS": "vassal",
             "XMPRN": "pronoia",
-            "XMSAM": "samanta",
-            "XMMHS": "maha_samanta",
-            "XMPMS": "pradhana_maha_samanta",
-            "XMTUS": "tusi",
             "XMUBE": "uc_bey",
             "XMBNK": "state_bank",
             "XMTRD": "trade_company",
@@ -268,6 +264,28 @@ class ColonialRegionTransferToolTests(unittest.TestCase):
         self.assertIn("international_organization:hre", direct_ifc_setup)
         self.assertIn("name = hre_direct_free_cities_subject", direct_ifc_setup)
         self.assertIn("type = subject_type:direct_imperial_free_city", direct_ifc_setup)
+
+        samanta_setup = phase2.split("xcrt_acceptance.37 = {", 1)[1].split(
+            "\nxcrt_acceptance.38 = {", 1
+        )[0]
+        for tag in ("GWA", "HAD", "MEW"):
+            self.assertIn(f"c:{tag}", samanta_setup)
+        self.assertIn("tag = DLH", samanta_setup)
+        self.assertIn("type = subject_type:maha_samanta", samanta_setup)
+        self.assertIn("type = subject_type:pradhana_maha_samanta", samanta_setup)
+
+        samanta_audit = phase2.split("xcrt_acceptance.38 = {", 1)[1].split(
+            "\nxcrt_acceptance.", 1
+        )[0]
+        for tag, subject_type in (
+            ("GWA", "samanta"),
+            ("HAD", "maha_samanta"),
+            ("MEW", "pradhana_maha_samanta"),
+        ):
+            self.assertIn(f"c:{tag}", samanta_audit)
+            self.assertIn(f"is_subject_type = {subject_type}", samanta_audit)
+        self.assertIn("country_type = location", samanta_audit)
+        self.assertIn("exists = capital", samanta_audit)
 
     def test_interaction_suppresses_undefined_post_action_messages(self) -> None:
         script_path = self.validator.PRODUCT_ROOT / self.validator.SCRIPT_REL

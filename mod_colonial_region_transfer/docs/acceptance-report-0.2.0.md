@@ -238,8 +238,28 @@ run `xcrt-20260916T215800Z-phase2-subject-matrix-retry2` 使用 fresh 简中隔�
 exact-build 原版给出了合法替代路径：`FRA -> ALE appanage`、
 `HSA -> LUB hanseatic_member`、`TUN -> BTL tributary` 是初始关系；`march` 要求宗主 rank
 不低于目标且目标关系未锁定；`direct_imperial_free_city` 必须在 HRE 直属自由市状态下由
-皇帝/leader 持有。最终矩阵因此改为 13+2 通用塞尔维亚基线与五个合法上下文子场景，
-而不是继续强造互斥状态。任何 GREEN 结论仍必须来自未热改投影的后续 fresh run。
+皇帝/leader 持有。该阶段方案因此先改为 13+2 通用塞尔维亚基线与五个合法上下文子场景，
+而不是继续强造互斥状态；后续 fresh run 暴露的另外四类上下文限制见下一节。任何 GREEN
+结论仍必须来自未热改投影的后续 fresh run。
+
+## 附属类型矩阵：13+2 基线拆分验证 RED
+
+run `xcrt-20260917T004000Z-phase2-subject-matrix-baseline` 使用 fresh 简中隔离 profile、
+离线 Steam 与投影 Mod 树 SHA-256
+`98e922285de9ac09a70c192358ad9efb087a89e68211bff8f499853b4b235e6e`。`.20` 布置后，
+`.21` 显示聚合失败；只读 `.22` 仅显示 `samanta`、`maha_samanta`、
+`pradhana_maha_samanta` 与 `tusi` 四项失败，其余 9 个 location 类型与两个 building 类型
+均满足逐项合同。故该 attempt 永久分类为 `fixture/harness RED`，没有产品 RED 证据。
+
+聚合 FAIL 与逐类型 FAIL 截图 SHA-256 分别为
+`092bd1acffb0b4cb0ba4a823a41ba326290591f70c267880dbb0ab25de869875` 与
+`9feb548e10585c381334a258892b6945c5949e3c5796f3324b48ae3d879327a5`；关闭进程后的
+`game.log` / `error.log` SHA-256 分别为
+`20d87141eac6b40511346ea402c2cff5d5d6425b3fae60e7204957beb2a2f162` 与
+`25234ae432e8799b85e4c173375bb1822d91781c7ab4b10e5292bbf583779b7d`。
+exact-build 定义确认前三类受印度 advance/升级链约束，`tusi` 受中华帝国与目标地域文化
+上下文约束。替代方案把塞尔维亚基线收敛为 9+2，以原生 Delhi samanta 链单独覆盖三类，
+并复用已经闭合的原生 `LNG`→`GYT tusi` 场景；所有新结论仍必须来自 fresh run。
 
 ## Workshop 发布证据
 

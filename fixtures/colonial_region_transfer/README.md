@@ -10,7 +10,7 @@
 - `event xcrt_acceptance.8`：普通 `vassal` 目标的同构二期主路径；布置后及真实取消后
   分别用 `.16` 精确审计所有 owner、数量和关系均为初始状态，真实确认后用 `.9`
   审计同构结果。
-- `event xcrt_acceptance.20`：建立 13 个可通用构造的领土型与两个 building 型直属附属
+- `event xcrt_acceptance.20`：建立 9 个可通用构造的领土型与两个 building 型直属附属
   对象；先用
   `.21` 做聚合审计。若 `.21` 失败，必须在同一 run 调用 `.22`；`.22` 只显示未满足
   `直属关系 + 精确 subject type + country_type + capital` 合同的具体类型，禁止仅凭
@@ -25,11 +25,18 @@
   建立并审计皇帝 `UBV` 的 `direct_imperial_free_city`。每类仍须进入真实产品目标列表。
   Build `24187685` 实机已证明 `appanage`、
   `hanseatic_member`、`direct_imperial_free_city`、`march`、`tributary` 不能可靠地通过
-  `create_country_from_location` 的 `overlord + subject_type` 一步式路径建立；这五种类型
-  必须先创建独立 location 国家，并在 `create_country_from_location` 的新国家 scope 内以
-  `hidden_effect + make_subject_of` 明确建立关系。不得在同一 option 紧接着用新定义的
+  `create_country_from_location` 的 `overlord + subject_type` 一步式路径建立；前三类直接复用
+  原生关系，`march` 在新国家 scope 内先设置 county rank 再 `make_subject_of`，直属帝国
+  自由市则先启用 HRE 原版状态再变更原生 `LUB`。不得在同一 option 紧接着用新定义的
   `c:XM*` tag 重新取 scope：Build `24187685` 会在 option 完成前把该 tag 视为未注册。
   该差异只属于夹具布置机制，不改变产品的类型 allowlist。
+- 印度附属链按原版变更路径另行验收：全新 `DLH` 开局运行 `.37`，保留原生
+  `GWA samanta`，把原生 `HAD samanta` 按原版 effect 变更为 `maha_samanta`，把原生
+  `MEW samanta` 依次变更为 `maha_samanta`、`pradhana_maha_samanta`；`.38` 只读审计
+  三个对象。`samanta` 的创建要求宗主拥有 `samanta_advance`，后两类的
+  `creation_visible` 固定为 `always = no`，因此不得再放进塞尔维亚通用创建矩阵。
+- `tusi` 不再放进通用矩阵；它要求中华帝国组织上下文和合格地域/文化目标，复用已闭合的
+  原生 `LNG`→`GYT` 场景作为类型与真实目标列表证据。
 - `tag LNG` 后执行 `event xcrt_acceptance.10`：保持 1337 开局中引擎已建立的原生
   `LNG`→`GYT` 土司关系与 `nixi` 首都，在 `south_china_region` 布置 14→16 禁用；
   此时 `LNG` 首都也在目标 Region，故该负向场景还受到产品既有的宗主首都保护。
