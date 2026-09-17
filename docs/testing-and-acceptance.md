@@ -92,10 +92,18 @@ OCR 不能单独证明：
 每个 run 必须：
 
 1. 使用唯一 run ID 和一次性隔离 profile。
-2. 固定语言、分辨率、UI 缩放、DLC、播放集和唯一目标 Mod。
+2. 启动前在 fresh profile 写入当前 exact build 已实测接受的
+   `pdx_settings.json` 键 `System.language = "l_simp_chinese"`，再固定分辨率、
+   UI 缩放、DLC、播放集和唯一目标 Mod；不得依赖首次启动后才写回语言，避免
+   fixture 本地化在启动期按错误语言加载为 `Unknown`。
 3. 启动前清理本轮隔离日志，但不清理尚未闭合场景的相关历史 run。
 4. 冻结 EXE、产品树、fixture、配置和启动参数哈希。
 5. 退出后证明本轮进程树归零，并验证真实玩家目录未改变。
+
+验收准备器只为不存在的 `pdx_settings.json` 创建上述最小语言设置。目标文件已存在时
+必须失败闭锁，不得覆盖或合并，因为已有文件意味着 profile 不再满足 fresh 前提，且
+静默改写会掩盖调用顺序错误。该预置只证明启动输入已固定；实际简中加载仍须由首帧
+OCR 与 fresh 日志验证。
 
 ## 6. EU5 原生测试能力
 

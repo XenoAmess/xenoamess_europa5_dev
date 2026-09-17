@@ -330,6 +330,92 @@ class ColonialRegionTransferToolTests(unittest.TestCase):
             self.assertTrue(mods[0]["isEnabled"])
             self.assertTrue(mods[0]["path"].endswith("/xcrt_colonial_region_transfer/"))
 
+    def test_acceptance_language_settings_seed_exact_build_simplified_chinese(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            profile = Path(temp) / "profile"
+            profile.mkdir()
+            expected = self.preparer.write_language_settings(profile)
+            raw = (profile / "pdx_settings.json").read_bytes()
+            self.assertTrue(raw.isascii())
+            self.assertEqual(
+                {"System": {"language": "l_simp_chinese"}},
+                expected,
+            )
+            self.assertEqual(expected, json.loads(raw))
+
+    def test_acceptance_launch_config_refuses_existing_settings_without_partial_write(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            temp_root = Path(temp)
+            profile = temp_root / "profile"
+            evidence = temp_root / "evidence"
+            profile.mkdir()
+            self.preparer.compose(profile, evidence)
+            settings_path = profile / "pdx_settings.json"
+            original = b'{"System":{"language":"l_english"}}\n'
+            settings_path.write_bytes(original)
+
+            with self.assertRaisesRegex(
+                self.preparer.PreparationRefused,
+                "refusing to overwrite existing language settings",
+            ):
+                self.preparer.write_launch_configuration(profile)
+
+            self.assertEqual(original, settings_path.read_bytes())
+            self.assertFalse((profile / "playsets.json").exists())
+
+    def test_acceptance_launch_config_writes_playset_and_language_before_launch(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            temp_root = Path(temp)
+            profile = temp_root / "profile"
+            evidence = temp_root / "evidence"
+            profile.mkdir()
+            self.preparer.compose(profile, evidence)
+
+            observed = self.preparer.write_launch_configuration(profile)
+
+            self.assertEqual(
+                "l_simp_chinese",
+                observed["settings"]["System"]["language"],
+            )
+            self.assertTrue((profile / "playsets.json").is_file())
+            self.assertTrue((profile / "pdx_settings.json").is_file())
+
+    def test_acceptance_cli_preflight_refuses_before_projection(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            temp_root = Path(temp)
+            profile = temp_root / "profile"
+            evidence = temp_root / "evidence"
+            profile.mkdir()
+            settings_path = profile / "pdx_settings.json"
+            original = b'{"System":{"language":"l_english"}}\n'
+            settings_path.write_bytes(original)
+
+            completed = subprocess.run(
+                [
+                    sys.executable,
+                    str(PREPARER_PATH),
+                    "--profile",
+                    str(profile),
+                    "--evidence-root",
+                    str(evidence),
+                    "--write-playset",
+                ],
+                cwd=REPO_ROOT,
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(2, completed.returncode)
+            self.assertIn("refusing to overwrite existing language settings", completed.stderr)
+            self.assertEqual(original, settings_path.read_bytes())
+            self.assertFalse((profile / "mod").exists())
+            self.assertFalse(evidence.exists())
+
     def test_release_projection_is_reproducible_and_allowlisted(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             temp_root = Path(temp)

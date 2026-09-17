@@ -18,6 +18,11 @@
 - `build_colonial_region_transfer_release.py`：从匹配 `colonial_region_transfer-v<VERSION>` 的 clean HEAD 只投影精确 allowlist，生成 staging、manifest 与确定性 ZIP；`--check` 在两个临时目录中逐字节复建。当前 EU5 Mod Tools 原生 metadata 缺失时明确拒绝构建。
 - `eu5_acceptance.py` 与 `eu5_runtime/`：窗口、截图、OCR、输入和结构化证据原语。所有 GUI 输入必须同时指定 JSON 回执与事后截图；回执的声明边界固定为 `input-sent-only`。
 - `prune_runtime_evidence.py`：只接受 `_runtime` 下逐项列出的已闭合场景证据，拒绝 glob、根目录和越界路径；用于执行“失败记录永久保留、完整运行证据保留至场景闭合”的清理合同。
+- `prepare_colonial_region_transfer_acceptance.py`：将产品与外置 fixture 投影到 fresh
+  隔离 profile；`--write-playset` 同时生成唯一 Mod 播放集和最小
+  `pdx_settings.json`，在 EU5 首次加载本地化前固定
+  `System.language = "l_simp_chinese"`。已有任一启动配置时拒绝覆盖，也不会先写出
+  部分投影。
 
 定点滚动与拖拽示例（`--space` 默认为 `client`；wheel 省略坐标时兼容旧行为）：
 

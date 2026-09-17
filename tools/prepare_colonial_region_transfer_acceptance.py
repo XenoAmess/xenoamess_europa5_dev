@@ -16,6 +16,7 @@ PRODUCT_ROOT = REPO_ROOT / "mod_colonial_region_transfer"
 FIXTURE_ROOT = REPO_ROOT / "fixtures/colonial_region_transfer/overlay"
 MOD_DIRECTORY = "xcrt_colonial_region_transfer"
 PLAYSET_NAME = "XCRT Acceptance"
+ACCEPTANCE_LANGUAGE = "l_simp_chinese"
 EXACT_BUILD_DLC = (
     ("d000_shared", True),
     ("d017_sacred_sites_pack", False),
@@ -179,6 +180,56 @@ def write_playset(profile: Path) -> dict[str, object]:
     return playset
 
 
+def write_language_settings(profile: Path) -> dict[str, object]:
+    """Seed the exact-build language before EU5 performs its first localization load."""
+    profile = profile.resolve()
+    if not profile.is_dir():
+        raise PreparationRefused(f"isolated profile does not exist: {profile}")
+
+    destination = profile / "pdx_settings.json"
+    if destination.exists():
+        raise PreparationRefused(
+            f"refusing to overwrite existing language settings: {destination}"
+        )
+    settings: dict[str, object] = {
+        "System": {
+            "language": ACCEPTANCE_LANGUAGE,
+        }
+    }
+    destination.write_text(
+        json.dumps(settings, ensure_ascii=True, indent=2) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
+    return settings
+
+
+def require_launch_destinations_absent(profile: Path) -> Path:
+    """Refuse an already-initialized profile before writing any launch artifact."""
+    profile = profile.resolve()
+    if not profile.is_dir():
+        raise PreparationRefused(f"isolated profile does not exist: {profile}")
+    for destination, label in (
+        (profile / "playsets.json", "playset"),
+        (profile / "pdx_settings.json", "language settings"),
+    ):
+        if destination.exists():
+            raise PreparationRefused(f"refusing to overwrite existing {label}: {destination}")
+    return profile
+
+
+def write_launch_configuration(profile: Path) -> dict[str, object]:
+    """Preflight both destinations, then write playset and Simplified Chinese setting."""
+    profile = require_launch_destinations_absent(profile)
+    mod_path = (profile / "mod" / MOD_DIRECTORY).resolve()
+    if not mod_path.is_dir():
+        raise PreparationRefused(f"acceptance Mod projection does not exist: {mod_path}")
+
+    settings = write_language_settings(profile)
+    playset = write_playset(profile)
+    return {"playset": playset, "settings": settings}
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--profile", type=Path, required=True)
@@ -186,7 +237,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--write-playset",
         action="store_true",
-        help="also create a valid exact-build playsets.json enabling only the projection",
+        help=(
+            "also create exact-build playsets.json and pre-launch Simplified Chinese "
+            "pdx_settings.json"
+        ),
     )
     return parser.parse_args()
 
@@ -194,9 +248,11 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     try:
+        if args.write_playset:
+            require_launch_destinations_absent(args.profile)
         manifest = compose(args.profile, args.evidence_root)
         if args.write_playset:
-            write_playset(args.profile)
+            write_launch_configuration(args.profile)
     except PreparationRefused as exc:
         sys.stderr.write(f"REFUSED: {exc}\n")
         return 2

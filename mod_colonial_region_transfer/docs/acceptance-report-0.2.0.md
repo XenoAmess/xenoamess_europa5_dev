@@ -294,6 +294,34 @@ client/screen 坐标的 `wheel` 与保证异常时释放鼠标键的 `drag`；�
 继续保留，完整运行证据可按仓库证据策略清理。受限类型仍须在各自合法上下文中继续验收，
 本节 GREEN 不替代那些尚未执行的场景。
 
+## 原生 appanage：启动语言未预置 RED
+
+run `xcrt-20260917T111000Z-phase2-native-appanage` 使用 fresh 隔离 profile、离线 Steam
+与投影 Mod 树 SHA-256
+`80bed38eef4fcd3cf80f34be984ff5d3bff52900d7d937b9de0e89e5ccd78893`。
+法国开局的只读 `.30` 审计显示原生 `FRA -> ALE appanage` 的直属关系、精确类型、
+`country_type = location` 与首都合同全部成立，截图 SHA-256 为
+`25b99feb3bc709fe98f2ebbeb5f30d87072bc8077b0d8e56517a529e9740dbc0`。真实
+“管理附属国”入口中的“阿朗松伯国”面板列出产品动作“整合附属地”；面板截图与
+原始分辨率 OCR JSON SHA-256 分别为
+`9c69a28307acf03322a75dd9369ac88c1c76c9634fb318686b5c7ecacb60f466` 与
+`7892dd7006a56830662479364c8a99aa8ec29291d2d941d2bd1f123f2edbed36`。悬停提示还显示
+当前状态“条件未满足”及“整合条件已经变化；没有转让任何地点”，对应截图与 OCR JSON
+SHA-256 分别为
+`abc0d3790951a300cb4206b7495bbde1f114430168b390a8c81cd6fa17b84662` 与
+`b9e3b483551327fe62a9103137d5c0cdb08f4f795a700a5e68024967ab6cdf43`。这些观察支持
+产品类型筛选接纳 `appanage`，但不能覆盖本 run 的夹具门禁失败。
+
+本 run 在首次启动后才通过 UI 把语言切换为 `l_simp_chinese`。因此事件定义初次校验时，
+仅提供简中的验收 fixture 本地化尚未加载，fresh `error.log` 记录
+`Unknown loc key xcrt_acceptance.*` 及由这些缺键引起的 `custom_tooltip` PostValidate
+错误；正常退出后的 `game.log` / `error.log` SHA-256 分别为
+`ed1bff327814286c7c9fe9fde50cf2162e280b97369eb7ae0511336bcfdcfd16` 与
+`65a94241e4744b367b153ca70fc617ea90103be43ae4c53ca0ec83c2516accca`。该问题属于
+`fixture/harness RED`，不是产品 RED；attempt 摘要永久保留。Python 准备器已改为在
+启动前为 fresh profile 写入 `System.language = "l_simp_chinese"`，必须用未复用本 run
+状态的 fresh retry 关闭场景。
+
 ## Workshop 发布证据
 
 - 发布 run：`xcrt-publish-20260914T164500Z-0.2.0`；Workshop item：
