@@ -322,6 +322,32 @@ SHA-256 分别为
 启动前为 fresh profile 写入 `System.language = "l_simp_chinese"`，必须用未复用本 run
 状态的 fresh retry 关闭场景。
 
+## 原生 appanage：简中预置 fresh retry GREEN
+
+run `xcrt-20260917T191500Z-phase2-native-appanage-retry` 使用全新隔离 profile、离线 Steam
+与投影 Mod 树 SHA-256
+`80bed38eef4fcd3cf80f34be984ff5d3bff52900d7d937b9de0e89e5ccd78893`。准备器在首次启动前
+写入 `System.language = "l_simp_chinese"`；`pdx_settings.json` SHA-256 为
+`89d64b7e8ece79d66ef900971328e6ad560b25203d992f96262abf1f8a92f0d1`。首次语言确认界面已
+以简中显示，进入主菜单前后的 fresh 日志均未出现 `Unknown loc key xcrt_acceptance.*`。
+
+法国开局的只读 `.30` 审计只显示“通过：受限附属关系合同成立”，证明原生
+`FRA -> ALE appanage` 的直属关系、精确类型、`country_type = location` 与首都合同成立；
+截图与原始分辨率 OCR JSON SHA-256 分别为
+`9922d6a8d1c8abe7ef6e831fdcba81924b1c1baffc1bde1ec60be2a59ce8a6dd` 与
+`acee3b149393e0da496a0d94c849f2817b658677261a2dac62c7168c2b410856`。随后从真实
+“管理附属国”入口选择“阿朗松伯国”，同一产品动作面板显示“整合附属地”；截图与
+OCR JSON SHA-256 分别为
+`16af346145aea943236871ca4a1ce959f519f1ac5e0e9628db4b84201cd371e1` 与
+`3957846172898410199eb437165368f84213c86c59249f7861433744b9cea209`。
+
+EU5 经游戏内菜单正常退出。最终 `game.log` / `error.log` SHA-256 分别为
+`d4aa4fe4b724e3dc18e43e633e7137028cbbe9fbb3f3fe7978457f5176d9870c` 与
+`dbca3f01a6c8ce4ba771edd1063dea06631256300ce1c68d2be2e8690bffa3d5`；`error.log` 未命中
+任何 `xcrt` key，`game.log` 仅含两个 fixture 事件文件的正常加载记录。该 fresh retry
+将原生 `appanage` 场景关闭为 GREEN；上一 attempt 的 `fixture/harness RED` 摘要永久
+保留，完整运行证据可按仓库策略清理。本场景没有发现产品缺陷，因此不触发再次发布。
+
 ## Workshop 发布证据
 
 - 发布 run：`xcrt-publish-20260914T164500Z-0.2.0`；Workshop item：
