@@ -28,6 +28,7 @@ from eu5_runtime.windows import (
     capture,
     click,
     desktop_status,
+    drag,
     find_window,
     hotkey,
     hover,
@@ -311,8 +312,51 @@ def _cmd_hover(args: argparse.Namespace) -> int:
 
 def _cmd_wheel(args: argparse.Namespace) -> int:
     binding = _binding(args)
-    wheel(binding, args.amount)
-    return _finish_action(args, binding, "wheel", {"amount": args.amount})
+    point = wheel(
+        binding,
+        args.amount,
+        x=args.x,
+        y=args.y,
+        coordinate_space=args.space,
+    )
+    details: dict[str, object] = {"amount": args.amount}
+    if point is not None:
+        details.update(
+            {
+                "requested_point": [args.x, args.y],
+                "screen_point": list(point),
+                "coordinate_space": args.space,
+            }
+        )
+    return _finish_action(args, binding, "wheel", details)
+
+
+def _cmd_drag(args: argparse.Namespace) -> int:
+    binding = _binding(args)
+    start, end = drag(
+        binding,
+        args.from_x,
+        args.from_y,
+        args.to_x,
+        args.to_y,
+        button=args.button,
+        coordinate_space=args.space,
+        duration=args.duration,
+    )
+    return _finish_action(
+        args,
+        binding,
+        "drag",
+        {
+            "requested_from": [args.from_x, args.from_y],
+            "requested_to": [args.to_x, args.to_y],
+            "screen_from": list(start),
+            "screen_to": list(end),
+            "coordinate_space": args.space,
+            "button": args.button,
+            "duration": args.duration,
+        },
+    )
 
 
 def _cmd_key(args: argparse.Namespace) -> int:
@@ -528,7 +572,22 @@ def build_parser() -> argparse.ArgumentParser:
     _add_target(wheel_parser)
     _add_action_evidence(wheel_parser)
     wheel_parser.add_argument("--amount", required=True, type=int)
+    wheel_parser.add_argument("--x", type=int)
+    wheel_parser.add_argument("--y", type=int)
+    wheel_parser.add_argument("--space", choices=("client", "screen"), default="client")
     wheel_parser.set_defaults(handler=_cmd_wheel)
+
+    drag_parser = commands.add_parser("drag", help="drag between two points")
+    _add_target(drag_parser)
+    _add_action_evidence(drag_parser)
+    drag_parser.add_argument("--from-x", required=True, type=int)
+    drag_parser.add_argument("--from-y", required=True, type=int)
+    drag_parser.add_argument("--to-x", required=True, type=int)
+    drag_parser.add_argument("--to-y", required=True, type=int)
+    drag_parser.add_argument("--space", choices=("client", "screen"), default="client")
+    drag_parser.add_argument("--button", choices=("left", "right", "middle"), default="left")
+    drag_parser.add_argument("--duration", type=float, default=0.5)
+    drag_parser.set_defaults(handler=_cmd_drag)
 
     key_parser = commands.add_parser("key", help="press one named key")
     _add_target(key_parser)

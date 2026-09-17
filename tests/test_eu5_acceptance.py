@@ -29,8 +29,10 @@ from eu5_runtime.ocr import (  # noqa: E402
 from eu5_runtime.windows import (  # noqa: E402
     WindowBindingError,
     action_receipt,
+    drag,
     ensure_foreground,
     select_unique_window,
+    wheel,
 )
 from prune_runtime_evidence import resolve_target  # noqa: E402
 
@@ -154,6 +156,73 @@ class WindowTests(unittest.TestCase):
         self.assertTrue(receipt["target"]["closed_after_action"])
         self.assertEqual(self.first.hwnd, receipt["target"]["hwnd"])
 
+    def test_wheel_can_target_a_client_point(self) -> None:
+        automation = mock.Mock()
+        with (
+            mock.patch.dict(sys.modules, {"pyautogui": automation}),
+            mock.patch("eu5_runtime.windows.ensure_foreground"),
+            mock.patch(
+                "eu5_runtime.windows._screen_point",
+                return_value=(310, 420),
+            ) as resolve,
+        ):
+            point = wheel(self.first, -4, x=10, y=20, coordinate_space="client")
+        self.assertEqual((310, 420), point)
+        resolve.assert_called_once_with(self.first, 10, 20, "client")
+        automation.scroll.assert_called_once_with(-4, x=310, y=420)
+
+    def test_wheel_without_coordinates_keeps_legacy_behavior(self) -> None:
+        automation = mock.Mock()
+        with (
+            mock.patch.dict(sys.modules, {"pyautogui": automation}),
+            mock.patch("eu5_runtime.windows.ensure_foreground"),
+        ):
+            point = wheel(self.first, 3)
+        self.assertIsNone(point)
+        automation.scroll.assert_called_once_with(3)
+
+    def test_wheel_rejects_an_incomplete_point_before_input(self) -> None:
+        automation = mock.Mock()
+        with (
+            mock.patch.dict(sys.modules, {"pyautogui": automation}),
+            mock.patch("eu5_runtime.windows.ensure_foreground") as foreground,
+        ):
+            with self.assertRaises(ValueError):
+                wheel(self.first, -1, x=10)
+        foreground.assert_not_called()
+        automation.scroll.assert_not_called()
+
+    def test_drag_releases_button_when_movement_fails(self) -> None:
+        automation = mock.Mock()
+        automation.moveTo.side_effect = [None, RuntimeError("movement failed")]
+        with (
+            mock.patch.dict(sys.modules, {"pyautogui": automation}),
+            mock.patch("eu5_runtime.windows.ensure_foreground"),
+            mock.patch(
+                "eu5_runtime.windows._screen_point",
+                side_effect=[(10, 20), (30, 40)],
+            ),
+        ):
+            with self.assertRaisesRegex(RuntimeError, "movement failed"):
+                drag(self.first, 1, 2, 3, 4, duration=0.75)
+        self.assertEqual(
+            [mock.call(10, 20), mock.call(30, 40, duration=0.75)],
+            automation.moveTo.call_args_list,
+        )
+        automation.mouseDown.assert_called_once_with(button="left")
+        automation.mouseUp.assert_called_once_with(button="left")
+
+    def test_drag_rejects_invalid_duration_before_input(self) -> None:
+        automation = mock.Mock()
+        with (
+            mock.patch.dict(sys.modules, {"pyautogui": automation}),
+            mock.patch("eu5_runtime.windows.ensure_foreground") as foreground,
+        ):
+            with self.assertRaises(ValueError):
+                drag(self.first, 1, 2, 3, 4, duration=float("nan"))
+        foreground.assert_not_called()
+        automation.moveTo.assert_not_called()
+
 
 class CliTests(unittest.TestCase):
     def test_ocr_defaults_to_cuda(self) -> None:
@@ -172,6 +241,71 @@ class CliTests(unittest.TestCase):
     def test_mutating_action_requires_receipt_and_screenshot(self) -> None:
         with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
             build_parser().parse_args(["click", "--x", "1", "--y", "2"])
+
+    def test_wheel_accepts_explicit_screen_coordinates(self) -> None:
+        args = build_parser().parse_args(
+            [
+                "wheel",
+                "--amount",
+                "-5",
+                "--x",
+                "2100",
+                "--y",
+                "700",
+                "--space",
+                "screen",
+                "--receipt",
+                "receipt.json",
+                "--screenshot",
+                "screen.png",
+            ]
+        )
+        self.assertEqual((2100, 700, "screen"), (args.x, args.y, args.space))
+
+    def test_wheel_omitted_coordinates_remain_supported(self) -> None:
+        args = build_parser().parse_args(
+            [
+                "wheel",
+                "--amount",
+                "2",
+                "--receipt",
+                "receipt.json",
+                "--screenshot",
+                "screen.png",
+            ]
+        )
+        self.assertIsNone(args.x)
+        self.assertIsNone(args.y)
+        self.assertEqual("client", args.space)
+
+    def test_drag_parser_captures_endpoints_and_motion(self) -> None:
+        args = build_parser().parse_args(
+            [
+                "drag",
+                "--from-x",
+                "10",
+                "--from-y",
+                "20",
+                "--to-x",
+                "30",
+                "--to-y",
+                "40",
+                "--space",
+                "screen",
+                "--button",
+                "middle",
+                "--duration",
+                "0.75",
+                "--receipt",
+                "receipt.json",
+                "--screenshot",
+                "screen.png",
+            ]
+        )
+        self.assertEqual((10, 20, 30, 40), (args.from_x, args.from_y, args.to_x, args.to_y))
+        self.assertEqual("screen", args.space)
+        self.assertEqual("middle", args.button)
+        self.assertEqual(0.75, args.duration)
 
     def test_paste_accepts_a_text_file_as_single_source(self) -> None:
         args = build_parser().parse_args(

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import math
 from pathlib import Path
 import time
 from typing import Iterable
@@ -264,11 +265,54 @@ def hover(
     return point
 
 
-def wheel(binding: WindowBinding, amount: int) -> None:
+def wheel(
+    binding: WindowBinding,
+    amount: int,
+    *,
+    x: int | None = None,
+    y: int | None = None,
+    coordinate_space: str = "client",
+) -> tuple[int, int] | None:
     import pyautogui
 
+    if (x is None) != (y is None):
+        raise ValueError("wheel requires both x and y when either is provided")
     ensure_foreground(binding)
-    pyautogui.scroll(amount)
+    if x is None:
+        pyautogui.scroll(amount)
+        return None
+    point = _screen_point(binding, x, y, coordinate_space)
+    pyautogui.scroll(amount, x=point[0], y=point[1])
+    return point
+
+
+def drag(
+    binding: WindowBinding,
+    from_x: int,
+    from_y: int,
+    to_x: int,
+    to_y: int,
+    *,
+    button: str = "left",
+    coordinate_space: str = "client",
+    duration: float = 0.5,
+) -> tuple[tuple[int, int], tuple[int, int]]:
+    import pyautogui
+
+    if button not in {"left", "right", "middle"}:
+        raise ValueError(f"unsupported mouse button: {button}")
+    if not math.isfinite(duration) or duration < 0:
+        raise ValueError("drag duration must be a finite non-negative number")
+    ensure_foreground(binding)
+    start = _screen_point(binding, from_x, from_y, coordinate_space)
+    end = _screen_point(binding, to_x, to_y, coordinate_space)
+    pyautogui.moveTo(*start)
+    try:
+        pyautogui.mouseDown(button=button)
+        pyautogui.moveTo(*end, duration=duration)
+    finally:
+        pyautogui.mouseUp(button=button)
+    return start, end
 
 
 def press_key(binding: WindowBinding, key: str) -> None:

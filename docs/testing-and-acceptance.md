@@ -76,6 +76,13 @@ OCR 不能单独证明：
 - 重复文字必须结合窗口区域、层级和相邻锚点消歧。
 - “输入 API 接受”只是 transport ACK，不是产品后置条件。
 
+滚动与拖拽统一通过 `tools/eu5_acceptance.py`：
+
+- `wheel` 省略 `--x/--y` 时保持历史行为，在当前指针位置滚动；指定时两者必须成对出现，并通过 `--space client|screen` 明确坐标空间。
+- `drag` 必须指定 `--from-x/--from-y/--to-x/--to-y`，起点与终点共享显式的 `--space client|screen`；仅接受非负 `--duration` 和受支持的鼠标按键。
+- client 坐标在动作执行前按窗口最新 client geometry 转换并进行边界检查；screen 坐标按原值发送。
+- 输入回执同时记录请求坐标、解析后的 screen 坐标、坐标空间、按键/滚轮量与拖拽时长。拖拽即使移动失败也必须释放鼠标按键，避免遗留按下状态。
+
 以上优先级来自 Stellaris 的可复用经验，但每个快捷键、扫描码、窗口布局和恢复动作都必须在 EU5 exact build 重新验证。
 
 ## 5. 隔离运行

@@ -12,7 +12,7 @@
 | L0 静态合同 | PASS | 12 项 exact-build 哈希、20 类型清单、metadata、脚本、11 种语言、土司双重原子矩阵、新缩略图与 release allowlist 通过。 |
 | Open Kaishek | PASS (static) | eu5-1.3.11-build-24187685 profile 对 interaction 与 scripted triggers 均返回 VALIDATED；profile 明确不声明 runtime 语义。 |
 | L1 隔离加载 | IN_PROGRESS | 简中 fresh 隔离运行能加载产品和夹具；全场景日志门禁与重载仍待关闭。夹具启动早期出现本地化 key 预载警告，玩家事件 UI 后续显示正确中文；原版市场 law 报错亦随夹具大范围 donor 隔离出现，均不能冒充产品脚本错误或无错误的 L1 GREEN。 |
-| L2 玩家行为 | IN_PROGRESS | 原生土司通过真实“附属国行动”完成 14→15；普通直属附庸通过同一真实入口完成 1→4，独立国与 Region 外地点边界保持。殖民回归、18+2 类型矩阵、关系层级和其余禁用路径仍待关闭。 |
+| L2 玩家行为 | IN_PROGRESS | 原生土司通过真实“附属国行动”完成 14→15；普通直属附庸通过同一真实入口完成 1→4，独立国与 Region 外地点边界保持；9+2 通用类型基线已从真实全局目标选择器关闭。殖民回归、受限类型合法上下文、关系层级和其余禁用路径仍待关闭。 |
 | L3 高风险路径 | IN_PROGRESS | 原生直属土司 14→15 成功并通过 owner/数量/关系审计；15→16 真实 UI 禁用且审计证明无部分转让。普通直属附庸正向路径、两个排除边界及真实确认框取消均已关闭；生命周期与保存重载仍待完成。 |
 | Workshop 发布 | PASS | 0.2.0 内容、标题、说明、改动说明与白绮主题缩略图已更新；匿名回读、远端原图及空路径 fresh cache 均通过。 |
 
@@ -260,6 +260,39 @@ run `xcrt-20260917T004000Z-phase2-subject-matrix-baseline` 使用 fresh 简中�
 exact-build 定义确认前三类受印度 advance/升级链约束，`tusi` 受中华帝国与目标地域文化
 上下文约束。替代方案把塞尔维亚基线收敛为 9+2，以原生 Delhi samanta 链单独覆盖三类，
 并复用已经闭合的原生 `LNG`→`GYT tusi` 场景；所有新结论仍必须来自 fresh run。
+
+## 附属类型矩阵：9+2 通用基线 GREEN
+
+run `xcrt-20260917T031000Z-phase2-subject-matrix-baseline-9plus2` 使用 fresh 简中隔离
+profile、离线 Steam 与投影 Mod 树 SHA-256
+`80bed38eef4fcd3cf80f34be984ff5d3bff52900d7d937b9de0e89e5ccd78893`。
+投影中的 Phase 2 fixture 与夹具简中本地化 SHA-256 分别为
+`936a41acaedc3330b4519879537bcc997d16bb367ed4bfd0d60d1a3f53901177` 与
+`995576b41243f5a7ce1038284837fc4256441f1481691e2312d84ca226093841`。
+`.20` 建立九个领土型与两个 building 型直属对象后，`.21` 只显示
+“通过：9+2基线夹具状态成立”；该审计截图 SHA-256 为
+`0b8e585fb5f26f1f0a60702e0e132651afe3ca16c7eeca9be07d2ea707d3015b`，因此无需调用
+仅用于失败诊断的 `.22`。
+
+同帧建立关系后，游戏的国家外交列表尚未刷新；把日期推进到 1337-05-01 后暂停，真实
+“打开所有外交行动 → 附属国行动”中的“整合附属地”行显示候选计数 `9`，截图 SHA-256
+`2c9ad13fc3d935c8b1a6d9a3dcb6e2e53975b312fa6c942a6cb0387b3d138e5f`。进入真实目标
+选择器后，九个可用对象全部出现：`secessionists`、`colonial_nation`、`fiefdom`、
+`conquistador`、`dominion`、`vassal`、`imperial_free_city`、`uc_bey`、`pronoia`；
+`state_bank` 与 `trade_company` 两个 building country 均未出现。选择器截图 SHA-256
+`177c2910a0409ca0a7eb4d9192cfa00f22fd2643477799fcc889903f93ae299d`，其 OCR JSON
+SHA-256 为 `3d897163bcd0ef9bf910a2668f0ce53e5a44ff6f74c4373f50fa780ac325ec26`；OCR
+识别出九个目标名称及“整合附属地”，会话实际同时注册 CUDA 与 CPU provider。
+
+原有 Python 输入工具不能把 EU5 面板稳定滚动到目标行。本轮先补充并回归验证了显式
+client/screen 坐标的 `wheel` 与保证异常时释放鼠标键的 `drag`；实机使用 `drag` 成功
+进入上述真实选择器。日期刷新与滚动能力均属于 `fixture/harness` / `tool-coverage`
+处理，不是产品缺陷。正常退出进程后的 `game.log` / `error.log` SHA-256 分别为
+`fe11da624665a7f4c4d3d4d18dc23a192371dcb6f9a7cf1dc851e17178824402` 与
+`e1586d022cbe2163f74e6171cb621523be3ee3f2cf2bbd192d7d605268f2df19`；两份日志均未命中
+产品 `xcrt_colonial_region_transfer` key。本 9+2 切片已经闭合；失败 attempt 的永久摘要
+继续保留，完整运行证据可按仓库证据策略清理。受限类型仍须在各自合法上下文中继续验收，
+本节 GREEN 不替代那些尚未执行的场景。
 
 ## Workshop 发布证据
 
