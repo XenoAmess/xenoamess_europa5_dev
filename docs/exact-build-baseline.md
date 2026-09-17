@@ -53,7 +53,36 @@ Mod 的 VFS 合并和跨层路径行为必须用 EU5 自己生成的 stub 与实
 
 ## 静态工具边界
 
-`D:\workspace\open_kaishek` 当前有 CK3 1.19.0.6 与 Stellaris 4.4.6 profile，没有 EU5 profile。首个 Mod 的 L0 工作包含建立 exact-build EU5 profile；完成前可以进行文件、编码和合同检查，但不能宣称 EU5 P 语言语义已由该工具验证。
+`C:\workspace\open_kaishek` 已建立锁定 Build `24187685` 的
+`eu5-1.3.11-build-24187685` profile。2026-09-17 同步演进加入 `NAND`、战争相关
+trigger/effect 与递归 iterator 覆盖（commit `4d3ede9e9de141503fd309ffb18a6243a2cecacb`）；当前产品
+脚本与验收 fixture 均为 0 条语法、0 条语义诊断。工具通过只证明已建模语法/语义合同，
+不能替代 EU5 运行时、真实 UI 或存档验证；遇到新方言缺口仍必须标为 tool-coverage 并
+同步补充 profile，不能冒充产品 RED。
+
+## 受限附属类型上下文
+
+Build `24187685` 的初始外交关系直接提供：`FRA -> ALE` 为 `appanage`、`HSA -> LUB`
+为 `hanseatic_member`、`TUN -> BTL` 为 `tributary`。HRE 初始 leader/emperor 为 `UBV`，
+但 `direct_imperial_free_city` 只有在 HRE 的直属自由市状态生效后才会稳定存在；`march`
+的 `visible` 要求宗主 rank 不低于目标且目标关系未锁定。
+
+实机失败夹具进一步证明：在塞尔维亚下无视这些上下文强制创建时，`appanage`、
+`hanseatic_member`、`march`、`tributary` 都会被引擎规范化为普通 `vassal`，而
+`direct_imperial_free_city` 会被清理。全类型验收必须按合法上下文拆分，不能用单一宗主
+强造 18 类关系。
+
+本结论锁定的原版证据 SHA-256：
+
+| 文件 | SHA-256 |
+| --- | --- |
+| `game/main_menu/setup/start/12_diplomacy.txt` | `c2b86e760721342a26f15d54629de32feef29d33e081cf0828c570a058d047d3` |
+| `game/main_menu/setup/start/15_international_organizations.txt` | `9398a1ec2095580419370969428264e5fdaeb7e114230aff9e66a444e1d01a3e` |
+| `game/in_game/common/subject_types/appanage.txt` | `c41c925e4b6f2e953a9417f1ff83cfdc5e64b385691dcc81c9fb7288e4e5b86d` |
+| `game/in_game/common/subject_types/hanseatic_member.txt` | `695904645cc6aa46b98a4b572e7cc8e2c359daadf4beec690eb45680d57799aa` |
+| `game/in_game/common/subject_types/march.txt` | `ad6c5b7869c067b5a2a07961a0f3ee2a7210b5aa43619e871211f87a936fd40a` |
+| `game/in_game/common/subject_types/hre.txt` | `502fc5b1f3769d47587a0294e55c3ce7335f6899ccd086c1c9698562004c041a` |
+| `game/in_game/common/scripted_effects/international_organization_effects.txt` | `66defd13b110b76df72772de58e9010e0030bf0a326dd0d90e4c46d5f5523dce` |
 
 ## 实机阶段待补齐或持续复核
 

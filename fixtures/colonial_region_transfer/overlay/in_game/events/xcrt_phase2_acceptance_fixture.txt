@@ -133,17 +133,12 @@ xcrt_acceptance.22 = {
 		name = xcrt_acceptance.22.all_pass
 		trigger = {
 			has_global_variable = xcrt_acceptance_phase2_matrix_ready
-			c:XMAPP = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = appanage country_type = location exists = capital }
 			c:XMCOL = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = colonial_nation country_type = location exists = capital }
 			c:XMCON = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = conquistador country_type = location exists = capital }
 			c:XMDOM = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = dominion country_type = location exists = capital }
 			c:XMFIE = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = fiefdom country_type = location exists = capital }
-			c:XMHAN = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = hanseatic_member country_type = location exists = capital }
 			c:XMIFC = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = imperial_free_city country_type = location exists = capital }
-			c:XMDIFC = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = direct_imperial_free_city country_type = location exists = capital }
-			c:XMMAR = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = march country_type = location exists = capital }
 			c:XMSEC = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = secessionists country_type = location exists = capital }
-			c:XMTRI = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = tributary country_type = location exists = capital }
 			c:XMVAS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = vassal country_type = location exists = capital }
 			c:XMPRN = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = pronoia country_type = location exists = capital }
 			c:XMSAM = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = samanta country_type = location exists = capital }
@@ -156,17 +151,12 @@ xcrt_acceptance.22 = {
 		}
 	}
 
-	option = { name = xcrt_acceptance.22.appanage trigger = { NOT = { c:XMAPP = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = appanage country_type = location exists = capital } } } }
 	option = { name = xcrt_acceptance.22.colonial_nation trigger = { NOT = { c:XMCOL = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = colonial_nation country_type = location exists = capital } } } }
 	option = { name = xcrt_acceptance.22.conquistador trigger = { NOT = { c:XMCON = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = conquistador country_type = location exists = capital } } } }
 	option = { name = xcrt_acceptance.22.dominion trigger = { NOT = { c:XMDOM = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = dominion country_type = location exists = capital } } } }
 	option = { name = xcrt_acceptance.22.fiefdom trigger = { NOT = { c:XMFIE = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = fiefdom country_type = location exists = capital } } } }
-	option = { name = xcrt_acceptance.22.hanseatic_member trigger = { NOT = { c:XMHAN = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = hanseatic_member country_type = location exists = capital } } } }
 	option = { name = xcrt_acceptance.22.imperial_free_city trigger = { NOT = { c:XMIFC = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = imperial_free_city country_type = location exists = capital } } } }
-	option = { name = xcrt_acceptance.22.direct_imperial_free_city trigger = { NOT = { c:XMDIFC = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = direct_imperial_free_city country_type = location exists = capital } } } }
-	option = { name = xcrt_acceptance.22.march trigger = { NOT = { c:XMMAR = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = march country_type = location exists = capital } } } }
 	option = { name = xcrt_acceptance.22.secessionists trigger = { NOT = { c:XMSEC = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = secessionists country_type = location exists = capital } } } }
-	option = { name = xcrt_acceptance.22.tributary trigger = { NOT = { c:XMTRI = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = tributary country_type = location exists = capital } } } }
 	option = { name = xcrt_acceptance.22.vassal trigger = { NOT = { c:XMVAS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = vassal country_type = location exists = capital } } } }
 	option = { name = xcrt_acceptance.22.pronoia trigger = { NOT = { c:XMPRN = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = pronoia country_type = location exists = capital } } } }
 	option = { name = xcrt_acceptance.22.samanta trigger = { NOT = { c:XMSAM = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = samanta country_type = location exists = capital } } } }
@@ -176,6 +166,295 @@ xcrt_acceptance.22 = {
 	option = { name = xcrt_acceptance.22.uc_bey trigger = { NOT = { c:XMUBE = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = uc_bey country_type = location exists = capital } } } }
 	option = { name = xcrt_acceptance.22.state_bank trigger = { NOT = { c:XMBNK = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = state_bank country_type = building } } } }
 	option = { name = xcrt_acceptance.22.trade_company trigger = { NOT = { c:XMTRD = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = trade_company country_type = building } } } }
+}
+
+# Read-only clause diagnostics for the five restricted subject types isolated by
+# .22. Events .23/.24/.26/.27 require the object to exist; .25 deliberately
+# checks only existence because the engine removed XMDIFC in both setup paths.
+xcrt_acceptance.23 = {
+	type = country_event
+	title = xcrt_acceptance.23.title
+	desc = xcrt_acceptance.matrix_clause.desc
+	outcome = neutral
+	orphan = yes
+	trigger = { always = no }
+	option = { name = xcrt_acceptance.matrix_clause.exists_pass trigger = { country_exists = c:XMAPP } }
+	option = { name = xcrt_acceptance.matrix_clause.exists_fail trigger = { NOT = { country_exists = c:XMAPP } } }
+	option = { name = xcrt_acceptance.matrix_clause.relation_pass trigger = { c:XMAPP = { is_subject_of = global_var:xcrt_acceptance_actor } } }
+	option = { name = xcrt_acceptance.matrix_clause.relation_fail trigger = { c:XMAPP = { NOT = { is_subject_of = global_var:xcrt_acceptance_actor } } } }
+	option = { name = xcrt_acceptance.matrix_clause.type_pass trigger = { c:XMAPP = { is_subject_type = appanage } } }
+	option = { name = xcrt_acceptance.matrix_clause.type_fail trigger = { c:XMAPP = { NOT = { is_subject_type = appanage } } } }
+	option = { name = xcrt_acceptance.matrix_clause.country_type_pass trigger = { c:XMAPP = { country_type = location } } }
+	option = { name = xcrt_acceptance.matrix_clause.country_type_fail trigger = { c:XMAPP = { NOT = { country_type = location } } } }
+	option = { name = xcrt_acceptance.matrix_clause.capital_pass trigger = { c:XMAPP = { exists = capital } } }
+	option = { name = xcrt_acceptance.matrix_clause.capital_fail trigger = { c:XMAPP = { NOT = { exists = capital } } } }
+}
+
+xcrt_acceptance.24 = {
+	type = country_event
+	title = xcrt_acceptance.24.title
+	desc = xcrt_acceptance.matrix_clause.desc
+	outcome = neutral
+	orphan = yes
+	trigger = { always = no }
+	option = { name = xcrt_acceptance.matrix_clause.exists_pass trigger = { country_exists = c:XMHAN } }
+	option = { name = xcrt_acceptance.matrix_clause.exists_fail trigger = { NOT = { country_exists = c:XMHAN } } }
+	option = { name = xcrt_acceptance.matrix_clause.relation_pass trigger = { c:XMHAN = { is_subject_of = global_var:xcrt_acceptance_actor } } }
+	option = { name = xcrt_acceptance.matrix_clause.relation_fail trigger = { c:XMHAN = { NOT = { is_subject_of = global_var:xcrt_acceptance_actor } } } }
+	option = { name = xcrt_acceptance.matrix_clause.type_pass trigger = { c:XMHAN = { is_subject_type = hanseatic_member } } }
+	option = { name = xcrt_acceptance.matrix_clause.type_fail trigger = { c:XMHAN = { NOT = { is_subject_type = hanseatic_member } } } }
+	option = { name = xcrt_acceptance.matrix_clause.country_type_pass trigger = { c:XMHAN = { country_type = location } } }
+	option = { name = xcrt_acceptance.matrix_clause.country_type_fail trigger = { c:XMHAN = { NOT = { country_type = location } } } }
+	option = { name = xcrt_acceptance.matrix_clause.capital_pass trigger = { c:XMHAN = { exists = capital } } }
+	option = { name = xcrt_acceptance.matrix_clause.capital_fail trigger = { c:XMHAN = { NOT = { exists = capital } } } }
+}
+
+xcrt_acceptance.25 = {
+	type = country_event
+	title = xcrt_acceptance.25.title
+	desc = xcrt_acceptance.matrix_clause.exists_desc
+	outcome = neutral
+	orphan = yes
+	trigger = { always = no }
+	option = { name = xcrt_acceptance.matrix_clause.exists_pass trigger = { country_exists = c:XMDIFC } }
+	option = { name = xcrt_acceptance.matrix_clause.exists_fail trigger = { NOT = { country_exists = c:XMDIFC } } }
+}
+
+xcrt_acceptance.26 = {
+	type = country_event
+	title = xcrt_acceptance.26.title
+	desc = xcrt_acceptance.matrix_clause.desc
+	outcome = neutral
+	orphan = yes
+	trigger = { always = no }
+	option = { name = xcrt_acceptance.matrix_clause.exists_pass trigger = { country_exists = c:XMMAR } }
+	option = { name = xcrt_acceptance.matrix_clause.exists_fail trigger = { NOT = { country_exists = c:XMMAR } } }
+	option = { name = xcrt_acceptance.matrix_clause.relation_pass trigger = { c:XMMAR = { is_subject_of = global_var:xcrt_acceptance_actor } } }
+	option = { name = xcrt_acceptance.matrix_clause.relation_fail trigger = { c:XMMAR = { NOT = { is_subject_of = global_var:xcrt_acceptance_actor } } } }
+	option = { name = xcrt_acceptance.matrix_clause.type_pass trigger = { c:XMMAR = { is_subject_type = march } } }
+	option = { name = xcrt_acceptance.matrix_clause.type_fail trigger = { c:XMMAR = { NOT = { is_subject_type = march } } } }
+	option = { name = xcrt_acceptance.matrix_clause.country_type_pass trigger = { c:XMMAR = { country_type = location } } }
+	option = { name = xcrt_acceptance.matrix_clause.country_type_fail trigger = { c:XMMAR = { NOT = { country_type = location } } } }
+	option = { name = xcrt_acceptance.matrix_clause.capital_pass trigger = { c:XMMAR = { exists = capital } } }
+	option = { name = xcrt_acceptance.matrix_clause.capital_fail trigger = { c:XMMAR = { NOT = { exists = capital } } } }
+}
+
+xcrt_acceptance.27 = {
+	type = country_event
+	title = xcrt_acceptance.27.title
+	desc = xcrt_acceptance.matrix_clause.desc
+	outcome = neutral
+	orphan = yes
+	trigger = { always = no }
+	option = { name = xcrt_acceptance.matrix_clause.exists_pass trigger = { country_exists = c:XMTRI } }
+	option = { name = xcrt_acceptance.matrix_clause.exists_fail trigger = { NOT = { country_exists = c:XMTRI } } }
+	option = { name = xcrt_acceptance.matrix_clause.relation_pass trigger = { c:XMTRI = { is_subject_of = global_var:xcrt_acceptance_actor } } }
+	option = { name = xcrt_acceptance.matrix_clause.relation_fail trigger = { c:XMTRI = { NOT = { is_subject_of = global_var:xcrt_acceptance_actor } } } }
+	option = { name = xcrt_acceptance.matrix_clause.type_pass trigger = { c:XMTRI = { is_subject_type = tributary } } }
+	option = { name = xcrt_acceptance.matrix_clause.type_fail trigger = { c:XMTRI = { NOT = { is_subject_type = tributary } } } }
+	option = { name = xcrt_acceptance.matrix_clause.country_type_pass trigger = { c:XMTRI = { country_type = location } } }
+	option = { name = xcrt_acceptance.matrix_clause.country_type_fail trigger = { c:XMTRI = { NOT = { country_type = location } } } }
+	option = { name = xcrt_acceptance.matrix_clause.capital_pass trigger = { c:XMTRI = { exists = capital } } }
+	option = { name = xcrt_acceptance.matrix_clause.capital_fail trigger = { c:XMTRI = { NOT = { exists = capital } } } }
+}
+
+# Read-only fallback classification after .23/.24/.26/.27 proved that the
+# requested exact types were not retained. Each pair tests whether the engine
+# normalized the surviving relation to an ordinary vassal.
+xcrt_acceptance.28 = {
+	type = country_event
+	title = xcrt_acceptance.28.title
+	desc = xcrt_acceptance.28.desc
+	outcome = neutral
+	orphan = yes
+	trigger = { always = no }
+	option = { name = xcrt_acceptance.28.appanage_vassal_pass trigger = { c:XMAPP = { is_subject_type = vassal } } }
+	option = { name = xcrt_acceptance.28.appanage_vassal_fail trigger = { c:XMAPP = { NOT = { is_subject_type = vassal } } } }
+	option = { name = xcrt_acceptance.28.hanseatic_vassal_pass trigger = { c:XMHAN = { is_subject_type = vassal } } }
+	option = { name = xcrt_acceptance.28.hanseatic_vassal_fail trigger = { c:XMHAN = { NOT = { is_subject_type = vassal } } } }
+	option = { name = xcrt_acceptance.28.march_vassal_pass trigger = { c:XMMAR = { is_subject_type = vassal } } }
+	option = { name = xcrt_acceptance.28.march_vassal_fail trigger = { c:XMMAR = { NOT = { is_subject_type = vassal } } } }
+	option = { name = xcrt_acceptance.28.tributary_vassal_pass trigger = { c:XMTRI = { is_subject_type = vassal } } }
+	option = { name = xcrt_acceptance.28.tributary_vassal_fail trigger = { c:XMTRI = { NOT = { is_subject_type = vassal } } } }
+}
+
+# Restricted-type audits use vanilla-legal actors/relations. These events are
+# read-only and must be paired with the real product selector in their own
+# fresh runs.
+xcrt_acceptance.30 = {
+	type = country_event
+	title = xcrt_acceptance.30.title
+	desc = xcrt_acceptance.special_audit.desc
+	outcome = neutral
+	orphan = yes
+	trigger = { always = no }
+	option = {
+		name = xcrt_acceptance.special_audit.pass
+		trigger = {
+			tag = FRA
+			c:ALE = { is_subject_of = root is_subject_type = appanage country_type = location exists = capital }
+		}
+	}
+	option = {
+		name = xcrt_acceptance.special_audit.fail
+		trigger = {
+			NAND = {
+				tag = FRA
+				c:ALE = { is_subject_of = root is_subject_type = appanage country_type = location exists = capital }
+			}
+		}
+	}
+}
+
+xcrt_acceptance.31 = {
+	type = country_event
+	title = xcrt_acceptance.31.title
+	desc = xcrt_acceptance.special_audit.desc
+	outcome = neutral
+	orphan = yes
+	trigger = { always = no }
+	option = {
+		name = xcrt_acceptance.special_audit.pass
+		trigger = {
+			tag = HSA
+			c:LUB = { is_subject_of = root is_subject_type = hanseatic_member country_type = location exists = capital }
+		}
+	}
+	option = {
+		name = xcrt_acceptance.special_audit.fail
+		trigger = {
+			NAND = {
+				tag = HSA
+				c:LUB = { is_subject_of = root is_subject_type = hanseatic_member country_type = location exists = capital }
+			}
+		}
+	}
+}
+
+xcrt_acceptance.32 = {
+	type = country_event
+	title = xcrt_acceptance.32.title
+	desc = xcrt_acceptance.special_audit.desc
+	outcome = neutral
+	orphan = yes
+	trigger = { always = no }
+	option = {
+		name = xcrt_acceptance.special_audit.pass
+		trigger = {
+			tag = TUN
+			c:BTL = { is_subject_of = root is_subject_type = tributary country_type = location exists = capital }
+		}
+	}
+	option = {
+		name = xcrt_acceptance.special_audit.fail
+		trigger = {
+			NAND = {
+				tag = TUN
+				c:BTL = { is_subject_of = root is_subject_type = tributary country_type = location exists = capital }
+			}
+		}
+	}
+}
+
+# A fresh dynamic country has no safe rank assumption. Set county rank before
+# requesting march so the exact-build visible predicate is satisfied.
+xcrt_acceptance.33 = {
+	type = country_event
+	title = xcrt_acceptance.33.title
+	desc = xcrt_acceptance.special_setup.desc
+	outcome = neutral
+	orphan = yes
+	trigger = { always = no }
+	option = {
+		name = xcrt_acceptance.special_setup.apply
+		trigger = { tag = SER NOT = { country_exists = c:XMSPM } }
+		save_scope_as = xcrt_special_actor
+		location:torres_vedras = {
+			discover_location = root
+			change_location_owner = root
+			create_country_from_location = {
+				define_unique_country_tag = XMSPM
+				change_country_name = XMSPM
+				set_country_rank = country_rank:rank_county
+				hidden_effect = { make_subject_of = { target = scope:xcrt_special_actor type = subject_type:march } }
+			}
+		}
+		location:santarem = { discover_location = root change_location_owner = root }
+		set_global_variable = { name = xcrt_acceptance_actor value = root }
+		set_global_variable = xcrt_acceptance_special_march_ready
+	}
+}
+
+xcrt_acceptance.34 = {
+	type = country_event
+	title = xcrt_acceptance.34.title
+	desc = xcrt_acceptance.special_audit.desc
+	outcome = neutral
+	orphan = yes
+	trigger = { always = no }
+	option = {
+		name = xcrt_acceptance.special_audit.pass
+		trigger = {
+			has_global_variable = xcrt_acceptance_special_march_ready
+			c:XMSPM = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = march country_type = location exists = capital }
+		}
+	}
+	option = {
+		name = xcrt_acceptance.special_audit.fail
+		trigger = {
+			NAND = {
+				has_global_variable = xcrt_acceptance_special_march_ready
+				c:XMSPM = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = march country_type = location exists = capital }
+			}
+		}
+	}
+}
+
+# direct_imperial_free_city is stable only while the HRE direct-free-city
+# regime is active. LUB is an exact-build HRE free city and UBV is the initial
+# emperor/leader, so this reproduces the vanilla relation context.
+xcrt_acceptance.35 = {
+	type = country_event
+	title = xcrt_acceptance.35.title
+	desc = xcrt_acceptance.special_setup.desc
+	outcome = neutral
+	orphan = yes
+	trigger = { always = no }
+	option = {
+		name = xcrt_acceptance.special_setup.apply
+		trigger = { tag = UBV }
+		international_organization:hre = {
+			set_variable = { name = hre_direct_free_cities_subject value = yes }
+		}
+		c:LUB = { make_subject_of = { target = root type = subject_type:direct_imperial_free_city } }
+		set_global_variable = { name = xcrt_acceptance_actor value = root }
+		set_global_variable = xcrt_acceptance_special_direct_ifc_ready
+	}
+}
+
+xcrt_acceptance.36 = {
+	type = country_event
+	title = xcrt_acceptance.36.title
+	desc = xcrt_acceptance.special_audit.desc
+	outcome = neutral
+	orphan = yes
+	trigger = { always = no }
+	option = {
+		name = xcrt_acceptance.special_audit.pass
+		trigger = {
+			has_global_variable = xcrt_acceptance_special_direct_ifc_ready
+			c:LUB = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = direct_imperial_free_city country_type = location exists = capital }
+		}
+	}
+	option = {
+		name = xcrt_acceptance.special_audit.fail
+		trigger = {
+			NAND = {
+				has_global_variable = xcrt_acceptance_special_direct_ifc_ready
+				c:LUB = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = direct_imperial_free_city country_type = location exists = capital }
+			}
+		}
+	}
 }
 
 # Fresh-game Tusi scenario. LNG keeps its historical direct GYT Tusi relation
@@ -540,9 +819,10 @@ xcrt_acceptance.16 = {
 	}
 }
 
-# Fresh-game target matrix: all 18 current-build territorial subject types are
-# direct subjects. Two building countries are also direct state_bank and
-# trade_company subjects and must not enter the product selector.
+# Fresh-game baseline matrix: the 13 current-build territorial subject types
+# that can be constructed without mutually incompatible vanilla contexts are
+# direct subjects. The five restricted types use .30-.36. Two building
+# countries are direct state_bank/trade_company subjects and must stay hidden.
 xcrt_acceptance.20 = {
 	type = country_event
 	title = xcrt_acceptance.20.title
@@ -555,15 +835,6 @@ orphan = yes
 		name = xcrt_acceptance.20.a
 		save_scope_as = xcrt_matrix_actor
 
-		location:torres_vedras = {
-			discover_location = root
-			change_location_owner = root
-			create_country_from_location = {
-				define_unique_country_tag = XMAPP
-				change_country_name = XMAPP
-				hidden_effect = { make_subject_of = { target = scope:xcrt_matrix_actor type = subject_type:appanage } }
-			}
-		}
 		location:santarem = {
 			discover_location = root
 			change_location_owner = root
@@ -584,51 +855,15 @@ orphan = yes
 			change_location_owner = root
 			create_country_from_location = { overlord = root subject_type = subject_type:fiefdom define_unique_country_tag = XMFIE change_country_name = XMFIE }
 		}
-		location:beja = {
-			discover_location = root
-			change_location_owner = root
-			create_country_from_location = {
-				define_unique_country_tag = XMHAN
-				change_country_name = XMHAN
-				hidden_effect = { make_subject_of = { target = scope:xcrt_matrix_actor type = subject_type:hanseatic_member } }
-			}
-		}
 		location:sines = {
 			discover_location = root
 			change_location_owner = root
 			create_country_from_location = { overlord = root subject_type = subject_type:imperial_free_city define_unique_country_tag = XMIFC change_country_name = XMIFC }
 		}
-		location:odemira = {
-			discover_location = root
-			change_location_owner = root
-			create_country_from_location = {
-				define_unique_country_tag = XMDIFC
-				change_country_name = XMDIFC
-				hidden_effect = { make_subject_of = { target = scope:xcrt_matrix_actor type = subject_type:direct_imperial_free_city } }
-			}
-		}
-		location:ourique = {
-			discover_location = root
-			change_location_owner = root
-			create_country_from_location = {
-				define_unique_country_tag = XMMAR
-				change_country_name = XMMAR
-				hidden_effect = { make_subject_of = { target = scope:xcrt_matrix_actor type = subject_type:march } }
-			}
-		}
 		location:elvas = {
 			discover_location = root
 			change_location_owner = root
 			create_country_from_location = { overlord = root subject_type = subject_type:secessionists define_unique_country_tag = XMSEC change_country_name = XMSEC }
-		}
-		location:moura = {
-			discover_location = root
-			change_location_owner = root
-			create_country_from_location = {
-				define_unique_country_tag = XMTRI
-				change_country_name = XMTRI
-				hidden_effect = { make_subject_of = { target = scope:xcrt_matrix_actor type = subject_type:tributary } }
-			}
 		}
 		location:portalegre = {
 			discover_location = root
@@ -713,17 +948,12 @@ xcrt_acceptance.21 = {
 		name = xcrt_acceptance.21.pass
 		trigger = {
 			has_global_variable = xcrt_acceptance_phase2_matrix_ready
-			c:XMAPP = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = appanage country_type = location exists = capital }
 			c:XMCOL = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = colonial_nation country_type = location exists = capital }
 			c:XMCON = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = conquistador country_type = location exists = capital }
 			c:XMDOM = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = dominion country_type = location exists = capital }
 			c:XMFIE = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = fiefdom country_type = location exists = capital }
-			c:XMHAN = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = hanseatic_member country_type = location exists = capital }
 			c:XMIFC = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = imperial_free_city country_type = location exists = capital }
-			c:XMDIFC = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = direct_imperial_free_city country_type = location exists = capital }
-			c:XMMAR = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = march country_type = location exists = capital }
 			c:XMSEC = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = secessionists country_type = location exists = capital }
-			c:XMTRI = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = tributary country_type = location exists = capital }
 			c:XMVAS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = vassal country_type = location exists = capital }
 			c:XMPRN = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = pronoia country_type = location exists = capital }
 			c:XMSAM = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = samanta country_type = location exists = capital }
@@ -742,17 +972,12 @@ xcrt_acceptance.21 = {
 		trigger = {
 			NAND = {
 				has_global_variable = xcrt_acceptance_phase2_matrix_ready
-				c:XMAPP = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = appanage country_type = location exists = capital }
 				c:XMCOL = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = colonial_nation country_type = location exists = capital }
 				c:XMCON = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = conquistador country_type = location exists = capital }
 				c:XMDOM = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = dominion country_type = location exists = capital }
 				c:XMFIE = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = fiefdom country_type = location exists = capital }
-				c:XMHAN = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = hanseatic_member country_type = location exists = capital }
 				c:XMIFC = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = imperial_free_city country_type = location exists = capital }
-				c:XMDIFC = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = direct_imperial_free_city country_type = location exists = capital }
-				c:XMMAR = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = march country_type = location exists = capital }
 				c:XMSEC = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = secessionists country_type = location exists = capital }
-				c:XMTRI = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = tributary country_type = location exists = capital }
 				c:XMVAS = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = vassal country_type = location exists = capital }
 				c:XMPRN = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = pronoia country_type = location exists = capital }
 				c:XMSAM = { is_subject_of = global_var:xcrt_acceptance_actor is_subject_type = samanta country_type = location exists = capital }

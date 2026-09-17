@@ -24,7 +24,7 @@
 - interaction SHA-256：ecc9c26bc2643c8f97714bc075e7489e88e81624e31c0171aef7a0cbe91cff8f。
 - scripted triggers SHA-256：
   e5e2b974a67a464f2c7448db2caac4fff722a229572ee2c74ca388e71fcc00cb。
-- 34 项 Python 工具测试通过（外置夹具额外 donor 冻结/隔离、精确补集审计、逐类型矩阵诊断与历史证据策略亦纳入回归）。
+- 35 项 Python 工具测试通过（外置夹具额外 donor 冻结/隔离、精确补集审计、受限类型合法上下文、逐类型矩阵诊断与历史证据策略亦纳入回归）。
 - Open Kaishek 聚合测试通过，其中 EU5 profile 5 项测试通过。
 - 选择器和效果侧的土司矩阵均为：既有 1..14 个地点时最多接收 14..1 个地点；
   既有 15 个地点没有成功分支。
@@ -204,6 +204,42 @@ run `xcrt-20260916T203500Z-phase2-subject-matrix-retry` 使用 fresh 简中隔�
 `6c9eab8fe5145edf07285d720b559088df944d7b5211decf4715a5785845ba29`。
 下一版替代夹具把 `make_subject_of` 放回 `create_country_from_location` 所提供的新国家
 scope 内执行；仍须以新的 fresh run 重做聚合审计。完整运行目录仅保留到矩阵场景闭合。
+
+## 附属类型矩阵：created-scope 重试 RED
+
+run `xcrt-20260916T215800Z-phase2-subject-matrix-retry2` 使用 fresh 简中隔离 profile、
+离线 Steam 与投影 Mod 树 SHA-256
+`0347ba171c653a33fea6223ae896eb260cc87d19f2c622df2ec0c83543c56fa7`。
+该版已把 `make_subject_of` 放进 `create_country_from_location` 的新国家 scope；创建阶段
+不再出现动态 tag 或空 scope 错误，但 `.21` / `.22` 仍指向同五类，且最终日志只对
+`XMDIFC` 报告 tag 不存在。故该 attempt 永久分类为 `fixture/harness RED`：四个对象需要
+继续区分关系、类型、country_type 与首都，`XMDIFC` 则确认对象生命周期未成立。
+
+聚合 FAIL 与逐类型 FAIL 截图 SHA-256 分别为
+`e667c3c4b226ee9821eb810f65b0a5d9c4419bf4c452ee409d60fcc67dda047b` 与
+`c1b02f66ca79362b1adace44ffd019f66368eba2086ae09e996dede09f3ce91a`；诊断时
+`game.log` / `error.log` SHA-256 分别为
+`3413f287e21b30026468c3a8aacdd31d4a33465e5b84fd4d37a6f81eea808ddf` 与
+`9903a479b43f9a07ead10eb6da64c126f2ea4d94b6af1766c70c4c13d942b69e`。
+本 run 已是 RED；保存上述原始哈希后热加载只读 `.23`–`.28` 完成根因定位：
+
+- `.23` `appanage`、`.24` `hanseatic_member`、`.26` `march`、`.27` `tributary` 均为
+  “对象存在、直属关系、country_type=location、首都存在”通过，只有精确附属类型失败；
+  对应截图 SHA-256 为
+  `49ed0258666079c42a51a4e24c64b2117a05dfda5a6663468b8ba8c9610ae342`、
+  `de70ac59d5886ffa3562c0886d8aa9f6eec672ecd77ae45eb1acbbadc3e72907`、
+  `98f5d9f9ff1a0d9ae8cd4a333678f809c689f71f78db5fdf4bf71f9d26774a98`、
+  `9a0cb4acb9a5ea96396e10884fdb9cb20bc4ef716dae3116d8d3c6ad4f6a274b`。
+- `.25` 证明 `XMDIFC` 对象不存在，截图 SHA-256
+  `a1ef272d8bdb9d69d782440b0ed57e5f8f63d878d0e0cc76e2ec8074ba564404`。
+- `.28` 进一步证明四个幸存关系全部被引擎规范化为普通 `vassal`，截图 SHA-256
+  `1f1ec1ac99ef03d5d54e7b954ff9ae38b023432b9d69d86737f236bb6f70f63f`。
+
+exact-build 原版给出了合法替代路径：`FRA -> ALE appanage`、
+`HSA -> LUB hanseatic_member`、`TUN -> BTL tributary` 是初始关系；`march` 要求宗主 rank
+不低于目标且目标关系未锁定；`direct_imperial_free_city` 必须在 HRE 直属自由市状态下由
+皇帝/leader 持有。最终矩阵因此改为 13+2 通用塞尔维亚基线与五个合法上下文子场景，
+而不是继续强造互斥状态。任何 GREEN 结论仍必须来自未热改投影的后续 fresh run。
 
 ## Workshop 发布证据
 

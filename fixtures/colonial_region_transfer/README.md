@@ -10,10 +10,20 @@
 - `event xcrt_acceptance.8`：普通 `vassal` 目标的同构二期主路径；布置后及真实取消后
   分别用 `.16` 精确审计所有 owner、数量和关系均为初始状态，真实确认后用 `.9`
   审计同构结果。
-- `event xcrt_acceptance.20`：建立 18 个领土型与两个 building 型直属附属对象；先用
+- `event xcrt_acceptance.20`：建立 13 个可通用构造的领土型与两个 building 型直属附属
+  对象；先用
   `.21` 做聚合审计。若 `.21` 失败，必须在同一 run 调用 `.22`；`.22` 只显示未满足
   `直属关系 + 精确 subject type + country_type + capital` 合同的具体类型，禁止仅凭
-  聚合 FAIL 猜测产品问题。Build `24187685` 实机已证明 `appanage`、
+  聚合 FAIL 猜测产品问题。若 `.22` 仍指向受限类型，`.23`–`.27` 分别把
+  `appanage`、`hanseatic_member`、`direct_imperial_free_city`、`march`、
+  `tributary` 拆为对象存在、直属关系、精确类型、country_type 与首都子条件；`.28`
+  继续确认四个幸存关系是否被引擎规范化为普通 `vassal`。这些事件只保留历史 RED 的
+  根因诊断，不再承担最终矩阵。
+- 五个受限类型按原版合法上下文分别验收：`.30` 审计法国原生 `ALE appanage`，`.31`
+  审计 HSA 原生 `LUB hanseatic_member`，`.32` 审计突尼斯原生 `BTL tributary`；`.33/.34`
+  建立并审计显式 county rank 的塞尔维亚 `march`；`.35/.36` 在 HRE 直属自由市状态下
+  建立并审计皇帝 `UBV` 的 `direct_imperial_free_city`。每类仍须进入真实产品目标列表。
+  Build `24187685` 实机已证明 `appanage`、
   `hanseatic_member`、`direct_imperial_free_city`、`march`、`tributary` 不能可靠地通过
   `create_country_from_location` 的 `overlord + subject_type` 一步式路径建立；这五种类型
   必须先创建独立 location 国家，并在 `create_country_from_location` 的新国家 scope 内以

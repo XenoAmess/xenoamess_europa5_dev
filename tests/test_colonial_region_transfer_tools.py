@@ -194,7 +194,7 @@ class ColonialRegionTransferToolTests(unittest.TestCase):
         ):
             self.assertIn(expected, cancel)
 
-    def test_subject_matrix_has_per_type_failure_diagnostics(self) -> None:
+    def test_baseline_subject_matrix_has_per_type_failure_diagnostics(self) -> None:
         phase2 = (
             REPO_ROOT
             / "fixtures/colonial_region_transfer/overlay/in_game/events/"
@@ -202,17 +202,12 @@ class ColonialRegionTransferToolTests(unittest.TestCase):
         ).read_text(encoding="utf-8-sig")
         diagnostics = phase2.split("xcrt_acceptance.22 = {", 1)[1]
         expected = {
-            "XMAPP": "appanage",
             "XMCOL": "colonial_nation",
             "XMCON": "conquistador",
             "XMDOM": "dominion",
             "XMFIE": "fiefdom",
-            "XMHAN": "hanseatic_member",
             "XMIFC": "imperial_free_city",
-            "XMDIFC": "direct_imperial_free_city",
-            "XMMAR": "march",
             "XMSEC": "secessionists",
-            "XMTRI": "tributary",
             "XMVAS": "vassal",
             "XMPRN": "pronoia",
             "XMSAM": "samanta",
@@ -236,6 +231,43 @@ class ColonialRegionTransferToolTests(unittest.TestCase):
             self.assertIn(f"country_type = {expected_country_type}", option)
             if expected_country_type == "location":
                 self.assertIn("exists = capital", option)
+
+    def test_restricted_subject_types_use_exact_build_contexts(self) -> None:
+        phase2 = (
+            REPO_ROOT
+            / "fixtures/colonial_region_transfer/overlay/in_game/events/"
+            "xcrt_phase2_acceptance_fixture.txt"
+        ).read_text(encoding="utf-8-sig")
+        for event_id, actor, target, subject_type in (
+            ("30", "FRA", "ALE", "appanage"),
+            ("31", "HSA", "LUB", "hanseatic_member"),
+            ("32", "TUN", "BTL", "tributary"),
+            ("34", None, "XMSPM", "march"),
+            ("36", None, "LUB", "direct_imperial_free_city"),
+        ):
+            event = phase2.split(f"xcrt_acceptance.{event_id} = {{", 1)[1].split(
+                "\nxcrt_acceptance.", 1
+            )[0]
+            if actor:
+                self.assertIn(f"tag = {actor}", event)
+            self.assertIn(f"c:{target}", event)
+            self.assertIn(f"is_subject_type = {subject_type}", event)
+            self.assertIn("country_type = location", event)
+            self.assertIn("exists = capital", event)
+
+        march_setup = phase2.split("xcrt_acceptance.33 = {", 1)[1].split(
+            "\nxcrt_acceptance.34 = {", 1
+        )[0]
+        self.assertIn("set_country_rank = country_rank:rank_county", march_setup)
+        self.assertIn("type = subject_type:march", march_setup)
+
+        direct_ifc_setup = phase2.split("xcrt_acceptance.35 = {", 1)[1].split(
+            "\nxcrt_acceptance.36 = {", 1
+        )[0]
+        self.assertIn("tag = UBV", direct_ifc_setup)
+        self.assertIn("international_organization:hre", direct_ifc_setup)
+        self.assertIn("name = hre_direct_free_cities_subject", direct_ifc_setup)
+        self.assertIn("type = subject_type:direct_imperial_free_city", direct_ifc_setup)
 
     def test_interaction_suppresses_undefined_post_action_messages(self) -> None:
         script_path = self.validator.PRODUCT_ROOT / self.validator.SCRIPT_REL

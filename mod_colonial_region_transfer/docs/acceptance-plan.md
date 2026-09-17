@@ -54,16 +54,21 @@ fresh error.log 中不得出现归因于 xcrt_、interaction 或 scripted trigge
    真实互动选择 vassal 目标，先取消并再次以 .16 精确核对 owner、数量和关系不变，
    再确认执行，以 .9 审计同构结果。审计的失败选项必须用 exact-build 原版已采用的
    `NAND` 表达“至少一个条件不成立”，不得使用多子项 `NOT`。
-3. 全类型矩阵：全新开局执行 event xcrt_acceptance.20，以 .21 确认夹具建立 18 个
-   location 型直属附属和两个 building 型直属附属；在真实目标列表逐项确认 18 种领土型
-   目标出现，state_bank 与 trade_company 不出现，列表无坏 capital scope 提示。若 .21
-   聚合审计失败，必须在同一状态调用 .22；.22 对每个 tag 分别核对直属关系、精确
-   subject type、country_type 与领土型 capital，并只显示失败类型。该诊断只能分类和修复
-   fixture/harness，不能代替后续真实目标列表验收。若失败类型受原版
-   `subject_creation_enabled` / 创建入口约束，则夹具先建立独立 location 国家，再用
-   创建 effect 内的 `hidden_effect + make_subject_of` 赋予精确关系；新定义的动态 tag 在
-   当前 option 完成前不能作为后续 `c:` scope 使用。修正后必须从全新 run 重做 `.20` /
-   `.21`，不能复用已失败的世界状态。
+3. 全类型矩阵按原版合法上下文拆分，不再要求一个虚构宗主同时持有互斥的受限关系：
+   全新塞尔维亚开局执行 `.20`，以 `.21` 确认 13 个可通用构造的 location 型直属附属和
+   `state_bank` / `trade_company` 两个 building 型直属附属；真实目标列表必须出现 13 个
+   领土型目标而排除两个 building 对象。其余五类分别使用 exact-build 合法上下文：法国
+   的原生 `ALE appanage`、HSA 的原生 `LUB hanseatic_member`、突尼斯的原生
+   `BTL tributary`、显式降为 county 后再授予塞尔维亚的 `march`，以及先启用 HRE 直属
+   自由市状态、再由原版皇帝 `UBV` 持有的 `direct_imperial_free_city`。每一类先通过只读
+   关系/类型/country_type/capital 审计，再从真实产品目标列表确认可见；18 类结果合并构成
+   完整矩阵，不能用静态 allowlist 或事件弹窗代替真实 UI。
+
+   若 `.21` 聚合审计失败，必须在同一状态调用 `.22`；`.22` 只诊断当前 13+2 基线对象。
+   历史 `.23`–`.28` 保留为失败 attempt 的只读根因诊断：它们已经证明在无合法上下文时，
+   `appanage`、`hanseatic_member`、`march` 与 `tributary` 会被引擎规范化为普通 `vassal`，
+   `direct_imperial_free_city` 会被清理。该结果只能归类 fixture/harness，不能冒充产品 RED。
+   所有替代场景必须来自未热改投影的 fresh run，不能复用已失败世界状态。
 4. 禁用路径：复用 0.1.0 的战争、同首都 Region、无工作量路径；每项保存简中禁用原因、
    前后 owner 与 fresh 日志。
 5. 关系层级：殖民回归场景的 XCRTS 是 XCRTD 的下层附属；它的地点可作为 donor，但
