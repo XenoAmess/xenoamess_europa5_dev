@@ -348,6 +348,32 @@ EU5 经游戏内菜单正常退出。最终 `game.log` / `error.log` SHA-256 分
 将原生 `appanage` 场景关闭为 GREEN；上一 attempt 的 `fixture/harness RED` 摘要永久
 保留，完整运行证据可按仓库策略清理。本场景没有发现产品缺陷，因此不触发再次发布。
 
+## 原生 hanseatic_member：GREEN
+
+run `xcrt-20260917T210000Z-phase2-native-hanseatic-member` 使用全新隔离 profile、离线
+Steam 与投影 Mod 树 SHA-256
+`80bed38eef4fcd3cf80f34be984ff5d3bff52900d7d937b9de0e89e5ccd78893`。准备器在首次启动前
+写入 `System.language = "l_simp_chinese"`；`pdx_settings.json` SHA-256 为
+`89d64b7e8ece79d66ef900971328e6ad560b25203d992f96262abf1f8a92f0d1`，首次语言确认界面
+直接以简中显示。
+
+汉萨开局的只读 `.31` 审计只显示“通过：受限附属关系合同成立”，证明原生
+`HSA -> LUB hanseatic_member` 的直属关系、精确类型、`country_type = location` 与首都
+合同成立；截图与原始分辨率 OCR JSON SHA-256 分别为
+`5fb3aa41b5609bfeac9329024f3ff84d5ceccfe222d48c21df2c6a147fd433a6` 与
+`241b2ce26ce8c4618f7e2a780deca04452c6393050669ce07dc3aac0fc3d0408`。随后从真实
+“管理附属国”入口选择“吕贝克自由市”，同一产品动作面板显示“整合附属地”；截图与
+OCR JSON SHA-256 分别为
+`d76f2b1cd9e34e89b215346b5a235be7fc83632b8cb74ca461f1378c4d5b02c5` 与
+`75d37f6f3e3b22ecb5ba13e6a98a30720fb0a28f78f4112653b0db8e2893ff22`。
+
+EU5 经游戏内菜单正常退出。最终 `game.log` / `error.log` SHA-256 分别为
+`adbe66f08529e32c943d930b820b08f4bb729dbfa884a70f879f855b00cbf1d9` 与
+`2c7ea1d746b91f00f5e385de6d0ec87f6ef77230e8c2d35490e001e2a3fda8ab`；`error.log`
+没有任何 `xcrt` key 或产品/fixture 路径，现有记录均来自 exact-build 原版与离线后端，
+其中包括 `muscovite_succession_war.txt` 的原版脚本错误。本场景关闭为 GREEN，完整运行
+证据可按仓库策略清理；没有发现产品缺陷，因此不触发再次发布。
+
 ## Workshop 发布证据
 
 - 发布 run：`xcrt-publish-20260914T164500Z-0.2.0`；Workshop item：
