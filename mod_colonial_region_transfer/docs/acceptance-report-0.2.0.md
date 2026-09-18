@@ -400,6 +400,27 @@ EU5 经游戏内菜单正常退出。最终 `game.log` / `error.log` SHA-256 分
 离线后端与验收输入上下文，不构成产品错误。本场景关闭为 GREEN，完整运行证据可按仓库
 策略清理；没有发现产品缺陷，因此不触发再次发布。
 
+## 原生 march：聚合审计 RED
+
+run `xcrt-20260917T235500Z-phase2-native-march` 使用 fresh 简中隔离 profile、离线
+Steam 与投影 Mod 树 SHA-256
+`80bed38eef4fcd3cf80f34be984ff5d3bff52900d7d937b9de0e89e5ccd78893`。塞尔维亚开局执行
+`.33` 后，`.34` 显示“失败：受限附属关系合同不成立”；失败截图与原始分辨率 OCR JSON
+SHA-256 分别为
+`6fd0766152bcf3e8db2b83ac8238a788f49d38527f3c5f511972b79428dddb7c` 与
+`75fa19ce42cb3e2dbdf86296a6038a9aac426bfda4b99b5c8bee795f0ecce7a9`。该聚合事件不能区分
+setup marker、动态对象、global actor、直属关系、精确 `march`、`country_type`、首都、
+county rank 与类型锁定条件，因此本 attempt 永久分类为 `fixture/harness RED`，不能据此
+声称产品缺陷。
+
+EU5 经游戏内菜单正常退出。最终 `game.log` / `error.log` SHA-256 分别为
+`0bf809325261a7446237bfa2898981a0dff85ead3cbb956048f1b539cefb42a2` 与
+`eda66d1f41ea62ca564cb4ea28a0c8f2c1ee2f32b061057a04ea12ca6d521f4b`；`error.log`
+没有任何 `xcrt` key 或产品/fixture 路径。工具覆盖已在主仓 commit `494ec61` 增加只读
+`.39` 逐条件诊断，并在 Open Kaishek commit `2ea6b56` 同步增加 `country_rank` 与
+`subject_type_is_not_locked` 的 EU5 exact-build 语法和测试。旧投影没有 `.39`，必须用
+新投影 fresh retry；在 retry 关闭场景前，本 run 的完整证据仍暂存于 `_runtime`。
+
 ## Workshop 发布证据
 
 - 发布 run：`xcrt-publish-20260914T164500Z-0.2.0`；Workshop item：
