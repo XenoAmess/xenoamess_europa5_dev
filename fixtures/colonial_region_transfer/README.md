@@ -21,7 +21,10 @@
   根因诊断，不再承担最终矩阵。
 - 五个受限类型按原版合法上下文分别验收：`.30` 审计法国原生 `ALE appanage`，`.31`
   审计 HSA 原生 `LUB hanseatic_member`，`.32` 审计突尼斯原生 `BTL tributary`；`.33/.34`
-  建立并审计显式 county rank 的塞尔维亚 `march`；`.35/.36` 在 HRE 直属自由市状态下
+  建立并审计显式 county rank 的塞尔维亚 `march`；若 `.34` 聚合审计失败，必须在同一
+  run 调用只读 `.39`，分别显示布置标记、动态对象、global actor、直属关系、精确
+  `march`、`country_type`、首都、county rank 与 `subject_type_is_not_locked`，不得凭聚合
+  FAIL 猜测夹具或产品根因；`.35/.36` 在 HRE 直属自由市状态下
   建立并审计皇帝 `UBV` 的 `direct_imperial_free_city`。每类仍须进入真实产品目标列表。
   Build `24187685` 实机已证明 `appanage`、
   `hanseatic_member`、`direct_imperial_free_city`、`march`、`tributary` 不能可靠地通过

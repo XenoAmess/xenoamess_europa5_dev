@@ -513,6 +513,36 @@ xcrt_acceptance.38 = {
 	}
 }
 
+# Read-only march diagnostics after .34 aggregate FAIL. Keep every condition in
+# its own pass/fail pair so fixture, relation and type-normalization failures are
+# visible independently in the same fresh run.
+xcrt_acceptance.39 = {
+	type = country_event
+	title = xcrt_acceptance.39.title
+	desc = xcrt_acceptance.39.desc
+	outcome = neutral
+	orphan = yes
+	trigger = { always = no }
+	option = { name = xcrt_acceptance.39.ready_pass trigger = { has_global_variable = xcrt_acceptance_special_march_ready } }
+	option = { name = xcrt_acceptance.39.ready_fail trigger = { NOT = { has_global_variable = xcrt_acceptance_special_march_ready } } }
+	option = { name = xcrt_acceptance.matrix_clause.exists_pass trigger = { country_exists = c:XMSPM } }
+	option = { name = xcrt_acceptance.matrix_clause.exists_fail trigger = { NOT = { country_exists = c:XMSPM } } }
+	option = { name = xcrt_acceptance.39.actor_pass trigger = { has_global_variable = xcrt_acceptance_actor this = global_var:xcrt_acceptance_actor } }
+	option = { name = xcrt_acceptance.39.actor_fail trigger = { NAND = { has_global_variable = xcrt_acceptance_actor this = global_var:xcrt_acceptance_actor } } }
+	option = { name = xcrt_acceptance.matrix_clause.relation_pass trigger = { c:XMSPM = { is_subject_of = global_var:xcrt_acceptance_actor } } }
+	option = { name = xcrt_acceptance.matrix_clause.relation_fail trigger = { c:XMSPM = { NOT = { is_subject_of = global_var:xcrt_acceptance_actor } } } }
+	option = { name = xcrt_acceptance.matrix_clause.type_pass trigger = { c:XMSPM = { is_subject_type = march } } }
+	option = { name = xcrt_acceptance.matrix_clause.type_fail trigger = { c:XMSPM = { NOT = { is_subject_type = march } } } }
+	option = { name = xcrt_acceptance.matrix_clause.country_type_pass trigger = { c:XMSPM = { country_type = location } } }
+	option = { name = xcrt_acceptance.matrix_clause.country_type_fail trigger = { c:XMSPM = { NOT = { country_type = location } } } }
+	option = { name = xcrt_acceptance.matrix_clause.capital_pass trigger = { c:XMSPM = { exists = capital } } }
+	option = { name = xcrt_acceptance.matrix_clause.capital_fail trigger = { c:XMSPM = { NOT = { exists = capital } } } }
+	option = { name = xcrt_acceptance.39.rank_pass trigger = { c:XMSPM = { country_rank = country_rank:rank_county } } }
+	option = { name = xcrt_acceptance.39.rank_fail trigger = { c:XMSPM = { NOT = { country_rank = country_rank:rank_county } } } }
+	option = { name = xcrt_acceptance.39.unlocked_pass trigger = { c:XMSPM = { subject_type_is_not_locked = yes } } }
+	option = { name = xcrt_acceptance.39.unlocked_fail trigger = { c:XMSPM = { NOT = { subject_type_is_not_locked = yes } } } }
+}
+
 # Fresh-game Tusi scenario. LNG keeps its historical direct GYT Tusi relation
 # and native Nixi capital, brings GYT to 14 locations, and leaves two actor
 # locations in Nixi's South China Region.

@@ -257,6 +257,39 @@ class ColonialRegionTransferToolTests(unittest.TestCase):
         self.assertIn("set_country_rank = country_rank:rank_county", march_setup)
         self.assertIn("type = subject_type:march", march_setup)
 
+        march_diagnostics = phase2.split("xcrt_acceptance.39 = {", 1)[1].split(
+            "\nxcrt_acceptance.", 1
+        )[0]
+        self.assertIn("has_global_variable = xcrt_acceptance_special_march_ready", march_diagnostics)
+        self.assertIn("country_exists = c:XMSPM", march_diagnostics)
+        self.assertIn("has_global_variable = xcrt_acceptance_actor", march_diagnostics)
+        self.assertIn("this = global_var:xcrt_acceptance_actor", march_diagnostics)
+        self.assertIn("is_subject_of = global_var:xcrt_acceptance_actor", march_diagnostics)
+        self.assertIn("is_subject_type = march", march_diagnostics)
+        self.assertIn("country_type = location", march_diagnostics)
+        self.assertIn("exists = capital", march_diagnostics)
+        self.assertIn("country_rank = country_rank:rank_county", march_diagnostics)
+        self.assertIn("subject_type_is_not_locked = yes", march_diagnostics)
+        self.assertEqual(18, march_diagnostics.count("\toption ="))
+        march_localization = (
+            REPO_ROOT
+            / "fixtures/colonial_region_transfer/overlay/main_menu/localization/"
+            "simp_chinese/xcrt_acceptance_fixture_l_simp_chinese.yml"
+        ).read_text(encoding="utf-8-sig")
+        for suffix in (
+            "title",
+            "desc",
+            "ready_pass",
+            "ready_fail",
+            "actor_pass",
+            "actor_fail",
+            "rank_pass",
+            "rank_fail",
+            "unlocked_pass",
+            "unlocked_fail",
+        ):
+            self.assertIn(f" xcrt_acceptance.39.{suffix}:", march_localization)
+
         direct_ifc_setup = phase2.split("xcrt_acceptance.35 = {", 1)[1].split(
             "\nxcrt_acceptance.36 = {", 1
         )[0]
