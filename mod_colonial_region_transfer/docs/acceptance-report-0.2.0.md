@@ -457,6 +457,34 @@ EU5 经游戏内菜单正常退出。最终 `game.log` / `error.log` SHA-256 分
 `research_advance`，完整 fixture 为 syntax 0 / semantic 0。修复后的 fresh retry 关闭场景前，
 前两次 March run 的完整证据继续暂存于 `_runtime`。
 
+### march fixed fresh retry：GREEN
+
+run `xcrt-20260919T103000Z-phase2-native-march-fixed` 使用修复后的 fresh 简中隔离
+profile、离线 Steam 与投影 Mod 树 SHA-256
+`bf24bef557706b6800d79dee712876fa4455e92758f9b44cf01b97046635991d`。夹具事件与简中
+本地化 SHA-256 分别为
+`4403b6c55c34e4159270e5add41e95abdb68954389bc66143d6777f25ebbd49c` 与
+`94b41d0c2614a5498e26c82e18fb5185d1d07998be5ed4acc8fdb3d96ed34737`。
+
+塞尔维亚 fresh 开局执行包含 `research_advance = advance_type:marcher_lords` 的 `.33` 后，
+未追加任何诊断性控制台干预，`.34` 直接显示“通过：受限附属关系合同成立”；截图与原始
+分辨率 OCR JSON SHA-256 分别为
+`da527b946c9d62934709651de9503c7425ee31059e122a16670e991f8c8165b4` 与
+`dfd0098be4ba258478cbc4f82d24814f062282e1141a72427a5525e747ce3eed`。随后通过真实 UI
+打开“管理附属国”，选中 `XMSPM伯国` 并展开“附属国行动”；同帧可见目标与
+“整合附属地”入口。真实 UI 截图与 OCR JSON SHA-256 分别为
+`10b3de984dcc72e2cbd7c2699dcd666cda9e19dab1013ebdffc482bc25b52336` 与
+`37b418d09a8045c2ef2e3213de9a39376e95f4e2dbc8a91297f0b4a2e0844b35`。OCR 会话实际
+providers 为 `CUDAExecutionProvider`、`CPUExecutionProvider`，不是把输入发送成功当作
+业务成功。
+
+EU5 经游戏内菜单正常退出。最终 `game.log` / `error.log` SHA-256 分别为
+`92fb78a9bb95fd4bb7e060a593210baa65d7ee8acc624a1374cde21ee69e1d3d` 与
+`417f28a6e1c1a7cac77384ac0341ba9a904ce331509264a9350292379574561d`；日志检索没有发现
+可归因于 `xcrt`、产品 key 或产品/fixture 路径的错误。本场景最终关闭为 GREEN；前两次
+`fixture/harness RED` 的永久摘要保留，三次 run 的完整运行证据按仓库策略清理。该问题是
+验收夹具遗漏原版 advance 前置条件，不是产品缺陷，因此不触发 Workshop 再发布。
+
 ## Workshop 发布证据
 
 - 发布 run：`xcrt-publish-20260914T164500Z-0.2.0`；Workshop item：
