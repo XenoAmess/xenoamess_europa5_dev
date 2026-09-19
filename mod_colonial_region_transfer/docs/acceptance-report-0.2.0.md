@@ -485,6 +485,31 @@ EU5 经游戏内菜单正常退出。最终 `game.log` / `error.log` SHA-256 分
 `fixture/harness RED` 的永久摘要保留，三次 run 的完整运行证据按仓库策略清理。该问题是
 验收夹具遗漏原版 advance 前置条件，不是产品缺陷，因此不触发 Workshop 再发布。
 
+## 原生直属帝国自由市：GREEN
+
+run `xcrt-20260919T133000Z-phase2-native-direct-ifc` 使用 fresh 简中隔离 profile、离线
+Steam 与投影 Mod 树 SHA-256
+`bf24bef557706b6800d79dee712876fa4455e92758f9b44cf01b97046635991d`。在国家选择界面按
+简中名称选择 exact-build 的 `UBV`（上巴伐利亚），确认其为神圣罗马帝国皇帝后执行
+`.35`，由夹具启用 HRE 直属自由市状态并把原生 `LUB` 关系变更为
+`direct_imperial_free_city`；`.36` 直接显示“通过：受限附属关系合同成立”。审计截图与
+原始分辨率 OCR JSON SHA-256 分别为
+`71ce2a6af00a9e378aba61afa234ed91349e91f39042e69a540cc5ea5ad4c5e7` 与
+`a87f23130e46b71da5af4dfaf346a3036a5ea44ae6630eb967da3276d1ca1404`。
+
+随后通过真实 UI 打开“管理附属国”，列表中同帧显示“吕贝克自由市”与
+“直属帝国自由市”；选中目标并展开“附属国行动”后，同帧可见“吕贝克自由市”与产品
+“整合附属地”入口。最终真实 UI 截图与 OCR JSON SHA-256 分别为
+`c241c6bf104692c599d16e7afad4d70eb61851184ceec11e6e7561d3960dcc9b` 与
+`e62f047c85ed19a341913f50e53c75e89a6d1bca7a4969235e403a06a56bb80e`；OCR 会话实际使用
+`CUDAExecutionProvider` 并保留 `CPUExecutionProvider` fallback。
+
+EU5 经游戏内菜单正常退出。最终 `game.log` / `error.log` SHA-256 分别为
+`6c13adbece93b44b53c2b8e73cef408e6168075e25fdb8537bca503b4b7ce028` 与
+`402456b1dcbeb29c7618d6df13453686e5dd7e84c94cb64c93e9e1e104f98c89`；日志检索没有发现
+可归因于 `xcrt`、产品 key 或产品/fixture 路径的错误。本场景关闭为 GREEN，完整 run 证据
+按仓库策略清理；没有发现产品缺陷，因此不触发 Workshop 再发布。
+
 ## Workshop 发布证据
 
 - 发布 run：`xcrt-publish-20260914T164500Z-0.2.0`；Workshop item：
