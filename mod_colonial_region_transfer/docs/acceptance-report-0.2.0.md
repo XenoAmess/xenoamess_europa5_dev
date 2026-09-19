@@ -421,6 +421,42 @@ EU5 经游戏内菜单正常退出。最终 `game.log` / `error.log` SHA-256 分
 `subject_type_is_not_locked` 的 EU5 exact-build 语法和测试。旧投影没有 `.39`，必须用
 新投影 fresh retry；在 retry 关闭场景前，本 run 的完整证据仍暂存于 `_runtime`。
 
+### march fresh retry：advance 前置条件定位
+
+run `xcrt-20260918T020000Z-phase2-native-march-retry` 使用加入 `.39` 的 fresh 简中隔离
+profile、离线 Steam 与投影 Mod 树 SHA-256
+`11731dd84bbaf2bb0affe0c5ecc99e454c7c34bee6bfabf77dab935b802a0531`。塞尔维亚开局执行
+`.33` 后，`.34` 仍显示“失败：受限附属关系合同不成立”；截图与 OCR JSON SHA-256
+分别为 `9b409bd75187211219d6077f1defe52e1e1a1a280039345366f136ce88ce2ec4` 与
+`e06287038a24af45305e016c90e2cdc308bb54e7e7f920207a112c139818530c`。
+
+同一 run 随即执行只读 `.39`。顶部证据确认布置标记、动态对象、global actor 与直属关系
+均通过，只有精确附属类型失败；截图与 OCR JSON SHA-256 分别为
+`643b914782a89b65371daf02aebc4bd08fb59641c4ed819ad395df3de3ff584e` 与
+`a1120a14789ca6d79d3bc4c3d21a63b7a90dc6e75ce2f4316115949d18482d93`。滚动后的底部证据
+继续确认 `country_type = location`、首都、county rank 与附属类型未锁定全部通过；截图与
+OCR JSON SHA-256 分别为
+`c66d0a8752067a03cd2a784634f9b8a4075595be3477b95d776dbb6a9c070d83` 与
+`726ed5160d1ce959b435deb8a3ac48789fb488f77899e899901fe5a93a4bf420`。
+
+原版 `game/in_game/common/advances/4_choices_dip.txt` 明确由时代 2 advance
+`marcher_lords` 提供 `unlock_subject_type = march`。为验证因果而在本 run 追加诊断性控制台
+干预：先执行 `research_advance = advance_type:marcher_lords`，再对同一 XMSPM 直属关系
+重新请求 `subject_type:march`；随后 `.34` 立即 GREEN。该 GREEN 截图与 OCR JSON
+SHA-256 分别为 `a653282d5b5ad22f5b268364b7ed26cf99a451eccce6da5031b9335e16fe79f0` 与
+`e2949be2c5f8a8cd555570a7ef717e62766911bdb232f3e74a361732db94df45`。这组干预只证明根因，
+不作为 fresh 场景最终 GREEN。
+
+EU5 经游戏内菜单正常退出。最终 `game.log` / `error.log` SHA-256 分别为
+`c6f850fb22e84434b6b1c98ae1863641b7cc6c2d28cd6a31d052cd154e782e6c` 与
+`5e920f657939e1f7201d0c4a9326b165a3da2ef72c79c7bf965146aaec89e8d7`；`error.log`
+没有 `xcrt` key 或产品/fixture 路径。本 attempt 永久分类为 `fixture/harness RED`：夹具遗漏
+原版 advance 解锁前置条件，不是产品缺陷。夹具现已在 `.33` 先研究 `marcher_lords`，`.39`
+也新增 advance 独立断言；Open Kaishek commit
+`10c6beec2171adce96c7c039e8b4a5ebbdd0361d` 同步覆盖 `has_advance` 与
+`research_advance`，完整 fixture 为 syntax 0 / semantic 0。修复后的 fresh retry 关闭场景前，
+前两次 March run 的完整证据继续暂存于 `_runtime`。
+
 ## Workshop 发布证据
 
 - 发布 run：`xcrt-publish-20260914T164500Z-0.2.0`；Workshop item：

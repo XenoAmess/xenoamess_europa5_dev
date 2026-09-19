@@ -348,8 +348,9 @@ xcrt_acceptance.32 = {
 	}
 }
 
-# A fresh dynamic country has no safe rank assumption. Set county rank before
-# requesting march so the exact-build visible predicate is satisfied.
+# March is unlocked by the age-2 marcher_lords advance. Research it on the
+# actor before creating the fresh country, then set county rank before the
+# relation request so all exact-build creation predicates are satisfied.
 xcrt_acceptance.33 = {
 	type = country_event
 	title = xcrt_acceptance.33.title
@@ -360,6 +361,7 @@ xcrt_acceptance.33 = {
 	option = {
 		name = xcrt_acceptance.special_setup.apply
 		trigger = { tag = SER NOT = { country_exists = c:XMSPM } }
+		research_advance = advance_type:marcher_lords
 		save_scope_as = xcrt_special_actor
 		location:torres_vedras = {
 			discover_location = root
@@ -539,6 +541,8 @@ xcrt_acceptance.39 = {
 	option = { name = xcrt_acceptance.matrix_clause.capital_fail trigger = { c:XMSPM = { NOT = { exists = capital } } } }
 	option = { name = xcrt_acceptance.39.rank_pass trigger = { c:XMSPM = { country_rank = country_rank:rank_county } } }
 	option = { name = xcrt_acceptance.39.rank_fail trigger = { c:XMSPM = { NOT = { country_rank = country_rank:rank_county } } } }
+	option = { name = xcrt_acceptance.39.advance_pass trigger = { has_advance = marcher_lords } }
+	option = { name = xcrt_acceptance.39.advance_fail trigger = { NOT = { has_advance = marcher_lords } } }
 	option = { name = xcrt_acceptance.39.unlocked_pass trigger = { c:XMSPM = { subject_type_is_not_locked = yes } } }
 	option = { name = xcrt_acceptance.39.unlocked_fail trigger = { c:XMSPM = { NOT = { subject_type_is_not_locked = yes } } } }
 }

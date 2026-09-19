@@ -55,9 +55,10 @@ Mod 的 VFS 合并和跨层路径行为必须用 EU5 自己生成的 stub 与实
 
 `C:\workspace\open_kaishek` 已建立锁定 Build `24187685` 的
 `eu5-1.3.11-build-24187685` profile。2026-09-17 同步演进加入 `NAND`、战争相关
-trigger/effect、递归 iterator、HRE IO scope、`set_country_rank` 与
-`lock_current_subject_type` 覆盖；最新工具 commit 为
-`4616fd38ba66827150ef80f8e5245250a04442b0`。当前产品脚本与验收 fixture 均为 0 条语法、
+trigger/effect、递归 iterator、HRE IO scope、`set_country_rank`、`country_rank`、
+`subject_type_is_not_locked`、`lock_current_subject_type`、`has_advance` 与
+`research_advance` 覆盖；最新工具 commit 为
+`10c6beec2171adce96c7c039e8b4a5ebbdd0361d`。当前产品脚本与验收 fixture 均为 0 条语法、
 0 条语义诊断。工具通过只证明已建模语法/语义合同，
 不能替代 EU5 运行时、真实 UI 或存档验证；遇到新方言缺口仍必须标为 tool-coverage 并
 同步补充 profile，不能冒充产品 RED。
@@ -67,7 +68,11 @@ trigger/effect、递归 iterator、HRE IO scope、`set_country_rank` 与
 Build `24187685` 的初始外交关系直接提供：`FRA -> ALE` 为 `appanage`、`HSA -> LUB`
 为 `hanseatic_member`、`TUN -> BTL` 为 `tributary`。HRE 初始 leader/emperor 为 `UBV`，
 但 `direct_imperial_free_city` 只有在 HRE 的直属自由市状态生效后才会稳定存在；`march`
-的 `visible` 要求宗主 rank 不低于目标且目标关系未锁定。
+的 `visible` 要求宗主 rank 不低于目标且目标关系未锁定，其类型还由时代 2 advance
+`marcher_lords` 解锁。2026-09-19 实机逐项诊断确认：对象、直属关系、location 国家、首都、
+county rank 和未锁定条件全部成立但宗主未研究该 advance 时，请求的 `march` 会被规范化为
+普通 `vassal`；先执行原版 `research_advance = advance_type:marcher_lords` 后再重设同一关系，
+精确 `march` 审计立即通过。
 
 实机失败夹具进一步证明：在塞尔维亚下无视这些上下文强制创建时，`appanage`、
 `hanseatic_member`、`march`、`tributary` 都会被引擎规范化为普通 `vassal`，而
@@ -88,6 +93,7 @@ Build `24187685` 的初始外交关系直接提供：`FRA -> ALE` 为 `appanage`
 | `game/in_game/common/subject_types/appanage.txt` | `c41c925e4b6f2e953a9417f1ff83cfdc5e64b385691dcc81c9fb7288e4e5b86d` |
 | `game/in_game/common/subject_types/hanseatic_member.txt` | `695904645cc6aa46b98a4b572e7cc8e2c359daadf4beec690eb45680d57799aa` |
 | `game/in_game/common/subject_types/march.txt` | `ad6c5b7869c067b5a2a07961a0f3ee2a7210b5aa43619e871211f87a936fd40a` |
+| `game/in_game/common/advances/4_choices_dip.txt` | `16123d9afdd132035483113c404d3bc31a9d65135c94283722018f1585bd0aa7` |
 | `game/in_game/common/subject_types/hre.txt` | `502fc5b1f3769d47587a0294e55c3ce7335f6899ccd086c1c9698562004c041a` |
 | `game/in_game/common/scripted_effects/international_organization_effects.txt` | `66defd13b110b76df72772de58e9010e0030bf0a326dd0d90e4c46d5f5523dce` |
 | `game/in_game/common/subject_types/samanta.txt` | `d193f854d6d558a007b452ab8041f12ddb846332d79761e2e025ef15134dbf1e` |

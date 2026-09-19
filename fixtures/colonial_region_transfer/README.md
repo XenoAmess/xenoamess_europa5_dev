@@ -21,15 +21,18 @@
   根因诊断，不再承担最终矩阵。
 - 五个受限类型按原版合法上下文分别验收：`.30` 审计法国原生 `ALE appanage`，`.31`
   审计 HSA 原生 `LUB hanseatic_member`，`.32` 审计突尼斯原生 `BTL tributary`；`.33/.34`
-  建立并审计显式 county rank 的塞尔维亚 `march`；若 `.34` 聚合审计失败，必须在同一
+  先让塞尔维亚研究用于解锁该附属类型的 `marcher_lords`，再建立并审计显式 county rank 的
+  `march`；若 `.34` 聚合审计失败，必须在同一
   run 调用只读 `.39`，分别显示布置标记、动态对象、global actor、直属关系、精确
-  `march`、`country_type`、首都、county rank 与 `subject_type_is_not_locked`，不得凭聚合
+  `march`、`country_type`、首都、county rank、`marcher_lords` 与
+  `subject_type_is_not_locked`，不得凭聚合
   FAIL 猜测夹具或产品根因；`.35/.36` 在 HRE 直属自由市状态下
   建立并审计皇帝 `UBV` 的 `direct_imperial_free_city`。每类仍须进入真实产品目标列表。
   Build `24187685` 实机已证明 `appanage`、
   `hanseatic_member`、`direct_imperial_free_city`、`march`、`tributary` 不能可靠地通过
   `create_country_from_location` 的 `overlord + subject_type` 一步式路径建立；前三类直接复用
-  原生关系，`march` 在新国家 scope 内先设置 county rank 再 `make_subject_of`，直属帝国
+  原生关系，`march` 先让宗主研究 `marcher_lords`，再在新国家 scope 内设置 county rank
+  并 `make_subject_of`；缺少该 advance 时引擎会保留直属关系但规范化为普通 `vassal`。直属帝国
   自由市则先启用 HRE 原版状态再变更原生 `LUB`。不得在同一 option 紧接着用新定义的
   `c:XM*` tag 重新取 scope：Build `24187685` 会在 option 完成前把该 tag 视为未注册。
   该差异只属于夹具布置机制，不改变产品的类型 allowlist。
