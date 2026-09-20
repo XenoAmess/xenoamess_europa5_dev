@@ -12,7 +12,7 @@
 | L0 静态合同 | PASS | 12 项 exact-build 哈希、20 类型清单、metadata、脚本、11 种语言、土司双重原子矩阵、新缩略图与 release allowlist 通过。 |
 | Open Kaishek | PASS (static) | eu5-1.3.11-build-24187685 profile 对 interaction 与 scripted triggers 均返回 VALIDATED；profile 明确不声明 runtime 语义。 |
 | L1 隔离加载 | IN_PROGRESS | 简中 fresh 隔离运行能加载产品和夹具；全场景日志门禁与重载仍待关闭。夹具启动早期出现本地化 key 预载警告，玩家事件 UI 后续显示正确中文；原版市场 law 报错亦随夹具大范围 donor 隔离出现，均不能冒充产品脚本错误或无错误的 L1 GREEN。 |
-| L2 玩家行为 | IN_PROGRESS | 原生土司通过真实“附属国行动”完成 14→15；普通直属附庸通过同一真实入口完成 1→4，独立国与 Region 外地点边界保持；9+2 通用类型基线已从真实全局目标选择器关闭。殖民回归、受限类型合法上下文、关系层级和其余禁用路径仍待关闭。 |
+| L2 玩家行为 | IN_PROGRESS | 原生土司与普通直属附庸真实入口路径已关闭；18 个 location 附属类型均取得合法上下文真值审计与真实 UI 入口证据，两个 building 类型正确排除。殖民回归、关系层级和其余禁用路径仍待关闭。 |
 | L3 高风险路径 | IN_PROGRESS | 原生直属土司 14→15 成功并通过 owner/数量/关系审计；15→16 真实 UI 禁用且审计证明无部分转让。普通直属附庸正向路径、两个排除边界及真实确认框取消均已关闭；生命周期与保存重载仍待完成。 |
 | Workshop 发布 | PASS | 0.2.0 内容、标题、说明、改动说明与白绮主题缩略图已更新；匿名回读、远端原图及空路径 fresh cache 均通过。 |
 
@@ -509,6 +509,43 @@ EU5 经游戏内菜单正常退出。最终 `game.log` / `error.log` SHA-256 分
 `402456b1dcbeb29c7618d6df13453686e5dd7e84c94cb64c93e9e1e104f98c89`；日志检索没有发现
 可归因于 `xcrt`、产品 key 或产品/fixture 路径的错误。本场景关闭为 GREEN，完整 run 证据
 按仓库策略清理；没有发现产品缺陷，因此不触发 Workshop 再发布。
+
+## 原生印度 samanta 升级链：GREEN
+
+run `xcrt-20260920T012900Z-phase2-native-india-chain` 使用 fresh 简中隔离 profile、离线
+Steam 与投影 Mod 树 SHA-256
+`bf24bef557706b6800d79dee712876fa4455e92758f9b44cf01b97046635991d`。在国家选择界面按
+简中名称选择 exact-build 的 `DLH`（德里苏丹国）；`.37` 保留原生 `GWA samanta`，并按
+原版升级链把 `HAD` 变更为 `maha_samanta`、把 `MEW` 依次变更为 `maha_samanta` 和
+`pradhana_maha_samanta`。只读 `.38` 同时核对三个目标的宗主、直属关系、精确附属类型、
+`country_type = location` 与有效首都，显示“通过：受限附属关系合同成立”。审计截图与
+原始分辨率 OCR JSON SHA-256 分别为
+`caea354e6b12b5e871c73010ba7f82cffba69773ec44315c1efc177d6bd9e7cc` 与
+`51514bdafebd130fcaddb35bfb4b75a1bb74df8851bde80ca969cafc3bea865d`。
+
+真实“管理附属国”列表显示九个德里原生直属附属；其中 `GWA`（瓜廖尔）为“三曼多”、
+`HAD`（哈多蒂）为“摩诃三曼多”、`MEW`（梅瓦尔）为“般达那‑摩诃三曼多”。逐个选中目标、
+展开“附属国行动”并按名称筛选后，三者均只显示产品“整合附属地”入口。三组真实 UI
+截图 / OCR JSON SHA-256 分别为：瓜廖尔
+`49928bdbb1880937a630fadcf3c6a9393e677c6394ef780b6dc81919394b2b25` /
+`58b8a698151a1ba43e273f5f0f80e1e179932135d0f66b0094f13666e3de2215`，哈多蒂
+`212946287dce2e2fe35e909572d21615eb4df85836fa685b612c7a620c56e830` /
+`89e9e453d61d64045647b1cc037951672a8d01086a26091b53d727b4afe71248`，梅瓦尔
+`1490f8e4a663ab3069d060cd964b9e9fb3d47e5677410e091357100bc3e72d14` /
+`c16adac2b4feeea9c4261efd101fcd0cc54369900d265b6f3b3ea319eb485721`。
+
+OCR 请求明确为 CUDA，detector、classifier、recognizer 三个会话的首选 provider 均为
+`CUDAExecutionProvider`，同时保留 `CPUExecutionProvider` fallback；独立 GPU 证据 JSON
+SHA-256 为 `6b74815bc45a4bcd462f79e265bc90484ebee59856f2b58081dd2a6aadb55afe`。
+EU5 经游戏内菜单返回主菜单并正常退出，最终 `game.log` / `error.log` SHA-256 分别为
+`51496486881343999c1186c2b092956368fe68610b7e879818cd8434285661ae` 与
+`2c41469831b9b6075f8ae19d477a17773867ee5dc97421db0a6f89f10f9a71b8`；日志检索只发现
+两份验收事件文件正常加载，没有可归因于 `xcrt`、产品 key 或 fixture 的错误。本场景关闭为
+GREEN；没有发现产品缺陷，因此不触发 Workshop 再发布。
+
+至此 9 个通用 location 类型与 9 个必须使用合法原生上下文的特殊 location 类型均已同时
+取得只读真值审计和真实 UI 入口证据；两个 building 类型继续按合同从目标列表排除，完整
+附属类型矩阵关闭为 GREEN。
 
 ## Workshop 发布证据
 
