@@ -1,6 +1,6 @@
 # 献给白绮的附属地整合 0.2.0 验收报告
 
-状态：L0_GREEN / L1-L3_IN_PROGRESS / WORKSHOP_PUBLISHED
+状态：L0-L3_GREEN / WORKSHOP_PUBLISHED / ACCEPTANCE_COMPLETE
 
 本报告只记录 0.2.0。0.1.0 的既有实机与发布事实保留在
 [acceptance-report.md](acceptance-report.md)，不得混用。
@@ -11,9 +11,9 @@
 | --- | --- | --- |
 | L0 静态合同 | PASS | 12 项 exact-build 哈希、20 类型清单、metadata、脚本、11 种语言、土司双重原子矩阵、新缩略图与 release allowlist 通过。 |
 | Open Kaishek | PASS (static) | eu5-1.3.11-build-24187685 profile 对 interaction 与 scripted triggers 均返回 VALIDATED；profile 明确不声明 runtime 语义。 |
-| L1 隔离加载 | IN_PROGRESS | 简中 fresh 隔离运行能加载产品和夹具；全场景日志门禁与重载仍待关闭。夹具启动早期出现本地化 key 预载警告，玩家事件 UI 后续显示正确中文；原版市场 law 报错亦随夹具大范围 donor 隔离出现，均不能冒充产品脚本错误或无错误的 L1 GREEN。 |
-| L2 玩家行为 | IN_PROGRESS | 原生土司与普通直属附庸真实入口路径已关闭；18 个 location 附属类型均取得合法上下文真值审计与真实 UI 入口证据，两个 building 类型正确排除。殖民回归、关系层级和其余禁用路径仍待关闭。 |
-| L3 高风险路径 | IN_PROGRESS | 原生直属土司 14→15 成功并通过 owner/数量/关系审计；15→16 真实 UI 禁用且审计证明无部分转让。普通直属附庸正向路径、两个排除边界及真实确认框取消均已关闭；生命周期与保存重载仍待完成。 |
+| L1 隔离加载 | PASS | 简中 fresh 隔离运行加载产品和夹具；最终殖民回归 run 的全部轮转错误日志均无 `xcrt`/产品路径命中，保存、退出、继续载入与再次审计通过。原版本地化、离线网络和 UI 噪声均单独归因，不冒充产品错误。 |
+| L2 玩家行为 | PASS | 18 个 location 附属类型均取得合法上下文真值审计与真实 UI 入口证据，两个 building 类型正确排除；土司、普通直属附庸、殖民领、关系层级、确认取消及禁用条件均已关闭。 |
+| L3 高风险路径 | PASS | 土司 14→15 成功、15→16 禁用、普通附庸跨层 donor、体系外/Region 外边界、同 Region 首都/战争/无候选禁用、唯一地点 donor 生命周期及保存重载全部通过。 |
 | Workshop 发布 | PASS | 0.2.0 内容、标题、说明、改动说明与白绮主题缩略图已更新；匿名回读、远端原图及空路径 fresh cache 均通过。 |
 
 ## L0 证据
@@ -24,7 +24,7 @@
 - interaction SHA-256：ecc9c26bc2643c8f97714bc075e7489e88e81624e31c0171aef7a0cbe91cff8f。
 - scripted triggers SHA-256：
   e5e2b974a67a464f2c7448db2caac4fff722a229572ee2c74ca388e71fcc00cb。
-- 35 项 Python 工具测试通过（外置夹具额外 donor 冻结/隔离、精确补集审计、受限类型合法上下文、逐类型矩阵诊断与历史证据策略亦纳入回归）。
+- 47 项 Python 工具测试通过（`test_eu5_acceptance.py` 26 项、`test_colonial_region_transfer_tools.py` 21 项；外置夹具额外 donor 冻结/隔离、精确补集审计、受限类型合法上下文、逐类型矩阵诊断、PowerShell 禁令与历史证据策略均纳入回归）。
 - Open Kaishek 聚合测试通过，其中 EU5 profile 5 项测试通过。
 - 选择器和效果侧的土司矩阵均为：既有 1..14 个地点时最多接收 14..1 个地点；
   既有 15 个地点没有成功分支。
@@ -547,6 +547,91 @@ GREEN；没有发现产品缺陷，因此不触发 Workshop 再发布。
 取得只读真值审计和真实 UI 入口证据；两个 building 类型继续按合同从目标列表排除，完整
 附属类型矩阵关闭为 GREEN。
 
+## 殖民领主路径、禁用门禁与保存重载：GREEN
+
+最终 run `xcrt-20260920T032000Z-phase2-colonial-reload` 使用 EU5 1.3.11 Build 24187685、
+简体中文、离线 Steam、fresh 隔离 userdir 与 `1024×768` 客户区；只启用产品与外置验收
+夹具。启动记录 SHA-256 为
+`1063ecba4ae73e3e29faa03398851bc3d4db2c5f49199964c39bbf7f7b0c91e3`，投影 manifest
+SHA-256 为 `ec77245921339cd095837486fc497e4971c41751501c7b9c86b8793e2e42b7a2`，投影 Mod 树
+SHA-256 为 `bf24bef557706b6800d79dee712876fa4455e92758f9b44cf01b97046635991d`。
+国家选择搜索框的输入交互不稳定，因此开局先进入金帐汗国，再在正式布置前通过 debug
+命令 `tag POR` 切换为葡萄牙；后续 `.1` 前置布置、所有产品 UI 交互、保存和重载均发生在
+葡萄牙。只读 `.3` 在任何产品动作之前完整核对 owner、直属/下层附属关系与 Region 外对照，
+只显示“通过：初始状态成立”，故该选择步骤只是如实记录的 harness 细节，不影响业务结论。
+前置审计截图及 CUDA 证据 JSON SHA-256 分别为
+`dffbcbdb4062e0ec3224613cc951d433e64d5aba21ccb1279cb699cc8e817115` 与
+`2eefb701e0d01de7c26d3e84193ccafa3e4737eaa124c0ead7616d551ab2339c`。
+
+三个禁用分支均从真实“管理附属国 → 附属国行动 → 整合附属地”入口观察，而不是只调用
+夹具 trigger：
+
+| 禁用分支 | 玩家可见的未满足条件 | 截图 SHA-256 | OCR JSON SHA-256 |
+| --- | --- | --- | --- |
+| `.4` 将宗主首都迁入目标 Region | “目标附属国与宗主的首都不能位于同一地区” | `7a86e5d7f62294721f2d9054cb543d7c2be040f90bf3754ec61e4ab9a00163c9` | `75c2055f83563669c0a9f926c4729281d20cf6b8524e56e4c97ae7a5010cdd56` |
+| `.6` 建立对照战争 | “我们处于和平”未满足 | `d897bf3c25741798a092c8e99976b976585ba7c9817a10ba4c48254e56ccb566` | `9a420ee798524a6c52133291e8207ba314761ac68d9d1cf6df1e2819c99c5b18` |
+| 成功整合后再次打开互动 | “目标地区内必须有至少一个由宗主体系持有、且尚不属于目标附属国的地点”未满足 | `c95de48bc4cd477980c2fe423e47f0a2c0fc30f947101fd4c941b92f2d5b814d` | `bbbd2afa72f801301a6bc1e75ca8a8cf91cffbb35f65ce7b0b4111fc7f8c695d` |
+
+`.5` 与 `.7` 分别恢复首都和和平后，`.3` 再次 GREEN；恢复审计截图 SHA-256 为
+`abe1b4851f40b87e9452d62c2a600bb9de46720380a27c443a850ab1ccd4935b`。随后第一次从真实
+入口打开确认框，正文明确说明同 Region 合格地点、其他附属国首都、可能迁都或消失及不可
+撤销警告；确认框截图与 OCR JSON SHA-256 分别为
+`06e61a8edfc140d2be7ef05cd0f7f4c27b347b9e6b47ea9ac788e7fe7215f609` 与
+`c557bf1f095abf17f31b898490802a20b387124f1477dc9480fb7ff61f2af1df`。点击取消后 `.3`
+仍只显示 PASS，截图 SHA-256 为
+`d9a1d02f23f78b3c0b3f1a78ab06a954293b3b2a943b8b57cbe36419a1d9b294`，证明取消没有产生
+部分转让或关系变化。
+
+第二次从同一真实入口确认后，地图显示目标领土扩大；动作后截图 SHA-256 为
+`29dd1b01123168abd7784028956fba0eb5ded529771819ea24b37b74877902fc`。只读 `.2` 仅显示
+“通过：所有后置条件均成立”，同时证明 Tortuga、Marien、Guahaba、Baynoa 均归
+`XCRTT`，Iguamuco 仍归体系外 `XCRTI`，Porto Santo 未直接转给目标，唯一地点的下层
+donor `XCRTS` 已不存在，且 `XCRTT` 仍为葡萄牙附属。后置审计截图与 CUDA OCR 证据
+SHA-256 分别为 `695c4ec2ddbca381bc16bff0e55b25c0b8d54664c5078fa38f997ac7a9416f96` 与
+`7717d847ddbb946dd37063e05303cb81542ea8d19fcfad24b687bb615b119831`。
+
+手动存档 SHA-256 为
+`f8719faa0265f4cdc40ce875adf0b005f681fdae73373562a3ae1fad57982bdb`。该序列化状态中
+`XCRTD` 仍持有 Region 外 Porto Santo（location `17851`），但首都指针仍是已转走的
+Guahaba（location `20435`）；`XCRTS` 已没有 `owned_locations`。退出到主菜单并从
+Continue 重新载入后，画面恢复到葡萄牙世界状态，重载截图 SHA-256 为
+`69774b77e03fa1b2bd1cc2d4b15ac029902c2ea42ddbd60dc969a76ce137470b`，`.2` 再次只显示
+PASS，审计截图与 CUDA OCR 证据 SHA-256 分别为
+`4bd57ffe6cc84f3c5c572f45d9fefdf26a5471ece82f2074f7f8cb29288a1eac` 与
+`e272dfc9c27b5be16b9454117105a89bdb2cdabef70de34efc63374f4ba4e0b0`。退出时生成的
+post-reload autosave SHA-256 为
+`62127f66fece812069fc3b0f16477ecaa5a1c68242f8f8a9edbd568d3978dcf7`；其中 `XCRTD` 与
+`XCRTS` 均无 `owned_locations`，Porto Santo 记录也无当前 `owner`、仅保留
+`controller=2341` / `previous_owner=2341`。因此本 exact build 实际选择的是 donor 清理，
+不是替 `XCRTD` 迁都；产品文案保持“可能迁都或消失”是正确且必要的。
+
+三次关键 OCR 均显式请求 CUDA，detector、classifier、recognizer 的实际首选 provider
+均为 `CUDAExecutionProvider`，并保留 `CPUExecutionProvider` fallback。最终
+`game.log` SHA-256 为
+`33bfcb530c31e2e37c0f1f3bafb154b3221475db874927cbba09fdc5e4f45577`；轮转后的
+`error.3.log`、`error.2.log`、`error.1.log` 与最终 `error.log` SHA-256 依次为
+`eb5e7229b58c66fcddbd021e1d591b368cc4374b44556b2762b579386b2fe93d`、
+`ea2706dc91a62c21000c6980dc3d69b8a4a4f74de24aad19104cf4dad42738cd`、
+`32a8b2842b845bfb7507241247abe7813307a950ff92e08201052dd592722310` 与
+`5d7fe0c225a55c082c24beb0f2d602096b0a1bcfe333557ffcec647ed6b9ed7c`。全部错误日志均无
+`xcrt` 或产品路径命中；`game.log` 只记录两份验收事件文件正常加载。大量
+`WAR_WON_OTHER_COUNTRY` 原版本地化错误、离线图片下载失败及一次原版 tooltip 构建错误
+属于 environment/原版噪声，不归因于产品。EU5 最终经游戏内菜单“退出到桌面”正常关闭，
+Steam 保持离线。
+
+### 被替代的长期复用 run：永久 `fixture/harness RED`
+
+`xcrt-20260913T183814Z-phase2-runtime` 在同一长期 profile 内切换法国、塞尔维亚和动态目标，
+混合多个部分场景且没有 fresh 日志/世界边界，不能作为任何完整 L1–L3 GREEN。该 attempt
+永久分类为 `fixture/harness RED`，不是产品缺陷；其替代结果为各个 fresh 专项 run 与上面的
+最终殖民回归 run。`launch.json`、代表性 `vassal-audit.png`、`game.log`、`error.log`
+SHA-256 分别为
+`d803a90b3b9d324c495ffebd8fb96a6369276ce2aefcfe260eca94f2fcba37f2`、
+`15d4a9e944c509ad1b54c8438434db66fbd4869d930b5020321181f4635681b8`、
+`5ba7c9cda3965c4b6ec2454fa66c4750b92562b318016c2e04b228a790a99813` 与
+`2a2df888ab3ca7b13a812f1c8099978bfcd8763a8d54c479cf390aa8b22df2f4`。失败摘要和哈希永久
+保留；替代场景闭合后不再永久保存该 run 的完整运行目录。
+
 ## Workshop 发布证据
 
 - 发布 run：`xcrt-publish-20260914T164500Z-0.2.0`；Workshop item：
@@ -567,6 +652,7 @@ GREEN；没有发现产品缺陷，因此不触发 Workshop 再发布。
 - EU5 在 fresh 下载前正常退出；远端与 fresh-cache 门禁关闭后，Steam 于
   2026-09-15 02:46:23 主动 `LogOff()`，连接日志确认不会自动重连，客户端保持离线。
 
-L1–L3 完成后，本报告仍须补充全部场景的 owner/关系/数量真值、存档重载、失败
-attempt 与最终分类，方可把整份 0.2.0 验收报告改为全局 GREEN。Workshop 发布通过不替代
-尚未完成的产品运行时验收。
+0.2.0 的 L0–L3 验收至此 100% 闭合；历史失败 attempt 继续以原分类永久保留，不能被
+后续 GREEN 覆盖。没有发现新的产品缺陷，因此不生成 0.2.1，也不重复上传 Workshop；
+当前已发布 manifest、标题、说明、改动说明与白绮主题 thumbnail 保持不变。报告提交并推送
+后，已闭合场景的完整 `_runtime` 运行目录按仓库证据保留规则清理。
